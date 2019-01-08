@@ -1,6 +1,6 @@
 CXX      = clang++
 #CXXFLAGS = -std=c++11 -lm -Weverything -Wno-compat -Wno-padded -Wno-conversion -Wno-global-constructors -Wno-exit-time-destructors
-CXXFLAGS =  -Wall -Wextra -O0 -g -std=c++11
+CXXFLAGS =  -Wall -Wextra -O0 -g -std=c++11 `pkg-config --cflags opencv`
 EXEC     = fingerprint
 #LIB      = -lsfml-window -lsfml-graphics -lsfml-system
 SRC      = $(shell find src -type f -name '*.cpp')
@@ -17,11 +17,11 @@ $(EXEC): $(OBJ)
 	$(CXX)  $^ -o $(EXEC)
 
 obj/%.o : src/%.cpp
-	$(CXX) $(CXXFLAGS)  -c $< -o $@
+	$(CXX) $(CXXFLAGS)  -c $< `pkg-config --libs opencv` -o $@
 
 open:
 	@printf '\n→ launch $(EXEC)...\n'
-		./$(EXEC)
+		
 
 clean:
 	@printf '\n→ clean...\n'
