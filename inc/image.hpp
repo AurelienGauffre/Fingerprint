@@ -11,7 +11,10 @@ class Image {
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
+    Mat *m_original_image;
   public:
     Image(Mat image);
-    Mat Back_to_Mat(Image image);
+    void display();
+    void back_to_Mat();
+    Mat *get_original();
 };
