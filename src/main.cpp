@@ -4,6 +4,8 @@
 using namespace cv;
 using namespace std;
 
+#include "image.hpp"
+
 int main(int argc, char const *argv[]) {
   const char* m_image = argv[1];
   Mat image;
