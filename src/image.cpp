@@ -1,5 +1,6 @@
 #include <iostream>
 #include <opencv2/opencv.hpp>
+#include <opencv2/core/types_c.h>
 #include <vector>
 
 using namespace cv;
@@ -20,6 +21,6 @@ Image::Image(Mat image){
 }
 
 Mat Image::Back_to_Mat(Image image){
-  
-  return ;
+  Mat result;
+  return result;
 }

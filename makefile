@@ -7,8 +7,6 @@ INC      = inc
 SRC      = $(shell find src -type f -name '*.cpp')
 OBJ      = $(patsubst src/%.cpp, obj/%.o, $(SRC))
 DEP      = $(OBJ:.o=.d)
-CPPFLAGS = $(shell pkg-config --cflags opencv)
-LDLIBS = $(shell pkg-config --libs opencv)
 all: print_compilation $(EXEC) open
 
 -include $(DEP)
@@ -17,10 +15,10 @@ print_compilation:
 	@printf '\n→ compilation...\n'
 
 $(EXEC): $(OBJ)
-	$(CXX)  $^ -o $(EXEC)
+	$(CXX) `pkg-config --cflags opencv` `pkg-config --libs opencv` $^ -o $(EXEC)
 
 obj/%.o : src/%.cpp
-	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LIBS) -c $< -o $@ -I $(INC)
+	$(CXX) $(CXXFLAGS) -c $< -o $@ -I $(INC)
 
 open:
 	@printf '\n→ launch $(EXEC)...\n'
