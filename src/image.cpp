@@ -52,7 +52,7 @@ Mat *Image::get_original(){
 }
 
 void Image::display_Mat(){
-  namedWindow("result.png", WINDOW_AUTOSIZE);
+  namedWindow("result.png", 100000);
   imshow("result.png", *m_original_image);
   waitKey(0);
 }
@@ -73,4 +73,26 @@ float Image::max_intensity(){
 
 unsigned int Image::get_width(){
   return m_width;
+}
+
+unsigned int Image::coord_to_index(unsigned int i, unsigned int j){
+  return j*m_width + i;
+}
+unsigned int *Image::index_to_coord(unsigned int k){
+  unsigned int *result = new unsigned int[2];
+  result[0] = k%m_width;
+  result[1] = k/m_width;
+  return result;
+}
+
+void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height){
+  unsigned int x_min = origine[0]; //raise error
+  unsigned int y_min = origine[1];
+  unsigned int x_max = min(x_min + width-1,m_width-1);
+  unsigned int y_max = min(y_min + height-1,m_height-1);
+  for (unsigned int j = x_min; j <= x_max; j++) {
+    for (unsigned int i = y_min; i <= y_max; i++) {
+      m_pixels_array[coord_to_index(i,j)] = intensity;
+    }
+  }
 }
