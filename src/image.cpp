@@ -52,12 +52,14 @@ Mat *Image::get_original(){
 }
 
 void Image::display_Mat(){
+  this->back_to_Mat();
   namedWindow("result.png", 100000);
   imshow("result.png", *m_original_image);
   waitKey(0);
 }
 
 void Image::save_Mat(string name){
+  this->back_to_Mat();
   if (name == ""){
     name ="result_" + m_name;
   }
