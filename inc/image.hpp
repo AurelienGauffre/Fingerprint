@@ -28,7 +28,7 @@ class Image {
     float min_intensity();
     float max_intensity();
     unsigned int get_width();
-    void draw_rectangle(float intensity, Point1 origine, unsigned int )
+    void draw_rectangle(float intensity, Point1 origine, unsigned int width)
 
 };
 
