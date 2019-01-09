@@ -5,6 +5,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <string.h>
+#include "point.hpp"
 
 using namespace cv;
 using namespace std;
@@ -27,7 +28,7 @@ class Image {
     float min_intensity();
     float max_intensity();
     unsigned int get_width();
-    // void draw_rectangle(float intensity, )
+    void draw_rectangle(float intensity, Point1 origine, unsigned int )
 
 };
 
