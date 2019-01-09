@@ -11,12 +11,15 @@ void test_image(char const *arg[]){
   Image im1(m_image, m_name);
   //im1.display_attributes();
   im1.display_Mat();
-  im1.save_Mat();
-  im1.save_Mat("other_name.png");
-  cout << im1.min_intensity() << im1.max_intensity();
-  unsigned int origine[2] = {0,0};
-  im1.draw_rectangle(1,origine,30,300);
-  im1.draw_rectangle(0,origine,10,10);
+  // im1.save_Mat();
+  // im1.save_Mat("other_name.png");
+  // cout << im1.min_intensity() << im1.max_intensity();
+  // unsigned int origine[2] = {30,0};
+  // im1.draw_rectangle(1,origine,30,300);
+  // im1.draw_rectangle(0,origine,10,10);
+  // im1.display_Mat();
+  // im1.symetry_y();
+  // im1.display_Mat();
+  im1.symetry_diag();
   im1.display_Mat();
-
 }

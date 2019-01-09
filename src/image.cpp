@@ -40,9 +40,13 @@ void Image::display_attributes(){
 }
 
 void Image::back_to_Mat(){
-  for (unsigned int i = 0; i < m_height; i++){
-    for (unsigned int j = 0; j < m_width; j++){
-      m_original_image->ptr<uchar>(i)[j] = (uchar)(255*m_pixels_array[i*m_width + j]);
+  m_original_image->rows = m_height;
+  m_original_image->cols = m_width;
+  cout << m_original_image->size()<< endl ;
+  //resize(*m_original_image,*m_original_image,Size(m_height,m_width));
+  for (unsigned int y = 0; y < m_height; y++){
+    for (unsigned int x = 0; x < m_width; x++){
+      m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_pixels_array[coord_to_index(x,y)]);
     }
   }
 }
@@ -77,8 +81,8 @@ unsigned int Image::get_width(){
   return m_width;
 }
 
-unsigned int Image::coord_to_index(unsigned int i, unsigned int j){
-  return j*m_width + i;
+unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
+  return y*m_width + x;
 }
 unsigned int *Image::index_to_coord(unsigned int k){
   unsigned int *result = new unsigned int[2];
@@ -92,9 +96,37 @@ void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned in
   unsigned int y_min = origine[1];
   unsigned int x_max = min(x_min + width-1,m_width-1);
   unsigned int y_max = min(y_min + height-1,m_height-1);
-  for (unsigned int j = x_min; j <= x_max; j++) {
-    for (unsigned int i = y_min; i <= y_max; i++) {
-      m_pixels_array[coord_to_index(i,j)] = intensity;
+  for (unsigned int x = x_min; x <= x_max; x++) {
+    for (unsigned int y = y_min; y <= y_max; y++) {
+      m_pixels_array[coord_to_index(x,y)] = intensity;
     }
   }
+}
+
+void Image::symetry_y(){
+  for (unsigned int y = 0; y < m_height; y++){
+    for (unsigned int x= 0; x < m_width/2; x++){
+      float tmp = m_pixels_array[coord_to_index(x,y)];
+      m_pixels_array[coord_to_index(x,y)] = m_pixels_array[coord_to_index(m_width -1 - x,y)];
+      m_pixels_array[coord_to_index(m_width -1 - x,y)] = tmp;
+    }
+  }
+}
+
+void Image::symetry_diag(){
+
+  vector<float> m_new_pixels_array;
+  for (unsigned int x = 0; x < m_width; x++){
+    for (unsigned int y= 0; y < m_height; y++){
+      m_new_pixels_array.push_back(m_pixels_array[coord_to_index(x,y)]);
+
+      // float tmp2 = m_pixels_array[coord_to_index(x,y)];
+      // m_pixels_array[coord_to_index(x,y)] = m_pixels_array[coord_to_index(y,x)];
+      // m_pixels_array[coord_to_index(y,x)] = tmp2;
+    }
+  }
+  m_pixels_array = m_new_pixels_array ;
+  unsigned int tmp1 = m_width;
+  m_width = m_height;
+  m_height = tmp1;
 }

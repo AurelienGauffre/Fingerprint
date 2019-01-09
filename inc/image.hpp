@@ -28,9 +28,10 @@ class Image {
     float max_intensity();
     unsigned int get_width();
     void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
-    unsigned int coord_to_index(unsigned int i, unsigned int j);
+    unsigned int coord_to_index(unsigned int x, unsigned int y);
     unsigned int *index_to_coord(unsigned int k);
-
+    void symetry_y();
+    void symetry_diag();
 };
 
 #endif
