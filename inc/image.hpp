@@ -9,14 +9,16 @@
 using namespace cv;
 using namespace std;
 
+
 class Image {
   private:
-    vector<float> m_pixels_array;
+    vector<float> m_pixels_array; /*!< 1D array of pixels reprensenting our image.*/
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
-    Mat *m_original_image;
+    Mat *m_original_image;  /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_pixels_array.*/
     string m_name;
+
   public:
     Image(Mat image,string name);
     void display_attributes();
