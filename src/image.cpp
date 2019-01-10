@@ -15,9 +15,7 @@
 
 /*!
      *  \brief Basic Image constructor
-     *
      *  Constructor of class Image 
-     *
      *  \param listSongs : image "Mat", name
      */
 Image::Image(cv::Mat image, std::string name){
@@ -76,6 +74,11 @@ void Image::display_Mat(){
   cv::waitKey(0);
 }
 
+/*!
+     *  \brief Image save
+     *  Saves Image in project folder 
+     *  \param listSongs : name of image
+     */
 void Image::save_Mat(std::string name){
   this->back_to_Mat();
   if (name == ""){
@@ -138,4 +141,19 @@ void Image::symetry_diag(){
   unsigned int tmp1 = m_width;
   m_width = m_height;
   m_height = tmp1;
+}
+
+/*!
+     *  \brief Coordinates of pixels 
+     *  \param listSongs : name of image
+     *  \return array of points
+     */
+std::vector<Point> Image::coord_pixels() {
+  std::vector<Point> point_array;
+  for (unsigned int i = 0; i < m_height; i++) {
+    for (unsigned int j = 0; j < m_width; j++) {
+      point_array.push_back(Point(j,i));
+    }
+  }
+  return point_array;
 }
