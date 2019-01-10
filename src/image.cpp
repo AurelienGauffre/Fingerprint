@@ -157,3 +157,12 @@ std::vector<Point> Image::coord_pixels() {
   }
   return point_array;
 }
+
+/*!
+     *  \brief Rotates the Image
+     */
+void Image::rotate(float angle, Point rot_point) {
+
+}
+
+
