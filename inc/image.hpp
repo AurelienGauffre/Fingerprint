@@ -41,6 +41,8 @@ class Image {
     void symetry_y();
     void symetry_diag();
     void weight_coeff(unsigned int x_spot, unsigned int y_spot);
+    void weight_coeff_ellipse(float percentage);
+    unsigned int *find_ellipse();
 };
 
 #endif
