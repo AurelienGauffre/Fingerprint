@@ -35,6 +35,7 @@ class Image {
     void display_Mat();
     float min_intensity();
     float max_intensity();
+    void save_Mat(std::string name);
     unsigned int get_width();
     void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
     unsigned int coord_to_index(unsigned int x, unsigned int y);
