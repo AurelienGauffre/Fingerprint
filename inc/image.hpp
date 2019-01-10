@@ -11,8 +11,6 @@
 #include <vector>
 #include <string.h>
 
-using namespace cv;
-using namespace std;
 
 /*! \class Image
    * \brief class of the image we'll work on
@@ -40,6 +38,8 @@ class Image {
     unsigned int *index_to_coord(unsigned int k);
     void symetry_y();
     void symetry_diag();
+    std::vector<Point> coord_pixels();
+    void rotate(float angle, Point rot_point);
 };
 
 #endif
