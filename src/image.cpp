@@ -148,11 +148,12 @@ void Image::symetry_diag(){
      *  \param listSongs : name of image
      *  \return array of points
      */
-std::vector<Point> Image::coord_pixels() {
+std::vector<Point> Image::coord_pixels_rotated(float angle, Point rot_point) {
   std::vector<Point> point_array;
   for (unsigned int i = 0; i < m_height; i++) {
     for (unsigned int j = 0; j < m_width; j++) {
-      point_array.push_back(Point(j,i));
+      Point a(j,i);
+      point_array.push_back(a.rotation(rot_point, angle));
     }
   }
   return point_array;
