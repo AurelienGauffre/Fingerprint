@@ -33,17 +33,20 @@ Image::Image(Mat image, string name){
 }
 
 void Image::display_attributes(){
-  for (unsigned int k = 0 ; k < m_size; k++){
-    cout << m_pixels_array[k] << " ";
+  for (unsigned int y = 0 ; y < m_height; y++){
+    for (unsigned int x = 0 ; x < m_width; x++){
+      cout << m_pixels_array[coord_to_index(x,y)] << " ";
+    }
+    cout << endl;
   }
   cout << m_height << " " << m_width << " " << m_size << "" << m_name << endl;
 }
 
 void Image::back_to_Mat(){
-  m_original_image->rows = m_height;
-  m_original_image->cols = m_width;
+  // m_original_image->rows = m_height;
+  // m_original_image->cols = m_width;
+  resize(*m_original_image,*m_original_image,Size(m_width,m_height));
   cout << m_original_image->size()<< endl ;
-  //resize(*m_original_image,*m_original_image,Size(m_height,m_width));
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x = 0; x < m_width; x++){
       m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_pixels_array[coord_to_index(x,y)]);
@@ -114,15 +117,10 @@ void Image::symetry_y(){
 }
 
 void Image::symetry_diag(){
-
   vector<float> m_new_pixels_array;
   for (unsigned int x = 0; x < m_width; x++){
     for (unsigned int y= 0; y < m_height; y++){
       m_new_pixels_array.push_back(m_pixels_array[coord_to_index(x,y)]);
-
-      // float tmp2 = m_pixels_array[coord_to_index(x,y)];
-      // m_pixels_array[coord_to_index(x,y)] = m_pixels_array[coord_to_index(y,x)];
-      // m_pixels_array[coord_to_index(y,x)] = tmp2;
     }
   }
   m_pixels_array = m_new_pixels_array ;
