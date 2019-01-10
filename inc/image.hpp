@@ -1,6 +1,11 @@
 #ifndef DEF_IMAGE
 #define DEF_IMAGE
 
+/*!
+ * \file image.hpp
+ * \brief Definition of Image class
+ * \author Perrine, Célestine, Aurélien, Lucas
+ */
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <vector>
@@ -9,9 +14,14 @@
 using namespace cv;
 using namespace std;
 
+/*! \class Image
+   * \brief class of the image we'll work on
+   *
+   *  The class is composed of several methods
+   */
 class Image {
   private:
-    vector<float> m_pixels_array;
+    vector<float> m_pixels_array; /*!< */
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
@@ -20,8 +30,8 @@ class Image {
   public:
     Image(Mat image,string name);
     void display_attributes();
-    void back_to_Mat();
-    Mat *get_original();
+    void back_to_Mat(); /*!< Update the Mat version of Image*/
+    Mat *get_original(); /*!< Getter of Mat associated to Image */
     void display_Mat();
     void save_Mat(string name="");
     float min_intensity();

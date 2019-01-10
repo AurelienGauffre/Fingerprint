@@ -1,3 +1,10 @@
+/*!
+ * \file image.cpp
+ * \brief Definition of image class methods
+ * \author Perrine, Célestine, Aurélien, Lucas
+ * \date 01/08/2019
+ */
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/types_c.h>
@@ -9,6 +16,13 @@ using namespace std;
 
 #include "image.hpp"
 
+/*!
+     *  \brief Basic Image constructor
+     *
+     *  Constructor of class Image 
+     *
+     *  \param listSongs : image "Mat", name
+     */
 Image::Image(Mat image, string name){
   char s = '/';
   int pos = 0;
