@@ -21,19 +21,18 @@ using namespace std;
    */
 class Image {
   private:
-    vector<float> m_pixels_array; /*!< */
+    std::vector<float> m_pixels_array; /*!< 1D array of pixels reprensenting our image.*/
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
-    Mat *m_original_image;
-    string m_name;
+    cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_pixels_array.*/
+    std::string m_name;
   public:
-    Image(Mat image,string name);
+    Image(cv::Mat image,std::string name);
     void display_attributes();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
-    Mat *get_original(); /*!< Getter of Mat associated to Image */
+    cv::Mat *get_original(); /*!< Getter of Mat associated to Image */
     void display_Mat();
-    void save_Mat(string name="");
     float min_intensity();
     float max_intensity();
     unsigned int get_width();

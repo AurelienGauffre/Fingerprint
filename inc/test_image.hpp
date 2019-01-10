@@ -5,8 +5,6 @@
 
 #include "image.hpp"
 
-using namespace std;
-
 void test_image(char const *arg[]);
 
 #endif
