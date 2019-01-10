@@ -6,24 +6,21 @@
 #include <vector>
 #include <string.h>
 
-using namespace cv;
-using namespace std;
-
 class Image {
   private:
-    vector<float> m_pixels_array;
+    std::vector<float> m_pixels_array;
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
-    Mat *m_original_image;
-    string m_name;
+    cv::Mat *m_original_image;
+    std::string m_name;
   public:
-    Image(Mat image,string name);
+    Image(cv::Mat image,std::string name);
     void display_attributes();
     void back_to_Mat();
-    Mat *get_original();
+    cv::Mat *get_original();
     void display_Mat();
-    void save_Mat(string name="");
+    void save_Mat(std::string name="");
     float min_intensity();
     float max_intensity();
     unsigned int get_width();
