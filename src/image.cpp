@@ -16,7 +16,7 @@
 /*!
      *  \brief Basic Image constructor
      *
-     *  Constructor of class Image 
+     *  Constructor of class Image
      *
      *  \param listSongs : image "Mat", name
      */
@@ -65,10 +65,6 @@ void Image::back_to_Mat(){
   }
 }
 
-cv::Mat *Image::get_original(){
-  return m_original_image;
-}
-
 void Image::display_Mat(){
   this->back_to_Mat();
   cv::namedWindow("result.png", 100000);
@@ -89,10 +85,6 @@ float Image::min_intensity(){
 }
 float Image::max_intensity(){
   return *std::max_element(m_pixels_array.begin(),m_pixels_array.end());
-}
-
-unsigned int Image::get_width(){
-  return m_width;
 }
 
 unsigned int Image::coord_to_index(unsigned int x, unsigned int y){

@@ -20,6 +20,6 @@ void test_image(char const *arg[]){
   // im1.symetry_y();
   // im1.display_Mat();
   im1.symetry_diag();
-
+  
   im1.display_Mat();
 }
