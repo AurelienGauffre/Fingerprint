@@ -12,11 +12,11 @@ Pixel Pixel::rotation(Pixel origin, float angle){
   return Pixel(x,y,m_intensity);
 }
 
-float Pixel::x_getter() {
+float Pixel::get_x() {
   return m_x;
 }
 
-float Pixel::y_getter()
+float Pixel::get_y()
 {
   return m_y;
 }

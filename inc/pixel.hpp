@@ -8,8 +8,8 @@ private:
   float m_intensity ;
 public:
   Pixel(float x, float y, float intensity = 0);
-  float x_getter();
-  float y_getter();
+  float get_x();
+  float get_y();
   Pixel rotation(Pixel origin, float angle); /*!< return the Pixel rotated around orginin of angle*/
 };
 

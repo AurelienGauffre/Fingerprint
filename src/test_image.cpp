@@ -29,9 +29,7 @@ void test_rotation(char const *arg[], float angle, Pixel rot_point) {
   cv::Mat m_image;
   m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
   Image im1(m_image, m_name);
-  std::vector<Pixel> image_pixels(im1.coord_pixels());
-  std::vector<Pixel> image_pixels_rotated(im1.coord_pixels_rotated(image_pixels, angle, rot_point));
-  im1.rotate(image_pixels, image_pixels_rotated);
-  im1.back_to_Mat();
+
+  im1.rotate(angle,rot_point);
   im1.display_Mat();
 }

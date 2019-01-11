@@ -15,7 +15,7 @@
 
 /*!
      *  \brief Basic Image constructor
-     *  Constructor of class Image 
+     *  Constructor of class Image
      *  \param listSongs : image "Mat", name
      */
 Image::Image(cv::Mat image, std::string name){
@@ -73,7 +73,7 @@ void Image::display_Mat(){
 
 /*!
      *  \brief Image save
-     *  Saves Image in project folder 
+     *  Saves Image in project folder
      *  \param listSongs : name of image
      */
 void Image::save_Mat(std::string name){
@@ -138,7 +138,7 @@ void Image::symetry_diag(){
 }
 
 /*!
-     *  \brief Coordinates of pixels 
+     *  \brief Coordinates of pixels
      *  \return array of Pixels corresponding to pixels coordinates, in order of pixels
      */
 std::vector<Pixel> Image::coord_pixels() {
@@ -154,7 +154,7 @@ std::vector<Pixel> Image::coord_pixels() {
 }
 
 /*!
-  *  \brief Coordinates of pixels 
+  *  \brief Coordinates of pixels
   *  \param listSongs : name of image
   *  \return array of Pixels
   */
@@ -169,15 +169,16 @@ std::vector<Pixel> Image::coord_pixels_rotated(std::vector<Pixel> Pixel_array, f
 /*!
   *  \brief Rotates the Image
   */
-void Image::rotate(std::vector<Pixel> pixels, std::vector<Pixel> rotated_pixels) {
-  int size = m_width*m_height;
-  std::vector<float> new_pixels(size, 1);
-  for (unsigned int i = 0; i < size; i++) {
-    signed int x_coord = (signed int)rotated_pixels[i].x_getter();
-    signed int y_coord = (signed int)rotated_pixels[i].y_getter();
+void Image::rotate(float angle, Pixel rot_point) {
+  std::vector<Pixel> pixels(this->coord_pixels());
+  std::vector<Pixel> rotated_pixels(this->coord_pixels_rotated(pixels, angle, rot_point));
+  std::vector<float> new_pixels_array(m_size, 1);
+  for (unsigned int i = 0; i < m_size; i++) {
+    signed int x_coord = (signed int)rotated_pixels[i].get_x();
+    signed int y_coord = (signed int)rotated_pixels[i].get_y();
     if ((x_coord < (int)m_height)&&(x_coord >= 0)&&(y_coord < (int)m_width)&&(y_coord>=0)) {
-      new_pixels[coord_to_index(x_coord, y_coord)] = m_pixels_array[i];
+      new_pixels_array[coord_to_index(x_coord, y_coord)] = m_pixels_array[i];
     }
   }
-  m_pixels_array = new_pixels;
+  m_pixels_array = new_pixels_array;
 }
