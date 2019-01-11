@@ -11,6 +11,6 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   cout << "Test image :" << endl;
-  test_image(argv);
+  test_rotation(argv, 2, Pixel(128, 128));
   return 0;
 }

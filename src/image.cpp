@@ -63,9 +63,6 @@ void Image::back_to_Mat(){
   }
 }
 
-cv::Mat *Image::get_original(){
-  return m_original_image;
-}
 
 void Image::display_Mat(){
   this->back_to_Mat();
@@ -94,9 +91,6 @@ float Image::max_intensity(){
   return *std::max_element(m_pixels_array.begin(),m_pixels_array.end());
 }
 
-unsigned int Image::get_width(){
-  return m_width;
-}
 
 unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
   return y*m_width + x;
@@ -145,25 +139,45 @@ void Image::symetry_diag(){
 
 /*!
      *  \brief Coordinates of pixels 
-     *  \param listSongs : name of image
-     *  \return array of points
+     *  \return array of Pixels corresponding to pixels coordinates, in order of pixels
      */
-std::vector<Point> Image::coord_pixels_rotated(float angle, Point rot_point) {
-  std::vector<Point> point_array;
-  for (unsigned int i = 0; i < m_height; i++) {
-    for (unsigned int j = 0; j < m_width; j++) {
-      Point a(j,i);
-      point_array.push_back(a.rotation(rot_point, angle));
+std::vector<Pixel> Image::coord_pixels() {
+  std::vector<Pixel> Pixel_array;
+  for (unsigned int y = 0; y < m_height; y++)
+  {
+    for (unsigned int x = 0; x < m_width; x++)
+    {
+      Pixel_array.push_back(Pixel(x,y, m_pixels_array[coord_to_index(x,y)]));
     }
   }
-  return point_array;
+  return Pixel_array;
 }
 
 /*!
-     *  \brief Rotates the Image
-     */
-void Image::rotate(float angle, Point rot_point) {
-
+  *  \brief Coordinates of pixels 
+  *  \param listSongs : name of image
+  *  \return array of Pixels
+  */
+std::vector<Pixel> Image::coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel) {
+  std::vector<Pixel> Pixel_array_rotated;
+  for (unsigned int i = 0; i < Pixel_array.size(); i++) {
+    Pixel_array_rotated.push_back(Pixel_array[i].rotation(rot_Pixel, angle));
+  }
+  return Pixel_array_rotated;
 }
 
-
+/*!
+  *  \brief Rotates the Image
+  */
+void Image::rotate(std::vector<Pixel> pixels, std::vector<Pixel> rotated_pixels) {
+  int size = m_width*m_height;
+  std::vector<float> new_pixels(size, 1);
+  for (unsigned int i = 0; i < size; i++) {
+    signed int x_coord = (signed int)rotated_pixels[i].x_getter();
+    signed int y_coord = (signed int)rotated_pixels[i].y_getter();
+    if ((x_coord < (int)m_height)&&(x_coord >= 0)&&(y_coord < (int)m_width)&&(y_coord>=0)) {
+      new_pixels[coord_to_index(x_coord, y_coord)] = m_pixels_array[i];
+    }
+  }
+  m_pixels_array = new_pixels;
+}

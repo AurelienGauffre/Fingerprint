@@ -10,7 +10,7 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <string.h>
-#include "point.hpp"
+#include "pixel.hpp"
 
 
 /*! \class Image
@@ -39,8 +39,9 @@ class Image {
     unsigned int *index_to_coord(unsigned int k);
     void symetry_y();
     void symetry_diag();
-    std::vector<Point> coord_pixels_rotated(float angle, Point rot_point);
-    void rotate(float angle, Point rot_point);
+    std::vector<Pixel> coord_pixels();
+    std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel);
+    void rotate(std::vector<Pixel> pixels, std::vector<Pixel> rotated_pixels);
 };
 
 #endif

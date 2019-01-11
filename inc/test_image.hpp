@@ -7,4 +7,6 @@
 
 void test_image(char const *arg[]);
 
+void test_rotation(char const *arg[], float angle, Pixel rot_point);
+
 #endif
