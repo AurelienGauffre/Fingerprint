@@ -9,7 +9,7 @@ void test_image(char const *arg[]){
   m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
   Image im1(m_image, m_name);
   //im1.display_attributes();
-  im1.display_Mat();
+  // im1.display_Mat();
   // im1.save_Mat();
   // im1.save_Mat("other_name.png");
   // std::cout << im1.min_intensity() << im1.max_intensity() << std::endl;
@@ -19,7 +19,7 @@ void test_image(char const *arg[]){
   // im1.display_Mat();
   // im1.symetry_y();
   // im1.display_Mat();
-  im1.symetry_diag();
-  
-  im1.display_Mat();
+  // im1.symetry_diag();
+  //
+  // im1.display_Mat();
 }
