@@ -10,9 +10,8 @@
 #include <opencv2/opencv.hpp>
 #include <vector>
 #include <string.h>
+#include "pixel.hpp"
 
-using namespace cv;
-using namespace std;
 
 /*! \class Image
    * \brief class of the image we'll work on
@@ -43,6 +42,10 @@ class Image {
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
     void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
     unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
+    std::vector<Pixel> coord_pixels();
+    std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel);
+    void rotate(float angle, Pixel rot_point);
+    void rotate_bilinear(float angle, Pixel rot_point);
 };
 
 #endif

@@ -4,7 +4,7 @@
 
 
 void test_image(char const *arg[]){
-  std::string m_name = (std::string)arg[1];
+  std::string m_name = (std::string) arg[1];
   cv::Mat m_image;
   m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
   Image im1(m_image, m_name);
@@ -22,4 +22,14 @@ void test_image(char const *arg[]){
   // im1.symetry_diag();
   //
   // im1.display_Mat();
+}
+
+void test_rotation(char const *arg[], float angle, Pixel rot_point) {
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  Image im1(m_image, m_name);
+
+  im1.rotate_bilinear(angle,rot_point);
+  im1.display_Mat();
 }

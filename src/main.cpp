@@ -13,5 +13,7 @@ int main(int argc, char const *argv[]) {
   test_image(argv);
   cout << "Test pressure :" << endl;
   test_pressure(argv);
+  test_rotation(argv, M_PI/4*0, Pixel(128, 128));
   return 0;
+
 }
