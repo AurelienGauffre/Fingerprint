@@ -42,6 +42,7 @@ class Image {
     std::vector<Pixel> coord_pixels();
     std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel);
     void rotate(float angle, Pixel rot_point);
+    void rotate_bilinear(float angle, Pixel rot_point);
 };
 
 #endif
