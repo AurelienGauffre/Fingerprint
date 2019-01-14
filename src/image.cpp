@@ -82,8 +82,9 @@ void Image::display_Mat(){
 void Image::save_Mat(std::string name){
   this->back_to_Mat();
   if (name == ""){
-    name ="result_" + m_name;
+    name = m_name;
   }
+  name = "results/" + name;
   cv::imwrite(name,*m_original_image);
 }
 
