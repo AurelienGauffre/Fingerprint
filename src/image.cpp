@@ -54,8 +54,6 @@ void Image::display_attributes(){
 }
 
 void Image::back_to_Mat(){
-  // m_original_image->rows = m_height;
-  // m_original_image->cols = m_width;
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
   std::cout << m_original_image->size()<< std::endl ;
   for (unsigned int y = 0; y < m_height; y++){

@@ -40,9 +40,9 @@ class Image {
     unsigned int *index_to_coord(unsigned int k);
     void symetry_y();
     void symetry_diag();
-    void weight_coeff(unsigned int x_spot, unsigned int y_spot);
-    void weight_coeff_ellipse(float percentage);
-    unsigned int *find_ellipse();
+    void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
+    void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
+    unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
 };
 
 #endif

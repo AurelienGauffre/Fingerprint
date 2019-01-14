@@ -7,9 +7,8 @@ void test_pressure(char const *arg[]){
   cv::Mat m_image;
   m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
   Image im1(m_image, m_name);
-  // im1.display_Mat();
   // im1.weight_coeff(128,170);
-  im1.weight_coeff_ellipse(1);
-  // im1.display_Mat();
+  //im1.save_Mat();
+  im1.weight_coeff_ellipse(0.5);
   im1.save_Mat();
 }
