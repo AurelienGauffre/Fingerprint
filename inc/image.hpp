@@ -20,14 +20,15 @@
    */
 class Image {
   private:
-    std::vector<float> m_pixels_array; /*!< 1D array of pixels reprensenting our image.*/
+    std::vector<float> m_intensity_array; /*!< 1D array of pixels reprensenting our image.*/
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
-    cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_pixels_array.*/
+    cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_intensity_array.*/
     std::string m_name;
   public:
     Image(cv::Mat image,std::string name);
+    ~Image();
     void display_attributes();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
     void display_Mat();
@@ -36,7 +37,7 @@ class Image {
     void save_Mat(std::string name = "");
     void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
     unsigned int coord_to_index(unsigned int x, unsigned int y);
-    unsigned int *index_to_coord(unsigned int k);
+    // unsigned int *index_to_coord(unsigned int k);
     void symetry_y();
     void symetry_diag();
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/

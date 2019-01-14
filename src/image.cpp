@@ -38,15 +38,19 @@ Image::Image(cv::Mat image, std::string name){
   *m_original_image = image;
   for (unsigned int i = 0; i < m_height; i++){
     for (unsigned int j = 0; j < m_width; j++){
-      m_pixels_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
+      m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
     }
   }
+}
+
+Image::~Image(){
+  delete m_original_image;
 }
 
 void Image::display_attributes(){
   for (unsigned int y = 0 ; y < m_height; y++){
     for (unsigned int x = 0 ; x < m_width; x++){
-      std::cout << m_pixels_array[coord_to_index(x,y)] << " ";
+      std::cout << m_intensity_array[coord_to_index(x,y)] << " ";
     }
     std::cout << std::endl;
   }
@@ -58,7 +62,7 @@ void Image::back_to_Mat(){
   std::cout << m_original_image->size()<< std::endl ;
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x = 0; x < m_width; x++){
-      m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_pixels_array[coord_to_index(x,y)]);
+      m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_intensity_array[coord_to_index(x,y)]);
     }
   }
 }
@@ -84,21 +88,21 @@ void Image::save_Mat(std::string name){
 }
 
 float Image::min_intensity(){
-  return *std::min_element(m_pixels_array.begin(),m_pixels_array.end());
+  return *std::min_element(m_intensity_array.begin(),m_intensity_array.end());
 }
 float Image::max_intensity(){
-  return *std::max_element(m_pixels_array.begin(),m_pixels_array.end());
+  return *std::max_element(m_intensity_array.begin(),m_intensity_array.end());
 }
 
 unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
   return y*m_width + x;
 }
-unsigned int *Image::index_to_coord(unsigned int k){
-  unsigned int *result = new unsigned int[2];
-  result[0] = k%m_width;
-  result[1] = k/m_width;
-  return result;
-}
+// unsigned int *Image::index_to_coord(unsigned int k){
+//   unsigned int result[2];
+//   result[0] = k%m_width;
+//   result[1] = k/m_width;
+//   return result;
+// }
 
 void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height){
   unsigned int x_min = origine[0]; //raise error
@@ -107,7 +111,7 @@ void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned in
   unsigned int y_max = std::min(y_min + height-1,m_height-1);
   for (unsigned int x = x_min; x <= x_max; x++) {
     for (unsigned int y = y_min; y <= y_max; y++) {
-      m_pixels_array[coord_to_index(x,y)] = intensity;
+      m_intensity_array[coord_to_index(x,y)] = intensity;
     }
   }
 }
@@ -115,9 +119,9 @@ void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned in
 void Image::symetry_y(){
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x= 0; x < m_width/2; x++){
-      float tmp = m_pixels_array[coord_to_index(x,y)];
-      m_pixels_array[coord_to_index(x,y)] = m_pixels_array[coord_to_index(m_width -1 - x,y)];
-      m_pixels_array[coord_to_index(m_width -1 - x,y)] = tmp;
+      float tmp = m_intensity_array[coord_to_index(x,y)];
+      m_intensity_array[coord_to_index(x,y)] = m_intensity_array[coord_to_index(m_width -1 - x,y)];
+      m_intensity_array[coord_to_index(m_width -1 - x,y)] = tmp;
     }
   }
 }
@@ -126,80 +130,11 @@ void Image::symetry_diag(){
   std::vector<float> m_new_pixels_array;
   for (unsigned int x = 0; x < m_width; x++){
     for (unsigned int y= 0; y < m_height; y++){
-      m_new_pixels_array.push_back(m_pixels_array[coord_to_index(x,y)]);
+      m_new_pixels_array.push_back(m_intensity_array[coord_to_index(x,y)]);
     }
   }
-  m_pixels_array = m_new_pixels_array ;
+  m_intensity_array = m_new_pixels_array ;
   unsigned int tmp1 = m_width;
   m_width = m_height;
   m_height = tmp1;
-}
-
-/*!
-     *  \brief Coordinates of pixels
-     *  \return array of Pixels corresponding to pixels coordinates, in order of pixels
-     */
-std::vector<Pixel> Image::coord_pixels() {
-  std::vector<Pixel> Pixel_array;
-  for (unsigned int y = 0; y < m_height; y++)
-  {
-    for (unsigned int x = 0; x < m_width; x++)
-    {
-      Pixel_array.push_back(Pixel(x,y, m_pixels_array[coord_to_index(x,y)]));
-    }
-  }
-  return Pixel_array;
-}
-
-/*!
-  *  \brief Coordinates of pixels
-  *  \param listSongs : name of image
-  *  \return array of Pixels
-  */
-std::vector<Pixel> Image::coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel) {
-  std::vector<Pixel> Pixel_array_rotated;
-  for (unsigned int i = 0; i < Pixel_array.size(); i++) {
-    Pixel_array_rotated.push_back(Pixel_array[i].rotation(rot_Pixel, angle));
-  }
-  return Pixel_array_rotated;
-}
-
-/*!
-  *  \brief Rotates the Image
-  */
-void Image::rotate(float angle, Pixel rot_point) {
-  std::vector<Pixel> pixels(this->coord_pixels());
-  std::vector<Pixel> rotated_pixels(this->coord_pixels_rotated(pixels,angle, rot_point));
-  std::vector<float> new_pixels_array(m_size, 1);
-  for (unsigned int i = 0; i < m_size; i++) {
-    signed int x_coord = (signed int)rotated_pixels[i].get_x();
-    signed int y_coord = (signed int)rotated_pixels[i].get_y();
-    if ((x_coord < (int)m_height)&&(x_coord >= 0)&&(y_coord < (int)m_width)&&(y_coord>=0)) {
-      new_pixels_array[coord_to_index(x_coord, y_coord)] = m_pixels_array[i];
-    }
-  }
-  m_pixels_array = new_pixels_array;
-}
-
-
-void Image::rotate_bilinear(float angle, Pixel rot_point) {
-  std::vector<Pixel> pixels(this->coord_pixels());
-  std::vector<Pixel> former_pixels(this->coord_pixels_rotated(pixels,-angle, rot_point));
-  std::vector<float> new_pixels_array(m_size, 1);
-  for (unsigned int i = 0; i < m_size; i++) {
-    float x = former_pixels[i].get_x();
-    float y = former_pixels[i].get_y();
-    int x1 = (int)x ;
-    int x2 = x1 + 1 ;
-    int y1 = (int)y ;
-    int y2 = y1 + 1 ;
-
-    if ((x1 < m_width)&&(x1 >= 0)&&(y1 < m_height)&&(y1>=0)) {
-      new_pixels_array[i] =  former_pixels[coord_to_index(x1,y1)].get_intensity()*(x2-x)*(y2-y)+former_pixels[coord_to_index(x2,y1)].get_intensity()*(x-x1)*(y2-y)+former_pixels[coord_to_index(x1,y2)].get_intensity()*(x2-x)*(y-y1)+former_pixels[coord_to_index(x2,y2)].get_intensity()*(x-x1)*(y-y1);
-    }
-    else{
-      new_pixels_array[i] = 1; // Test with grey value
-    }
-  }
-  m_pixels_array = new_pixels_array;
 }
