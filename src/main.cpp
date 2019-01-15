@@ -16,6 +16,8 @@ int main(int argc, char const *argv[]) {
   test_rotation(argv, M_PI/4, Pixel(128, 128));
   cout << "Test optimization :" << endl;
   test_optimization(argv);
+  cout << "Test warp :" << endl;
+  test_warp(argv, 10, Pixel(128, 128));
   return 0;
 
 }

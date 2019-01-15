@@ -16,5 +16,6 @@ void test_image(char const *arg[]);
 void test_pressure(char const *arg[]);
 void test_rotation(char const *arg[], float angle, Pixel rot_point);
 void test_optimization(char const *arg[]);
+void test_warp(char const *arg[], float angle, Pixel rot_point);
 
 #endif

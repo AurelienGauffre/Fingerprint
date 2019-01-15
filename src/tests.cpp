@@ -6,7 +6,7 @@
 void test_image(char const *arg[]){
   std::string m_name = (std::string) arg[1];
   cv::Mat m_image;
-  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
   //im1.display_attributes();
   // im1.display_Mat();
@@ -27,18 +27,18 @@ void test_image(char const *arg[]){
 void test_pressure(char const *arg[]){
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;
-  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
   // im1.weight_coeff(128,170);
   //im1.save_Mat();
   im1.weight_coeff_ellipse(1);
-  im1.save_Mat();
+  im1.display_Mat();
 }
 
 void test_rotation(char const *arg[], float angle, Pixel rot_point) {
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;
-  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
 
   im1.rotate_bilinear(angle,rot_point);
@@ -56,4 +56,13 @@ void test_optimization(char const *arg[]){
   Image im2(m_image2, m_name2);
   int px = im1.optimization(im2);
   std::cout << px;
+}
+void test_warp(char const *arg[], float strength, Pixel location) {
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+  Image im1(m_image, m_name);
+
+  im1.warp(strength, location);
+  im1.display_Mat();
 }
