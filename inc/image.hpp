@@ -8,7 +8,7 @@
  */
 #include <iostream>
 #include <opencv2/opencv.hpp>
-#include <vector>
+#include <vector> /// <Eigen/Dense>
 #include <string.h>
 #include "pixel.hpp"
 
@@ -29,6 +29,7 @@ class Image {
   public:
     Image(cv::Mat image,std::string name);
     ~Image();
+    float get_intensity(unsigned int k);
     void display_attributes();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
     void display_Mat();
@@ -47,6 +48,9 @@ class Image {
     std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel);
     void rotate(float angle, Pixel rot_point);
     void rotate_bilinear(float angle, Pixel rot_point);
+    int optimization(Image &modele);
+    void translation_x(int p_x);
+    void translation_y(int p_y);
 };
 
 #endif

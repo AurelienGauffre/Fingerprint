@@ -44,3 +44,16 @@ void test_rotation(char const *arg[], float angle, Pixel rot_point) {
   im1.rotate_bilinear(angle,rot_point);
   im1.display_Mat();
 }
+
+void test_optimization(char const *arg[]){
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  Image im1(m_image, m_name);
+  std::string m_name2 = (std::string)arg[2];
+  cv::Mat m_image2;
+  m_image2 = cv::imread(m_name2, CV_LOAD_IMAGE_GRAYSCALE);
+  Image im2(m_image2, m_name2);
+  int px = im1.optimization(im2);
+  std::cout << px;
+}
