@@ -37,3 +37,33 @@ int Image::optimization(Image &modele){
   }
   return list_px[0];
 }
+
+int Image::opti_complex(Image &modele){
+  std::vector<int> list_px;
+  std::vector<float> list_l;
+  for (int k = -m_width + 1; k < (int)m_width; k++) {
+    list_px.push_back(k);
+  }
+  for (unsigned int k = 0; k < list_px.size(); k++) {
+    float l = 0.0;
+    for (int x = 0; x < (int)m_width; x++) {
+      for (int y = 0; y < (int)m_height; y++) {
+        int new_x = x + list_px[k];
+        if (0 <= new_x && new_x < (int)m_width) {
+          float diff = modele.get_intensity(coord_to_index(new_x,y)) - m_intensity_array[coord_to_index(x,y)];
+          l += std::pow(diff,2);
+        }
+      }
+    }
+    list_l.push_back(l);
+  }
+  float l_min = list_l[0];
+  unsigned int index = 0;
+  for (unsigned int k = 1; k < list_l.size(); k++){
+    if (list_l[k] < l_min){
+      l_min = list_l[k];
+      index = k;
+    }
+  }
+  return list_px[index];
+}

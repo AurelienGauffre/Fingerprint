@@ -54,6 +54,7 @@ class Image {
     void translation_y(int p_y);
     std::vector<Pixel> coord_pixels_warpped(std::vector<Pixel> Pixel_array, float strength, Pixel location); /*!< Returns array of warpped pixels (but keep same order than coord_pixels)*/
     void warp(float strength, Pixel location); /*!< Warp a part of picture*/
+    int opti_complex(Image &modele);
 };
 
 #endif
