@@ -44,3 +44,13 @@ void test_rotation(char const *arg[], float angle, Pixel rot_point) {
   im1.rotate_bilinear(angle,rot_point);
   im1.display_Mat();
 }
+
+void test_warp(char const *arg[], float strength, Pixel location) {
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, CV_LOAD_IMAGE_GRAYSCALE);
+  Image im1(m_image, m_name);
+
+  im1.warp(strength, location);
+  im1.display_Mat();
+}

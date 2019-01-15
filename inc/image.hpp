@@ -44,10 +44,12 @@ class Image {
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
     void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
     unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
-    std::vector<Pixel> coord_pixels();
-    std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel);
+    std::vector<Pixel> coord_pixels();  /*!< Returns the array of Pixels*/
+    std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than coord_pixels)*/
     void rotate(float angle, Pixel rot_point);
     void rotate_bilinear(float angle, Pixel rot_point);
+    std::vector<Pixel> coord_pixels_warpped(std::vector<Pixel> Pixel_array, float strength, Pixel location); /*!< Returns array of warpped pixels (but keep same order than coord_pixels)*/
+    void warp(float strength, Pixel location); /*!< Warp a part of picture*/
 };
 
 #endif
