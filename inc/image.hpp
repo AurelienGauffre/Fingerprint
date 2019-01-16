@@ -45,15 +45,17 @@ class Image {
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
     void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
     unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
-    std::vector<Pixel> coord_pixels();  /*!< Returns the array of Pixels*/
-    std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than coord_pixels)*/
+    std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
+    std::vector<Pixel> rotate_pixels(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
     void rotate(float angle, Pixel rot_point);
     void rotate_bilinear(float angle, Pixel rot_point);
     int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
-    std::vector<Pixel> coord_pixels_warpped(std::vector<Pixel> Pixel_array, float strength, Pixel location); /*!< Returns array of warpped pixels (but keep same order than coord_pixels)*/
+    std::vector<Pixel> warp_pixels(std::vector<Pixel> Pixel_array, float strength, Pixel location); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
     void warp(float strength, Pixel location); /*!< Warp a part of picture*/
 };
+
+
 
 #endif
