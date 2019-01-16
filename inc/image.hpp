@@ -58,6 +58,9 @@ class Image {
     int opti_complex(Image &modele);
     int opti_complex_xy(Image &modele);
     float squared_error(Image &modele);
+    float correlation(Image &modele);
+    float diff_mean();
+    float mean();
 };
 
 

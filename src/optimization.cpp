@@ -55,7 +55,7 @@ float Image::squared_error(Image &modele){
   return sum;
 }
 
-float correlation(Image &modele){
+float Image::correlation(Image &modele){
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
@@ -73,7 +73,7 @@ float Image::mean(){
       sum += m_intensity_array[coord_to_index(x,y)];
     }
   }
-  return sum/m_size();
+  return sum/m_size;
 }
 
 float Image::diff_mean(){
