@@ -12,8 +12,8 @@ public:
   float get_y();
   float get_intensity() ;
   float distance(Pixel p);
-  Pixel rotation(Pixel origin, float angle); /*!< return the Pixel rotated around origin of angle*/
-  Pixel warp(Pixel location, float strength);
+  Pixel rotation(const Pixel& origin, float angle); /*!< return the Pixel rotated around origin of angle*/
+  Pixel warp(const Pixel& location, float strength);
 };
 
 

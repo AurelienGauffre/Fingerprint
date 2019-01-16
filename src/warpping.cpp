@@ -7,7 +7,7 @@
 
 #include "image.hpp"
 
-std::vector<Pixel> Image::warp_pixels(std::vector<Pixel> Pixel_array, float strength, Pixel location) {
+std::vector<Pixel> Image::warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location) {
     float radius_threshold = std::abs(strength)/0.1;
     int x_min = std::max(static_cast<int>(location.get_x())-static_cast<int>(radius_threshold), static_cast<int>(0));
     int x_max = std::min(static_cast<int>(location.get_x()) + static_cast<int>(radius_threshold), static_cast<int>(m_width));
@@ -23,7 +23,7 @@ std::vector<Pixel> Image::warp_pixels(std::vector<Pixel> Pixel_array, float stre
     return Pixel_array;
 }
 
-void Image::warp(float strength, Pixel location)
+void Image::warp(float strength,  Pixel& location)
 {
     std::vector<Pixel> pixels(this->convert_to_pixels());
     std::vector<Pixel> former_pixels(this->warp_pixels(pixels, -strength, location));

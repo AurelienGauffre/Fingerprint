@@ -14,7 +14,7 @@
      *
      *  \param listSongs : image "Mat", name
      */
-Image::Image(cv::Mat image, std::string name){
+Image::Image(cv::Mat& image, const std::string& name){
   char s = '/';
   int pos = 0;
   for (int k = name.size() - 1; (name[k] != s)&&(k>-1); k--){
@@ -57,7 +57,6 @@ void Image::display_attributes(){
 
 void Image::back_to_Mat(){
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
-  std::cout << m_original_image->size()<< std::endl ;
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x = 0; x < m_width; x++){
       m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_intensity_array[coord_to_index(x,y)]);

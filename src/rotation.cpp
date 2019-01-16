@@ -23,7 +23,7 @@ std::vector<Pixel> Image::convert_to_pixels() {
   *  \param listSongs : name of image
   *  \return array of Pixels
   */
-std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel) {
+std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel) {
   std::vector<Pixel> Pixel_array_rotated;
   for (unsigned int i = 0; i < Pixel_array.size(); i++) {
     Pixel_array_rotated.push_back(Pixel_array[i].rotation(rot_Pixel, angle));
@@ -34,7 +34,7 @@ std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel> Pixel_array, float an
 /*!
   *  \brief Rotates the Image
   */
-void Image::rotate(float angle, Pixel rot_point) {
+void Image::rotate(float angle, const Pixel& rot_point) {
   std::vector<Pixel> pixels(this->convert_to_pixels());
   std::vector<Pixel> rotated_pixels(this->rotate_pixels(pixels,angle, rot_point));
   std::vector<float> new_pixels_array(m_size, 1);
@@ -49,7 +49,7 @@ void Image::rotate(float angle, Pixel rot_point) {
 }
 
 
-void Image::rotate_bilinear(float angle, Pixel rot_point) {
+void Image::rotate_bilinear(float angle, const Pixel& rot_point) {
   std::vector<Pixel> pixels(this->convert_to_pixels());
   std::vector<Pixel> former_pixels(this->rotate_pixels(pixels,-angle, rot_point));
   std::vector<float> new_pixels_array(m_size, 1);
