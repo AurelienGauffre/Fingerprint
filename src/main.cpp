@@ -8,6 +8,7 @@ using namespace std;
 #include "tests.hpp"
 
 int main(int argc, char const *argv[]) {
+  (void)argc;
   // cout << "Test image :" << endl;
   // test_image(argv);
 
