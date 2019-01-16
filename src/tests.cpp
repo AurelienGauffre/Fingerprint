@@ -18,10 +18,10 @@ void test_image(char const *arg[]){
   // im1.draw_rectangle(0,origine,10,10);
   // im1.display_Mat();
   // im1.symetry_y();
-  // im1.display_Mat();
-  // im1.symetry_diag();
-  //
-  // im1.display_Mat();
+  im1.display_Mat();
+  im1.symetry_diag();
+
+  im1.display_Mat();
 }
 
 void test_pressure(char const *arg[]){
@@ -54,7 +54,7 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  int px = im1.opti_complex(im2);
+  int px = im1.opti_complex_xy(im2);
   std::cout << px;
 }
 void test_warp(char const *arg[], float strength, Pixel location) {

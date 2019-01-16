@@ -49,12 +49,14 @@ class Image {
     std::vector<Pixel> coord_pixels_rotated(std::vector<Pixel> Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than coord_pixels)*/
     void rotate(float angle, Pixel rot_point);
     void rotate_bilinear(float angle, Pixel rot_point);
-    int optimization(Image &modele);
+    // int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
     std::vector<Pixel> coord_pixels_warpped(std::vector<Pixel> Pixel_array, float strength, Pixel location); /*!< Returns array of warpped pixels (but keep same order than coord_pixels)*/
     void warp(float strength, Pixel location); /*!< Warp a part of picture*/
     int opti_complex(Image &modele);
+    int opti_complex_xy(Image &modele);
+    float squared_error(Image &modele);
 };
 
 #endif

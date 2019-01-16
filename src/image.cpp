@@ -38,6 +38,7 @@ Image::Image(cv::Mat image, std::string name){
 }
 
 Image::~Image(){
+  m_original_image->cv::Mat::~Mat();
   delete m_original_image;
 }
 
@@ -82,7 +83,7 @@ void Image::save_Mat(std::string name){
   if (name == ""){
     name = m_name;
   }
-  name = "results/" + name;
+  name = "../results/" + name;
   cv::imwrite(name,*m_original_image);
 }
 
