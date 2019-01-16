@@ -55,6 +55,7 @@ class Image {
     int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
+    int opti_complex(Image &modele);
 };
 
 

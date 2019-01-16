@@ -54,7 +54,7 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  int px = im1.optimization(im2);
+  int px = im1.opti_complex(im2);
   std::cout << px;
 }
 void test_warp(char const *arg[], float strength, Pixel location) {
