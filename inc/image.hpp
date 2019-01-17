@@ -64,6 +64,7 @@ class Image {
     float covariance(Image &other);
     float mean();
     Image Absolute_error_image(Image &modele, std::vector<float> p);
+    std::vector<float> opti_subpixel(Image &modele, bool squarred);
 };
 
 

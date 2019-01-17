@@ -162,15 +162,97 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   }
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(2);
+  // std::cout << " 0 " << list_px[index/list_py.size()] << " 1 "  <<list_py[index%list_py.size()] << std::endl;
   p[0] = list_px[index/list_py.size()];
   p[1] = list_py[index%list_py.size()];
   return p;
 }
 
-// std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
-//   std::vector<float> p = this->opti_complex_xy(modele,squarred);
-//   float px = p[0];
-//   float py = p[1];
-//
-//
-// }
+std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
+  std::vector<float> p = this->opti_complex_xy(modele,squarred);
+  std::vector<float> copy_intensity_array(m_size);
+  copy_intensity_array = m_intensity_array;
+  float px = p[0];
+  float py = p[1];
+  float l;
+  float l_g;
+  float l_d;
+  this->translation(px,py);
+  if (squarred){
+    l = this->squared_error(modele);
+  } else {
+    l = 1 - std::abs(this->correlation(modele));
+  }
+  m_intensity_array= copy_intensity_array;
+  float px_g;
+  float px_d;
+  float distance = 0.5;
+  while (distance > 0.06){
+    px_g = px - distance;
+    px_d = px + distance;
+    if (squarred){
+      this->translation(px_g,py);
+      l_g = this->squared_error(modele);
+      m_intensity_array= copy_intensity_array;
+      this->translation(px_d,py);
+      l_d = this->squared_error(modele);
+      m_intensity_array= copy_intensity_array;
+    } else {
+      this->translation(px_g,py);
+      l_g = 1 - std::abs(this->correlation(modele));
+      m_intensity_array = copy_intensity_array;
+      this->translation(px_d,py);
+      l_d = this->correlation(modele);
+      m_intensity_array= copy_intensity_array;
+    }
+    if (l_d < l_g) {
+      l = l_d;
+      px = px_d;
+    } else {
+      l = l_g;
+      px = px_g;
+    }
+    distance = distance/2.0;
+  }
+  this->translation(px,py);
+  if (squarred){
+    l = this->squared_error(modele);
+  } else {
+    l = 1 - std::abs(this->correlation(modele));
+  }
+  m_intensity_array= copy_intensity_array;
+  float py_g;
+  float py_d;
+  distance = 0.5;
+  while (distance > 0.06){
+    py_g = py - distance;
+    py_d = py + distance;
+    if (squarred){
+      this->translation(px,py_g);
+      l_g = this->squared_error(modele);
+      m_intensity_array= copy_intensity_array;
+      this->translation(px,py_d);
+      l_d = this->squared_error(modele);
+      m_intensity_array= copy_intensity_array;
+    } else {
+      this->translation(px,py_g);
+      l_g = 1 - std::abs(this->correlation(modele));
+      m_intensity_array = copy_intensity_array;
+      this->translation(px,py_d);
+      l_d = this->correlation(modele);
+      m_intensity_array= copy_intensity_array;
+    }
+    if (l_d < l_g) {
+      l = l_d;
+      py = py_d;
+    } else {
+      l = l_g;
+      py = py_g;
+    }
+    distance = distance/2.0;
+  }
+  std::vector<float> res(2);
+  res[0] = px;
+  res[1] = py;
+  return res;
+}
