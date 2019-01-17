@@ -54,9 +54,11 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  int px = im1.opti_complex_xy(im2);
-  std::cout << px;
+  std::vector<int> p = im1.opti_complex_xy(im2,false);
+  Image error = im1.Absolute_error_image(im2,p);
+  error.display_Mat();
 }
+
 void test_warp(char const *arg[], float strength, Pixel location) {
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;

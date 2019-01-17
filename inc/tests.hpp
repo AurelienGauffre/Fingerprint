@@ -11,6 +11,7 @@
 
 #include "image.hpp"
 #include "pressure.hpp"
+#include "optimization.hpp"
 
 void test_image(char const *arg[]);
 void test_pressure(char const *arg[]);

@@ -46,6 +46,10 @@ float Image::get_intensity(unsigned int k){
   return m_intensity_array[k];
 }
 
+float *Image::get_pointer(unsigned int k){
+  return &m_intensity_array[k];
+}
+
 void Image::display_attributes(){
   for (unsigned int y = 0 ; y < m_height; y++){
     for (unsigned int x = 0 ; x < m_width; x++){

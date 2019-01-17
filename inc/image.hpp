@@ -28,6 +28,7 @@ class Image {
     Image(cv::Mat& image,const std::string& name);
     ~Image();
     float get_intensity(unsigned int k);
+    float *get_pointer(unsigned int k);
     void display_attributes();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
     void display_Mat();
@@ -55,12 +56,13 @@ class Image {
     //int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
-    int opti_complex(Image &modele);
-    int opti_complex_xy(Image &modele);
+    int opti_complex(Image &modele,bool squarred);
+    std::vector<int> opti_complex_xy(Image &modele,bool squarred);
     float squared_error(Image &modele);
     float correlation(Image &modele);
-    float diff_mean();
+    float covariance(Image &other);
     float mean();
+    Image Absolute_error_image(Image &modele, std::vector<int> p);
 };
 
 
