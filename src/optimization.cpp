@@ -43,8 +43,7 @@
 
 Image Image::Absolute_error_image(Image &modele, std::vector<float> p){
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
-  this->translation_x(p[0]);
-  this->translation_y(p[1]);
+  this->translation(p[0],p[1]);
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
       *res.get_pointer(coord_to_index(x,y)) = std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y)));
@@ -123,7 +122,7 @@ std::vector<float> Image::opti_complex(Image &modele, bool squarred){
     list_px.push_back(k);
   }
   for (unsigned int k = 0; k < list_px.size(); k++) {
-    this->translation_x(list_px[k]);
+    this->translation(list_px[k],0);
     if (squarred){
       list_l.push_back(this->squared_error(modele));
     } else {
@@ -152,8 +151,7 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   }
   for (unsigned int i = 0; i < list_px.size(); i++) {
     for (unsigned int j = 0; j < list_py.size(); j++) {
-      this->translation_x(list_px[i]);
-      this->translation_y(list_py[j]);
+      this->translation(list_px[i],list_py[j]);
       if (squarred){
         list_l.push_back(this->squared_error(modele));
       } else {
@@ -169,7 +167,10 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   return p;
 }
 
-// std::vector<float> Image::opti_subpixel(){
-//   std::vector<int> list_px;
-//   std::vector<int> list_py;
+// std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
+//   std::vector<float> p = this->opti_complex_xy(modele,squarred);
+//   float px = p[0];
+//   float py = p[1];
+//
+//
 // }

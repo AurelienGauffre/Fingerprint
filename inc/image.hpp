@@ -55,8 +55,8 @@ class Image {
     void warp(float strength,  Pixel &location); /*!< Warp a part of picture*/
     // Optimization //
     //int optimization(Image &modele);
-    void translation_x(int p_x);
-    void translation_y(int p_y);
+    void translation(float p_x,float p_y);
+    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y);
     std::vector<float> opti_complex(Image &modele,bool squarred);
     std::vector<float> opti_complex_xy(Image &modele,bool squarred);
     float squared_error(Image &modele);

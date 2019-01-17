@@ -28,6 +28,12 @@ Pixel Pixel::rotation(const Pixel& origin, float angle){ // FIX To move in rotat
   return Pixel(x,y,m_intensity);
 }
 
+Pixel Pixel::translation_one_pixel(float p_x, float p_y){
+  float x = m_x + p_x;
+  float y = m_y + p_y;
+  return Pixel(x,y,m_intensity);
+}
+
 Pixel Pixel::warp(const Pixel& location, float strength) { // FIX to move in warpping.cpp
   float d = this->distance(location);
   float k = 4;
