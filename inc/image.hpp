@@ -49,6 +49,7 @@ class Image {
     std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
     void rotate(float angle, const Pixel& rot_point);
     void rotate_bilinear(float angle, const Pixel& rot_point);
+    void bilinear_interpolation(std::vector<Pixel> &former_pixels);
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
     void warp(float strength,  Pixel &location); /*!< Warp a part of picture*/

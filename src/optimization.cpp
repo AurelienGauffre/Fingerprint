@@ -168,3 +168,8 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   p[1] = list_py[index%list_py.size()];
   return p;
 }
+
+// std::vector<float> Image::opti_subpixel(){
+//   std::vector<int> list_px;
+//   std::vector<int> list_py;
+// }

@@ -52,7 +52,11 @@ void Image::rotate(float angle, const Pixel& rot_point) {
 void Image::rotate_bilinear(float angle, const Pixel& rot_point) {
   std::vector<Pixel> pixels(this->convert_to_pixels());
   std::vector<Pixel> former_pixels(this->rotate_pixels(pixels,-angle, rot_point));
-  std::vector<float> new_pixels_array(m_size, 1);
+  this->bilinear_interpolation(former_pixels);
+}
+
+void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
+  std::vector<float> new_pixels_array(m_size);
   for (unsigned int i = 0; i < m_size; i++) {
     float x = former_pixels[i].get_x();
     float y = former_pixels[i].get_y();

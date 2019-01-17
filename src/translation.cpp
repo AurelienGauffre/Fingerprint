@@ -31,3 +31,18 @@ void Image::translation_y(int p_y){
   }
   m_intensity_array = new_intensity_array;
 }
+
+// void Image::translation_x(float p_x){
+//   std::vector<float> new_intensity_array(m_size);
+//   for (unsigned int x = 0; x < m_width; x++) {
+//     for (unsigned int y = 0; y < m_height; y++) {
+//       float new_x = x - p_x;
+//       if ((0 <= new_x)  && (new_x < (int)m_width)) {
+//         new_intensity_array[coord_to_index(x,y)] = m_intensity_array[coord_to_index((unsigned int)new_x,y)];
+//       } else {
+//         new_intensity_array[coord_to_index(x,y)] = 1;
+//       }
+//     }
+//   }
+//   m_intensity_array = new_intensity_array;
+// }
