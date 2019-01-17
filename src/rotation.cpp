@@ -24,28 +24,10 @@ std::vector<Pixel> Image::convert_to_pixels() {
   *  \return array of Pixels
   */
 std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel) {
-  std::vector<Pixel> Pixel_array_rotated;
   for (unsigned int i = 0; i < Pixel_array.size(); i++) {
-    Pixel_array_rotated.push_back(Pixel_array[i].rotation(rot_Pixel, angle));
+    Pixel_array[i].rotation(rot_Pixel, angle);
   }
-  return Pixel_array_rotated;
-}
-
-/*!
-  *  \brief Rotates the Image
-  */
-void Image::rotate(float angle, const Pixel& rot_point) {
-  std::vector<Pixel> pixels(this->convert_to_pixels());
-  std::vector<Pixel> rotated_pixels(this->rotate_pixels(pixels,angle, rot_point));
-  std::vector<float> new_pixels_array(m_size, 1);
-  for (unsigned int i = 0; i < m_size; i++) {
-    signed int x_coord = (signed int)rotated_pixels[i].get_x();
-    signed int y_coord = (signed int)rotated_pixels[i].get_y();
-    if ((x_coord < (int)m_height)&&(x_coord >= 0)&&(y_coord < (int)m_width)&&(y_coord>=0)) {
-      new_pixels_array[coord_to_index(x_coord, y_coord)] = m_intensity_array[i];
-    }
-  }
-  m_intensity_array = new_pixels_array;
+  return Pixel_array;
 }
 
 

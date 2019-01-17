@@ -18,7 +18,7 @@ std::vector<Pixel> Image::warp_pixels(std::vector<Pixel> &Pixel_array, float str
     for (int x = x_min; x <= x_max; x++) {
         for (int y = y_min; y <= y_max; y++) {
             if (location.distance(Pixel_array[this->coord_to_index(x,y)]) <= radius_threshold) {
-                Pixel_array[this->coord_to_index(x, y)] = Pixel_array[this->coord_to_index(x, y)].warp(location, strength, radius, violence);
+                Pixel_array[this->coord_to_index(x, y)].warp(location, strength, radius, violence);
             }
         }
     }
