@@ -56,13 +56,13 @@ class Image {
     //int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
-    int opti_complex(Image &modele,bool squarred);
-    std::vector<int> opti_complex_xy(Image &modele,bool squarred);
+    std::vector<float> opti_complex(Image &modele,bool squarred);
+    std::vector<float> opti_complex_xy(Image &modele,bool squarred);
     float squared_error(Image &modele);
     float correlation(Image &modele);
     float covariance(Image &other);
     float mean();
-    Image Absolute_error_image(Image &modele, std::vector<int> p);
+    Image Absolute_error_image(Image &modele, std::vector<float> p);
 };
 
 

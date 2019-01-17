@@ -54,7 +54,8 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  std::vector<int> p = im1.opti_complex_xy(im2,false);
+  std::vector<float> p = im1.opti_complex_xy(im2,false);
+  std::cout << p[0] << " " << p[1] << std::endl;
   Image error = im1.Absolute_error_image(im2,p);
   error.save_Mat();
 }

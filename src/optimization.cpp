@@ -41,7 +41,7 @@
 //   return list_px[0];
 // }
 
-Image Image::Absolute_error_image(Image &modele, std::vector<int> p){
+Image Image::Absolute_error_image(Image &modele, std::vector<float> p){
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
   this->translation_x(p[0]);
   this->translation_y(p[1]);
@@ -114,7 +114,7 @@ unsigned int optimize(std::vector<float> list_l, bool max){
 }
 
 
-int Image::opti_complex(Image &modele, bool squarred){
+std::vector<float> Image::opti_complex(Image &modele, bool squarred){
   std::vector<int> list_px;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
@@ -133,10 +133,12 @@ int Image::opti_complex(Image &modele, bool squarred){
   }
   unsigned int index = optimize(list_l,squarred);
   std::cout << "\n" << list_px[index];
-  return list_px[index];
+  std::vector<float> p(1);
+  p[0] = list_px[index];
+  return p;
 }
 
-std::vector<int> Image::opti_complex_xy(Image &modele, bool squarred){
+std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   std::vector<int> list_px;
   std::vector<int> list_py;
   std::vector<float> list_l;
@@ -161,11 +163,8 @@ std::vector<int> Image::opti_complex_xy(Image &modele, bool squarred){
     }
   }
   unsigned int index = optimize(list_l,squarred);
-  int px = list_px[index/list_py.size()];
-  int py = list_py[index%list_py.size()];
-  std::vector<int> p(2);
-  p[0] = px;
-  p[1] = py;
-  std::cout << " px " << p[0] << " py " << p[1] << std::endl;
+  std::vector<float> p(2);
+  p[0] = list_px[index/list_py.size()];
+  p[1] = list_py[index%list_py.size()];
   return p;
 }
