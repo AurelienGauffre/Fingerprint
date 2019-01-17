@@ -38,11 +38,16 @@ Image::Image(cv::Mat& image, const std::string& name){
 }
 
 Image::~Image(){
+  m_original_image->cv::Mat::~Mat();
   delete m_original_image;
 }
 
 float Image::get_intensity(unsigned int k){
   return m_intensity_array[k];
+}
+
+float *Image::get_pointer(unsigned int k){
+  return &m_intensity_array[k];
 }
 
 void Image::display_attributes(){
@@ -81,7 +86,7 @@ void Image::save_Mat(std::string name){
   if (name == ""){
     name = m_name;
   }
-  name = "results/" + name;
+  name = "../results/" + name;
   cv::imwrite(name,*m_original_image);
 }
 

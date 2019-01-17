@@ -28,6 +28,7 @@ class Image {
     Image(cv::Mat& image,const std::string& name);
     ~Image();
     float get_intensity(unsigned int k);
+    float *get_pointer(unsigned int k);
     void display_attributes();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
     void display_Mat();
@@ -48,14 +49,21 @@ class Image {
     std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
     void rotate(float angle, const Pixel& rot_point);
     void rotate_bilinear(float angle, const Pixel& rot_point);
+    void bilinear_interpolation(std::vector<Pixel> &former_pixels);
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
     void warp(float strength,  Pixel &location); /*!< Warp a part of picture*/
     // Optimization //
-    int optimization(Image &modele);
+    //int optimization(Image &modele);
     void translation_x(int p_x);
     void translation_y(int p_y);
-    int opti_complex(Image &modele);
+    std::vector<float> opti_complex(Image &modele,bool squarred);
+    std::vector<float> opti_complex_xy(Image &modele,bool squarred);
+    float squared_error(Image &modele);
+    float correlation(Image &modele);
+    float covariance(Image &other);
+    float mean();
+    Image Absolute_error_image(Image &modele, std::vector<float> p);
 };
 
 
