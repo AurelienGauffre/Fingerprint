@@ -56,7 +56,7 @@ void test_optimization(char const *arg[]){
   Image im2(m_image2, m_name2);
   std::vector<int> p = im1.opti_complex_xy(im2,false);
   Image error = im1.Absolute_error_image(im2,p);
-  error.display_Mat();
+  error.save_Mat();
 }
 
 void test_warp(char const *arg[], float strength, Pixel location) {

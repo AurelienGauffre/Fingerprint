@@ -42,7 +42,7 @@
 // }
 
 Image Image::Absolute_error_image(Image &modele, std::vector<int> p){
-  Image res = Image(*m_original_image, m_name.substr(m_name.size()-5, 4) + "_error.png");
+  Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
   this->translation_x(p[0]);
   this->translation_y(p[1]);
   for (int x = 0; x < (int)m_width; x++) {
