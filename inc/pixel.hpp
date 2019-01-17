@@ -1,6 +1,9 @@
 #ifndef DEF_PIXEL
 #define DEF_PIXEL
 
+#include <iostream>
+#include <cmath>
+
 class Pixel{
 private:
   float m_x ;

@@ -32,7 +32,7 @@ void Image::weight_coeff_ellipse(float percentage){
       float a = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*std::pow((float)ellipse[2]/(float)ellipse[3],2));
       float c_r = weight_exp(coeff,attenuation_power,a);
       m_intensity_array[coord_to_index(x,y)] = 1 - c_r*(1-m_intensity_array[coord_to_index(x,y)]);
-      m_intensity_array[coord_to_index(x,y)] = std::sin((M_PI/2)*m_intensity_array[coord_to_index(x,y)]);
+      m_intensity_array[coord_to_index(x,y)] = std::sin((M_PI/2)*m_intensity_array[coord_to_index(x,y)]); // FIX sin pas bon. utiliser sqrt
     }
   }
   delete ellipse;
