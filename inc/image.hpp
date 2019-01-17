@@ -51,12 +51,12 @@ class Image {
     void rotate_bilinear(float angle, const Pixel& rot_point);
     void bilinear_interpolation(std::vector<Pixel> &former_pixels);
     // Warp //
-    std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
-    void warp(float strength,  Pixel &location); /*!< Warp a part of picture*/
+    std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
+    void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
     // Optimization //
     //int optimization(Image &modele);
-    void translation_x(int p_x);
-    void translation_y(int p_y);
+    void translation(float p_x,float p_y);
+    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y);
     std::vector<float> opti_complex(Image &modele,bool squarred);
     std::vector<float> opti_complex_xy(Image &modele,bool squarred);
     float squared_error(Image &modele);
@@ -64,6 +64,7 @@ class Image {
     float covariance(Image &other);
     float mean();
     Image Absolute_error_image(Image &modele, std::vector<float> p);
+    std::vector<float> opti_subpixel(Image &modele, bool squarred);
 };
 
 

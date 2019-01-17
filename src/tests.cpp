@@ -56,16 +56,19 @@ void test_optimization(char const *arg[]){
   Image im2(m_image2, m_name2);
   std::vector<float> p = im1.opti_complex_xy(im2,true);
   std::cout << p[0] << " " << p[1] << std::endl;
-  // Image error = im1.Absolute_error_image(im2,p);
-  // error.save_Mat();
+  std::vector<float> p = im1.opti_subpixel(im2,true);
+  std::cout << " px " << p[0] << " py " << p[1] << std::endl;
+  Image error = im1.Absolute_error_image(im2,p);
+  error.save_Mat();
 }
 
-void test_warp(char const *arg[], float strength, Pixel location) {
+void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
+{
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
 
-  im1.warp(strength, location);
+  im1.warp(strength, location, radius, violence);
   im1.display_Mat();
 }
