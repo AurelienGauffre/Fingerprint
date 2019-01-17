@@ -28,12 +28,10 @@ Pixel Pixel::rotation(const Pixel& origin, float angle){ // FIX To move in rotat
   return Pixel(x,y,m_intensity);
 }
 
-Pixel Pixel::warp(const Pixel& location, float strength) { // FIX to move in warpping.cpp
+Pixel Pixel::warp(const Pixel& location, float strength, float radius, int violence) { // FIX to move in warpping.cpp
   float d = this->distance(location);
-  float k = 4;
-  float R = 60;
-  float theta = exp(-std::pow(d/R, k))*strength;
+  float theta = exp(-std::pow(d/radius, violence))*strength;
   float x = (m_x - location.m_x) * cos(theta) - (m_y - location.m_y) * sin(theta) + location.m_x;
   float y = (m_x - location.m_x) * sin(theta) + (m_y - location.m_y) * cos(theta) + location.m_y;
-  return Pixel(x,y, std::pow(m_intensity, 1+exp(-d/R)));
+  return Pixel(x,y, std::pow(m_intensity, 1+exp(-d/radius)));
 }
