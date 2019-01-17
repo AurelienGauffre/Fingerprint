@@ -60,12 +60,13 @@ void test_optimization(char const *arg[]){
   error.save_Mat();
 }
 
-void test_warp(char const *arg[], float strength, Pixel location) {
+void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
+{
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
 
-  im1.warp(strength, location);
+  im1.warp(strength, location, radius, violence);
   im1.display_Mat();
 }

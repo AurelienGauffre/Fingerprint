@@ -51,8 +51,8 @@ class Image {
     void rotate_bilinear(float angle, const Pixel& rot_point);
     void bilinear_interpolation(std::vector<Pixel> &former_pixels);
     // Warp //
-    std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
-    void warp(float strength,  Pixel &location); /*!< Warp a part of picture*/
+    std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
+    void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
     // Optimization //
     //int optimization(Image &modele);
     void translation(float p_x,float p_y);
