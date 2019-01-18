@@ -56,8 +56,8 @@ void test_optimization(char const *arg[]){
   Image im2(m_image2, m_name2);
   std::vector<float> p = im1.opti_complex_xy(im2,true);
   std::cout << p[0] << " " << p[1] << std::endl;
-  std::vector<float> p = im1.opti_subpixel(im2,true);
-  std::cout << " px " << p[0] << " py " << p[1] << std::endl;
+  // std::vector<float> p = im1.opti_subpixel(im2,true);
+  // std::cout << " px " << p[0] << " py " << p[1] << std::endl;
   Image error = im1.Absolute_error_image(im2,p);
   error.save_Mat();
 }

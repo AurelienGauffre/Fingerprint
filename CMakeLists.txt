@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0.0)
+cmake_minimum_required(VERSION 2.8.0)
 
 project(fingerprints)
 
@@ -19,7 +19,7 @@ list( APPEND PROJ_INCLUDE_DIRS
     ${OpenCV_INCLUDE_DIRS}
 )
 
-find_package(Eigen3 REQUIRED)
+#find_package(Eigen3 REQUIRED)
 
 # Add OpenCV Flags to Compilation Flags
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenCV_CFLAGS}")
