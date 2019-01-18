@@ -17,12 +17,8 @@ public:
   float distance(Pixel p);
 
   void rotation(const Pixel& origin, float angle); /*!< return the Pixel rotated around origin of angle*/
-  // void warp(const Pixel& location, float strength, float radius, int violence);
-
-  // Pixel rotation(const Pixel& origin, float angle); /*!< return the Pixel rotated around origin of angle*/
-
+  void warp(const Pixel& location, float strength, float radius, int violence);
   Pixel translation_one_pixel(float p_x,float p_y);
-  Pixel warp(const Pixel& location, float strength, float radius, int violence);
 };
 
 #endif
