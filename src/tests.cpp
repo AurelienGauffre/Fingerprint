@@ -43,6 +43,7 @@ void test_rotation(char const *arg[], float angle, Pixel rot_point) {
 
   im1.rotate_bilinear(angle,rot_point);
   im1.display_Mat();
+  im1.save_Mat();
 }
 
 void test_optimization(char const *arg[]){
@@ -56,8 +57,8 @@ void test_optimization(char const *arg[]){
   Image im2(m_image2, m_name2);
   std::vector<float> p = im1.opti_complex_xy(im2,true);
   std::cout << p[0] << " " << p[1] << std::endl;
-  std::vector<float> p = im1.opti_subpixel(im2,true);
-  std::cout << " px " << p[0] << " py " << p[1] << std::endl;
+  // std::vector<float> p = im1.opti_subpixel(im2,true);
+  // std::cout << " px " << p[0] << " py " << p[1] << std::endl;
   Image error = im1.Absolute_error_image(im2,p);
   error.save_Mat();
 }
@@ -71,4 +72,5 @@ void test_warp(char const *arg[], float strength, Pixel location, float radius, 
 
   im1.warp(strength, location, radius, violence);
   im1.display_Mat();
+  im1.save_Mat();
 }
