@@ -135,12 +135,12 @@ std::vector<float> Image::opti_complex(Image &modele, bool squarred){
     if (squarred){
       float l = this->squared_error(modele);
       float p = (float)k - (float)m_width + 1;
-      list_l.push_back(this->squared_error(modele));
+      list_l.push_back(l);
       fichier << p << " " << l << std::endl;
     } else {
       float l = this->correlation(modele);
       float p = (float)k - (float)m_width + 1;
-      list_l.push_back(this->correlation(modele));
+      list_l.push_back(l);
       fichier << p << " " << l << std::endl;
     }
     m_intensity_array= copy_intensity_array;
@@ -180,16 +180,14 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
         float l = this->squared_error(modele);
         float px = (float)i - (float)m_width + 1;
         float py = (float)j - (float)m_height + 1;
-        list_l.push_back(this->squared_error(modele));
         fichier << px << " " << py << " " << l << std::endl;
-        list_l.push_back(this->squared_error(modele));
+        list_l.push_back(l);
       } else {
         float l = this->correlation(modele);
         float px = (float)i - (float)m_width + 1;
         float py = (float)j - (float)m_height + 1;
-        list_l.push_back(this->correlation(modele));
         fichier << px << " " << py << " " << l << std::endl;
-        list_l.push_back(this->correlation(modele));
+        list_l.push_back(l);
       }
       m_intensity_array= copy_intensity_array;
     }
