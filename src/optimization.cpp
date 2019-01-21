@@ -167,86 +167,49 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   p[1] = list_py[index%list_py.size()];
   return p;
 }
+float Image::compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array){
+  float l;
+  if (squarred){
+    this->translation(px,py);
+    l = this->squared_error(modele);
+    m_intensity_array= copy_intensity_array;
+  } else {
+    this->translation(px,py);
+    l = this->correlation(modele);
+    m_intensity_array= copy_intensity_array;
+  }
+  return l;
+}
 
 std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
-  std::vector<float> p = this->opti_complex_xy(modele,squarred);
+  std::vector<float> p = this->opti_better(modele,squarred);
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
   float px = p[0];
   float py = p[1];
-  float l;
-  float l_g;
-  float l_d;
-  this->translation(px,py);
-  if (squarred){
-    l = this->squared_error(modele);
-  } else {
-    l = 1 - std::abs(this->correlation(modele));
-  }
-  m_intensity_array= copy_intensity_array;
-  float px_g;
-  float px_d;
+  float l_g, l_d, px_g, px_d, py_g, py_d;
   float distance = 0.5;
   while (distance > 0.06){
     px_g = px - distance;
     px_d = px + distance;
-    if (squarred){
-      this->translation(px_g,py);
-      l_g = this->squared_error(modele);
-      m_intensity_array= copy_intensity_array;
-      this->translation(px_d,py);
-      l_d = this->squared_error(modele);
-      m_intensity_array= copy_intensity_array;
-    } else {
-      this->translation(px_g,py);
-      l_g = 1 - std::abs(this->correlation(modele));
-      m_intensity_array = copy_intensity_array;
-      this->translation(px_d,py);
-      l_d = this->correlation(modele);
-      m_intensity_array= copy_intensity_array;
-    }
+    l_g = compute_l(modele,px_g,py,squarred,copy_intensity_array);
+    l_d = compute_l(modele,px_d,py,squarred,copy_intensity_array);
     if (l_d < l_g) {
-      l = l_d;
       px = px_d;
     } else {
-      l = l_g;
       px = px_g;
     }
     distance = distance/2.0;
   }
-  this->translation(px,py);
-  if (squarred){
-    l = this->squared_error(modele);
-  } else {
-    l = 1 - std::abs(this->correlation(modele));
-  }
-  m_intensity_array= copy_intensity_array;
-  float py_g;
-  float py_d;
   distance = 0.5;
   while (distance > 0.06){
     py_g = py - distance;
     py_d = py + distance;
-    if (squarred){
-      this->translation(px,py_g);
-      l_g = this->squared_error(modele);
-      m_intensity_array= copy_intensity_array;
-      this->translation(px,py_d);
-      l_d = this->squared_error(modele);
-      m_intensity_array= copy_intensity_array;
-    } else {
-      this->translation(px,py_g);
-      l_g = 1 - std::abs(this->correlation(modele));
-      m_intensity_array = copy_intensity_array;
-      this->translation(px,py_d);
-      l_d = this->correlation(modele);
-      m_intensity_array= copy_intensity_array;
-    }
+    l_g = compute_l(modele,px,py_g,squarred,copy_intensity_array);
+    l_d = compute_l(modele,px,py_d,squarred,copy_intensity_array);
     if (l_d < l_g) {
-      l = l_d;
       py = py_d;
     } else {
-      l = l_g;
       py = py_g;
     }
     distance = distance/2.0;
@@ -257,9 +220,42 @@ std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
   return res;
 }
 
-// std::vector<float> Image::opti_better(Image &modele, bool squarred){
-//
-// }
+std::vector<float> Image::opti_better(Image &modele, bool squarred){
+  unsigned int *max_intensity1 = this->find_max_intensity();
+  unsigned int *max_intensity2 = modele.find_max_intensity();
+  int diff_x = max_intensity2[0] - max_intensity1[0];
+  int diff_y = max_intensity2[1] - max_intensity1[1];
+  this->translation(diff_x,diff_y);
+  float percentage = 0.1;
+  std::vector<int> list_px;
+  std::vector<int> list_py;
+  std::vector<float> list_l;
+  std::vector<float> copy_intensity_array(m_size);
+  copy_intensity_array = m_intensity_array;
+  for (int k = -(int)(percentage*m_width) + 1; k < (int)(percentage*m_width); k++) {
+    list_px.push_back(k);
+  }
+  for (int k = -(int)(percentage*m_height) + 1; k < (int)(percentage*m_height); k++) {
+    list_py.push_back(k);
+  }
+  for (unsigned int j = 0; j < list_px.size(); j++) {
+    for (unsigned int k = 0; k < list_py.size(); k++) {
+      this->translation(list_px[j],list_py[k]);
+      if (squarred){
+        list_l.push_back(this->squared_error(modele));
+      } else {
+        list_l.push_back(this->correlation(modele));
+      }
+      m_intensity_array= copy_intensity_array;
+    }
+  }
+  unsigned int index = optimize(list_l,squarred);
+  std::vector<float> p(2);
+  // std::cout << " 0 " << list_px[index/list_py.size()] << " 1 "  <<list_py[index%list_py.size()] << std::endl;
+  p[0] = list_px[index/list_py.size()] + diff_x;
+  p[1] = list_py[index%list_py.size()] + diff_y;
+  return p;
+}
 
 std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::vector<float> list_angles;

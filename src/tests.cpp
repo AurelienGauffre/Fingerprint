@@ -56,16 +56,8 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  // std::vector<float> p = im1.opti_greedy(im2,true);
-  // std::cout << p[0] << " " << p[1] << " " << p[2] << std::endl;
-  // im1.translation(-20,29);
-  // im1.display_Mat();
-  // std::vector<float> p = im1.opti_rot(im2,true);
-  // std::cout << p[0] << std::endl;
-  std::vector<float> p = im1.opti_complex_xy(im2,true);
+  std::vector<float> p = im1.opti_subpixel(im2,true);
   std::cout << p[0] << " " << p[1] << std::endl;
-  // std::vector<float> p = im1.opti_subpixel(im2,true);
-  // std::cout << " px " << p[0] << " py " << p[1] << std::endl;
   Image error = im1.Absolute_error_image(im2,p);
   error.save_Mat();
 }
