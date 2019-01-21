@@ -43,7 +43,8 @@ void test_rotation(char const *arg[], float angle, Pixel rot_point) {
   Image im1(m_image, m_name);
 
   im1.rotate_bilinear(angle,rot_point);
-  im1.display_Mat();
+  // im1.display_Mat();
+  im1.save_Mat();
 }
 
 void test_optimization(char const *arg[]){
