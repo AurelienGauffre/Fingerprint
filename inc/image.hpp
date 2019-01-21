@@ -45,6 +45,7 @@ class Image {
     // Pressure //
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
     void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
+    unsigned int *find_max_intensity();
     unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
     // Rotation //
     std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
@@ -65,8 +66,12 @@ class Image {
     float correlation(Image &modele);
     float covariance(Image &other);
     float mean();
-    Image Absolute_error_image(Image &modele, std::vector<float> p);
+    Image Absolute_error_image(Image &modele);
     std::vector<float> opti_subpixel(Image &modele, bool squarred);
+    std::vector<float> opti_rot(Image &modele, bool squarred);
+    std::vector<float> opti_better(Image &modele, bool squarred);
+    float compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array);
+    cv::Mat DFT();
 };
 
 
