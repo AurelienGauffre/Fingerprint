@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
 
   //cout << "Test optimization :" << endl;
   //test_optimization(argv);
-  std::vector<float> kernel = {1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,1.0/25,3,3,3,3,3}  ;
+  std::vector<float> kernel = {-1,-1,-1,-1,8,-1,-1,-1,-1}  ;
   cout << "Test convolute" << endl ;
   test_convolute(argv,kernel);
   return 0;

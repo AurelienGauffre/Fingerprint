@@ -7,14 +7,17 @@ void Image::convolute(std::vector<float> kernel){
   for(int y = 0;  y<m_height; y++){
     for(int x = 0;  x<m_width;x++){
       float res = 0 ;
+      float norm = 0 ;
       for(int i = -a;i<=a;i++){
         for(int j = -b;j<=b;j++){
           if(((between(x-i,0,m_width))&&(between(y-j,0,m_height)))){
-            res+=m_intensity_array[coord_to_index(x-i,y-j)]*kernel[(2*a+1)*(a-i)+(b-j)];          
+            float kernel_value = kernel[(2*a+1)*(a-i)+(b-j)] ;
+            res+=m_intensity_array[coord_to_index(x-i,y-j)]*kernel_value;
+            norm += kernel_value ;
           }
         }
       }
-      new_intensity[coord_to_index(x,y)] = res;
+      new_intensity[coord_to_index(x,y)] = res/norm;
     }
   }
   m_intensity_array = new_intensity ;
