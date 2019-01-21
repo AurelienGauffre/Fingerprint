@@ -2,7 +2,6 @@
 #define DEF_OPTIMIZATION
 
 #include <iostream>
-#include <fstream>
 
 #include "image.hpp"
 

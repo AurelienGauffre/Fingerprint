@@ -10,6 +10,7 @@
 #include <opencv2/core/types_c.h>
 #include <vector>
 #include <string.h>
+#include <fstream>
 #include "pixel.hpp"
 /*! \class Image
    * \brief class of the image we'll work on
@@ -30,6 +31,7 @@ class Image {
     float get_intensity(unsigned int k);
     float *get_pointer(unsigned int k);
     void display_attributes();
+    void data_intensity();
     void back_to_Mat(); /*!< Update the Mat version of Image*/
     void display_Mat();
     float min_intensity();

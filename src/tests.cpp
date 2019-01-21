@@ -18,10 +18,11 @@ void test_image(char const *arg[]){
   // im1.draw_rectangle(0,origine,10,10);
   // im1.display_Mat();
   // im1.symetry_y();
-  im1.display_Mat();
-  im1.symetry_diag();
-
-  im1.display_Mat();
+  // im1.display_Mat();
+  // im1.symetry_diag();
+  //
+  // im1.display_Mat();
+  im1.data_intensity();
 }
 
 void test_pressure(char const *arg[]){
@@ -29,10 +30,10 @@ void test_pressure(char const *arg[]){
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
-  // im1.weight_coeff(128,170);
-  //im1.save_Mat();
-  im1.weight_coeff_ellipse(1);
-  im1.display_Mat();
+  im1.weight_coeff(128,170);
+  // im1.weight_coeff_ellipse(0.85);
+  im1.save_Mat();
+  // im1.display_Mat();
 }
 
 void test_rotation(char const *arg[], float angle, Pixel rot_point) {
@@ -54,12 +55,12 @@ void test_optimization(char const *arg[]){
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
-  std::vector<float> p = im1.opti_complex_xy(im2,true);
+  std::vector<float> p = im1.opti_complex(im2,true);
   std::cout << p[0] << " " << p[1] << std::endl;
   // std::vector<float> p = im1.opti_subpixel(im2,true);
   // std::cout << " px " << p[0] << " py " << p[1] << std::endl;
-  Image error = im1.Absolute_error_image(im2,p);
-  error.save_Mat();
+  // Image error = im1.Absolute_error_image(im2,p);
+  // error.save_Mat();
 }
 
 void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
