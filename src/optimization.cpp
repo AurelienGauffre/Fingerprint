@@ -1,7 +1,4 @@
-// #include <Python.h>
 #include "optimization.hpp"
-#include <fstream>
-// #include <sstream>
 
 
 
@@ -118,11 +115,6 @@ unsigned int optimize(std::vector<float> list_l, bool max){
 
 
 std::vector<float> Image::opti_complex(Image &modele, bool squarred){
-  std::ofstream fichier;
-  fichier.open("../results/data_affich_opti_x.txt", std::ios::out | std::ios::trunc);
-  if (fichier.fail()) {
-    std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
-  }
   std::vector<int> list_px;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
@@ -133,23 +125,12 @@ std::vector<float> Image::opti_complex(Image &modele, bool squarred){
   for (unsigned int k = 0; k < list_px.size(); k++) {
     this->translation(list_px[k],0);
     if (squarred){
-      float l = this->squared_error(modele);
-      float p = (float)k - (float)m_width + 1;
-      list_l.push_back(l);
-      fichier << p << " " << l << std::endl;
+      list_l.push_back(this->squared_error(modele));
     } else {
-      float l = this->correlation(modele);
-      float p = (float)k - (float)m_width + 1;
-      list_l.push_back(l);
-      fichier << p << " " << l << std::endl;
+      list_l.push_back(this->correlation(modele));
     }
     m_intensity_array= copy_intensity_array;
   }
-  fichier.close();
-
-  // std::ostringstream pyth;
-  // plot_px(pyth, "data_affich_opti_x.txt");
-
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(1);
   p[0] = list_px[index];
@@ -157,11 +138,6 @@ std::vector<float> Image::opti_complex(Image &modele, bool squarred){
 }
 
 std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
-  std::ofstream fichier;
-  fichier.open("../results/data_affich_opti_xy.txt", std::ios::out | std::ios::trunc);
-  if (fichier.fail()) {
-    std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
-  }
   std::vector<int> list_px;
   std::vector<int> list_py;
   std::vector<float> list_l;
@@ -177,17 +153,9 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
     for (unsigned int j = 0; j < list_py.size(); j++) {
       this->translation(list_px[i],list_py[j]);
       if (squarred){
-        float l = this->squared_error(modele);
-        float px = (float)i - (float)m_width + 1;
-        float py = (float)j - (float)m_height + 1;
-        fichier << px << " " << py << " " << l << std::endl;
-        list_l.push_back(l);
+        list_l.push_back(this->squared_error(modele));
       } else {
-        float l = this->correlation(modele);
-        float px = (float)i - (float)m_width + 1;
-        float py = (float)j - (float)m_height + 1;
-        fichier << px << " " << py << " " << l << std::endl;
-        list_l.push_back(l);
+        list_l.push_back(this->correlation(modele));
       }
       m_intensity_array= copy_intensity_array;
     }
@@ -292,17 +260,4 @@ std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
 // std::vector<float> Image::opti_subpixel(){
 //   std::vector<int> list_px;
 //   std::vector<int> list_py;
-// }
-
-// void plot_px(std::ostringstream &ss, std::string nomfichier){
-//   std::ostringstream run_py;
-//   run_py << "import numpy as np \n"
-//          << "import matplotlib.pyplot as plt \n"
-//          << "l = np.loadtxt('results/" << nomfichier << "') \n"
-//          << "x = l[:,0] \n"
-//          << "y = l[:,1] \n"
-//          << "plt.plot(x,y) \n";
-//   Py_Initialize();
-//   PyRun_SimpleSring(run_py.str().c_str());
-//   Py_Finalize();
 // }

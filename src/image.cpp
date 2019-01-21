@@ -50,6 +50,20 @@ float *Image::get_pointer(unsigned int k){
   return &m_intensity_array[k];
 }
 
+void Image::data_intensity(){
+  std::string nom_fichier = "../results/intensities_" + m_name + ".txt";
+  std::ofstream fichier;
+  fichier.open(nom_fichier.c_str(), std::ios::out);
+  if (fichier.fail()) {
+    std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
+  } else {
+    for (unsigned int k = 0; k < m_size; k++) {
+      fichier << m_intensity_array[k] << " " << std::endl;
+    }
+    fichier.close();
+  }
+}
+
 void Image::display_attributes(){
   for (unsigned int y = 0 ; y < m_height; y++){
     for (unsigned int x = 0 ; x < m_width; x++){
