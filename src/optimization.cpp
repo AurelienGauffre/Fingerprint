@@ -42,9 +42,8 @@
 //   return list_px[0];
 // }
 
-Image Image::Absolute_error_image(Image &modele, std::vector<float> p){
+Image Image::Absolute_error_image(Image &modele){
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
-  this->translation(p[0],p[1]);
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
       *res.get_pointer(coord_to_index(x,y)) = std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y)));
