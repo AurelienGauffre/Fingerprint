@@ -67,7 +67,10 @@ class Image {
     float mean();
     Image Absolute_error_image(Image &modele, std::vector<float> p);
     std::vector<float> opti_subpixel(Image &modele, bool squarred);
-    
+
+    //Linear filtering
+    void convolute(std::vector<float> kernel);
+
 };
 
 

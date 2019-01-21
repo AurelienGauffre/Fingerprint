@@ -7,4 +7,3 @@
 
 #include "image.hpp"
 #include "pixel.hpp"
-
