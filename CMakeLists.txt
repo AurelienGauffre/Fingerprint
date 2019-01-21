@@ -29,7 +29,7 @@ include_directories(${PROJECT_SOURCE_DIR}/inc)
 MESSAGE(STATUS ${PROJ_LIBRARY_DIRS})
 
 add_executable(fingerprints
-	"./src/image.cpp" "./src/pixel.cpp" "./src/pressure.cpp" "./src/rotation.cpp" "./src/tests.cpp"  "./src/warpping.cpp" "./src/translation.cpp" "./src/optimization.cpp"  "./src/maths_tools.cpp" "./src/linear_filter.cpp" "./src/main.cpp"
+	"./src/image.cpp" "./src/pixel.cpp" "./src/pressure.cpp" "./src/dft.cpp" "./src/rotation.cpp" "./src/tests.cpp"  "./src/warpping.cpp" "./src/translation.cpp" "./src/optimization.cpp"  "./src/maths_tools.cpp" "./src/linear_filter.cpp" "./src/main.cpp"
 )
 MESSAGE(STATUS ${OpenCV_LIBRARIES})
 target_link_libraries(fingerprints ${OpenCV_LIBRARIES})

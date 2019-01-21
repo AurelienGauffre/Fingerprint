@@ -38,27 +38,43 @@ void Image::weight_coeff_ellipse(float percentage){
   delete ellipse;
 }
 
-unsigned int *Image::find_ellipse(){
-  float percentage_col_min = m_height;
-  unsigned int col_min = 0;
+unsigned int *Image::find_max_intensity(){
+  unsigned int *res = new unsigned int[2];
+  float intensity_col_min = m_height;
+  float intensity_row_min = m_width;
   for (unsigned int x = 0; x < m_width; x++) {
-    float percentage = 0;
+    float intensity_x = 0;
     for (unsigned int y = 0; y < m_height; y++) {
-      percentage = percentage + m_intensity_array[coord_to_index(x,y)];
+      intensity_x = intensity_x + m_intensity_array[coord_to_index(x,y)];
     }
-    if (percentage < percentage_col_min) {
-      percentage_col_min = percentage;
-      col_min = x;
+    if (intensity_x < intensity_col_min) {
+      intensity_col_min = intensity_x;
+      res[0] = x;
     }
   }
+  for (unsigned int y = 0; y < m_height; y++) {
+    float intensity_y = 0;
+    for (unsigned int x = 0; x < m_width; x++) {
+      intensity_y = intensity_y + m_intensity_array[coord_to_index(x,y)];
+    }
+    if (intensity_y < intensity_row_min) {
+      intensity_row_min = intensity_y;
+      res[1] = y;
+    }
+  }
+  return res;
+}
+
+unsigned int *Image::find_ellipse(){
+  unsigned int *max_intensity = this->find_max_intensity();
   unsigned int nb_non_white_col = 0;
   for (unsigned int y = 0; y < m_height; y++) {
-    if (m_intensity_array[coord_to_index(col_min,y)] != 1) {
+    if (m_intensity_array[coord_to_index(max_intensity[0],y)] != 1) {
       nb_non_white_col ++;
     }
   }
   unsigned int *res = new unsigned int[4];
-  res[0] = col_min;
+  res[0] = max_intensity[0];
   res[1] = m_height - int(nb_non_white_col/2);
   res[2] = int(nb_non_white_col/2)*0.7;
   res[3] = int(nb_non_white_col/2);
