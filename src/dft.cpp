@@ -27,6 +27,6 @@ cv::Mat Image::DFT(){
   q1.copyTo(tmp);
   q2.copyTo(q1);
   tmp.copyTo(q2);
-  cv::normalize(magnitude, magnitude, 0, 1, CV_MINMAX);
+  cv::normalize(magnitude, magnitude, 0, 1, cv::NORM_MINMAX);
   return magnitude;
 }

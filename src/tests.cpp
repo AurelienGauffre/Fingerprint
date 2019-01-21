@@ -86,3 +86,14 @@ void test_warp(char const *arg[], float strength, Pixel location, float radius, 
   im1.display_Mat();
   im1.save_Mat();
 }
+
+void test_convolute(char const *arg[],std::vector<float> kernel)
+{
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+  Image im1(m_image, m_name);
+
+  im1.convolute(kernel);
+  im1.display_Mat();
+}

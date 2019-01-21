@@ -72,6 +72,10 @@ class Image {
     std::vector<float> opti_better(Image &modele, bool squarred);
     float compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array);
     cv::Mat DFT();
+
+    //Linear filtering
+    void convolute(std::vector<float> kernel);
+
 };
 
 
