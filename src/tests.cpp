@@ -66,16 +66,16 @@ void test_optimization(char const *arg[]){
 
   cv::Mat res1 = im1.DFT();
   Image dft1(res1,"dft1.png");
-  dft1.save_Mat();
-  // dft1.display_Mat();
+  dft1.display_Mat();
+  // dft1.save_Mat();
   cv::Mat res2 = im2.DFT();
   Image dft2(res2,"dft2.png");
-  // dft2.display_Mat();
-  dft2.save_Mat();
+  dft2.display_Mat();
+  // dft2.save_Mat();
   Image error = dft1.Absolute_error_image(dft2);
   // Image error = im1.Absolute_error_image(im2);
-  error.save_Mat();
-  // error.display_Mat();
+  // error.save_Mat();
+  error.display_Mat();
 }
 
 void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
