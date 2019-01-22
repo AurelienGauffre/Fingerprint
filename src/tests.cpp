@@ -64,12 +64,10 @@ void test_optimization(char const *arg[]){
   // std::vector<float> p = im1.opti_better(im2, true, true);
   // std::cout << p[0] << " " << p[1] << std::endl;
 
-  cv::Mat res1 = im1.DFT();
-  Image dft1(res1,"dft1.png");
+  Image dft1 = im1.DFT();
   dft1.display_Mat();
   // dft1.save_Mat();
-  cv::Mat res2 = im2.DFT();
-  Image dft2(res2,"dft2.png");
+  Image dft2 = im2.DFT();
   dft2.display_Mat();
   // dft2.save_Mat();
   Image error = dft1.Absolute_error_image(dft2);

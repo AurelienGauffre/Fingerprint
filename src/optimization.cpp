@@ -240,8 +240,7 @@ std::vector<float> Image::opti_better(Image &modele, bool squarred, bool plot){
   int diff_y = max_intensity2[1] - max_intensity1[1];
   this->translation(diff_x,diff_y);
   float percentage = 0.2;
-  std::vector<int> list_px;
-  std::vector<int> list_py;
+  std::vector<int> list_px, list_py;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
@@ -285,11 +284,13 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (float k = 0; k < M_PI; k+= 0.1) {
+  for (float k = 0; k < 2*M_PI; k+= 0.1) {
     list_angles.push_back(k);
   }
   for (unsigned int k = 0; k < list_angles.size(); k++) {
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
+    Image m_dft = this->dft();
+    Image modele_dft = modele.dft();
     if (squarred){
       list_l.push_back(this->squared_error(modele));
     } else {
