@@ -1,6 +1,6 @@
 #include "image.hpp"
 
-cv::Mat Image::DFT(){
+Image Image::DFT(){
   int height = cv::getOptimalDFTSize(m_original_image->rows);
   int width = cv::getOptimalDFTSize(m_original_image->cols);
   cv::copyMakeBorder(*m_original_image,*m_original_image,0,height - m_original_image->rows, 0, width - m_original_image->cols, cv::BORDER_CONSTANT, cv::Scalar::all(0));
@@ -28,5 +28,7 @@ cv::Mat Image::DFT(){
   q2.copyTo(q1);
   tmp.copyTo(q2);
   cv::normalize(magnitude, magnitude, 0, 1, cv::NORM_MINMAX);
-  return magnitude;
+  magnitude.convertTo(magnitude,CV_8UC1,255.0);
+  Image res(magnitude,m_name.substr(0, m_name.size()-4) + "_dft.png");
+  return res;
 }

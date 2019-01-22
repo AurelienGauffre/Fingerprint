@@ -69,9 +69,9 @@ class Image {
     Image Absolute_error_image(Image &modele);
     std::vector<float> opti_subpixel(Image &modele, bool squarred);
     std::vector<float> opti_rot(Image &modele, bool squarred);
-    std::vector<float> opti_better(Image &modele, bool squarred);
+    std::vector<float> opti_better(Image &modele, bool squarred, bool plot);
     float compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array);
-    cv::Mat DFT();
+    Image DFT();
 
     //Linear filtering
     void convolute(std::vector<float> kernel);

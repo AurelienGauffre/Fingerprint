@@ -101,6 +101,7 @@ void Image::save_Mat(std::string name){
     name = m_name;
   }
   name = "../results/" + name;
+  // (*m_original_image).convertTo(*m_original_image, CV_8UC1, 255.0);
   cv::imwrite(name,*m_original_image);
 }
 

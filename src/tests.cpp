@@ -8,7 +8,7 @@ void test_image(char const *arg[]){
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
-  //im1.display_attributes();
+  // im1.display_attributes();
   // im1.display_Mat();
   // im1.save_Mat();
   // im1.save_Mat("other_name.png");
@@ -61,17 +61,18 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
+  // std::vector<float> p = im1.opti_better(im2, true, true);
+  // std::cout << p[0] << " " << p[1] << std::endl;
 
-  // cv::Mat res1 = im1.DFT();
-  // Image dft1(res1,"dft1.png");
-  // dft1.display_Mat();
+  Image dft1 = im1.DFT();
+  dft1.display_Mat();
   // dft1.save_Mat();
-  // cv::Mat res2 = im2.DFT();
-  // Image dft2(res2,"dft2.png");
-  // dft2.display_Mat();
+  Image dft2 = im2.DFT();
+  dft2.display_Mat();
   // dft2.save_Mat();
-  // Image error = dft1.Absolute_error_image(dft2);
-  Image error = im1.Absolute_error_image(im2);
+  Image error = dft1.Absolute_error_image(dft2);
+  // Image error = im1.Absolute_error_image(im2);
+  // error.save_Mat();
   error.display_Mat();
 }
 

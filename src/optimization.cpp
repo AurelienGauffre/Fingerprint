@@ -46,6 +46,7 @@ Image Image::Absolute_error_image(Image &modele){
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
+      // std::cout << m_intensity_array[coord_to_index(x,y)] << "  " << modele.get_intensity(coord_to_index(x,y)) << "  diff abs " << std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y))) << std::endl;
       *res.get_pointer(coord_to_index(x,y)) = std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y)));
     }
   }
@@ -136,6 +137,7 @@ std::vector<float> Image::opti_complex(Image &modele, bool squarred){
   return p;
 }
 
+
 std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   std::vector<int> list_px;
   std::vector<int> list_py;
@@ -166,6 +168,8 @@ std::vector<float> Image::opti_complex_xy(Image &modele, bool squarred){
   p[1] = list_py[index%list_py.size()];
   return p;
 }
+
+
 float Image::compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array){
   float l;
   if (squarred){
@@ -180,8 +184,9 @@ float Image::compute_l(Image &modele, float px, float py, bool squarred, std::ve
   return l;
 }
 
+
 std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
-  std::vector<float> p = this->opti_better(modele,squarred);
+  std::vector<float> p = this->opti_better(modele,squarred, false);
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
   float px = p[0];
@@ -219,15 +224,23 @@ std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
   return res;
 }
 
-std::vector<float> Image::opti_better(Image &modele, bool squarred){
+
+std::vector<float> Image::opti_better(Image &modele, bool squarred, bool plot){
+  std::ofstream fichier;
+  if (plot == true) {
+    std::string nom_fichier = "../results/data_opti_better_" + m_name + ".txt";
+    fichier.open(nom_fichier.c_str(), std::ios::out);
+    if (fichier.fail()) {
+      std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
+    }
+  }
   unsigned int *max_intensity1 = this->find_max_intensity();
   unsigned int *max_intensity2 = modele.find_max_intensity();
   int diff_x = max_intensity2[0] - max_intensity1[0];
   int diff_y = max_intensity2[1] - max_intensity1[1];
   this->translation(diff_x,diff_y);
-  float percentage = 0.1;
-  std::vector<int> list_px;
-  std::vector<int> list_py;
+  float percentage = 0.2;
+  std::vector<int> list_px, list_py;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
@@ -241,12 +254,21 @@ std::vector<float> Image::opti_better(Image &modele, bool squarred){
     for (unsigned int k = 0; k < list_py.size(); k++) {
       this->translation(list_px[j],list_py[k]);
       if (squarred){
+        if (plot == true) {
+          fichier << list_px[j] << " " << list_py[k] << " " << this->squared_error(modele) << std::endl;
+        }
         list_l.push_back(this->squared_error(modele));
       } else {
+        if (plot == true) {
+          fichier << list_px[j] << " " << list_py[k] << " " << this->correlation(modele) << std::endl;
+        }
         list_l.push_back(this->correlation(modele));
       }
       m_intensity_array= copy_intensity_array;
     }
+  }
+  if (plot == true) {
+    fichier.close();
   }
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(2);
@@ -256,16 +278,19 @@ std::vector<float> Image::opti_better(Image &modele, bool squarred){
   return p;
 }
 
+
 std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::vector<float> list_angles;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (float k = 0; k < M_PI; k+= 0.1) {
+  for (float k = 0; k < 2*M_PI; k+= 0.1) {
     list_angles.push_back(k);
   }
   for (unsigned int k = 0; k < list_angles.size(); k++) {
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
+    Image m_dft = this->dft();
+    Image modele_dft = modele.dft();
     if (squarred){
       list_l.push_back(this->squared_error(modele));
     } else {
