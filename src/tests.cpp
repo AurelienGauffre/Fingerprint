@@ -61,21 +61,20 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
-  // im2.rotate_bilinear(0.44,Pixel(100,100,0));
-  // std::vector<float> p = im1.opti_rot(im2, true);
-  Image res = im1.symetrize();
-  res.save_Mat();
+  im2.rotate_bilinear(0.44,Pixel(100,100,0));
+  im2.save_Mat();
+  std::vector<float> p = im1.opti_rot(im2, false);
 
-//   Image dft1 = im1.DFT();
-//   dft1.display_Mat();
-//   // dft1.save_Mat();
-//   Image dft2 = im2.DFT();
-//   dft2.display_Mat();
-//   // dft2.save_Mat();
-//   Image error = dft1.Absolute_error_image(dft2);
-//   // Image error = im1.Absolute_error_image(im2);
-//   // error.save_Mat();
-//   error.display_Mat();
+  // Image dft1 = im1.DFT();
+  // dft1.display_Mat();
+  // // dft1.save_Mat();
+  // Image dft2 = im2.DFT();
+  // dft2.display_Mat();
+  // // dft2.save_Mat();
+  // Image error = dft1.Absolute_error_image(dft2);
+  // // Image error = im1.Absolute_error_image(im2);
+  // // error.save_Mat();
+  // error.display_Mat();
 
 
 }

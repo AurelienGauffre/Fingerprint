@@ -6,6 +6,7 @@
  */
 
 #include "image.hpp"
+#include <typeinfo>
 
 /*!
      *  \brief Basic Image constructor
@@ -84,10 +85,25 @@ void Image::back_to_Mat(){
 }
 
 void Image::display_Mat(){
+  std::cout << "avant " << std::endl;
+  std::cout << typeid(m_original_image->at<uchar>(0, 0)).name() << std::endl;
+  std::cout << typeid(m_intensity_array[0]).name() << std::endl;
+  // for (unsigned int k = 0; k < m_intensity_array.size(); k++){
+  //   std::cout <<  m_intensity_array[k] << " ";
+  // }
+  // std::cout << *m_original_image;
+  // std::cout << std::endl;
   this->back_to_Mat();
   cv::namedWindow("result.png", 100000);
   cv::imshow("result.png", *m_original_image);
   cv::waitKey(0);
+  std::cout << "apres " << std::endl;
+  // for (unsigned int k = 0; k < m_intensity_array.size(); k++){
+  //   std::cout <<  m_intensity_array[k] << " ";
+  // }
+  // std::cout << *m_original_image << std::endl;
+  std::cout << typeid(m_original_image->at<uchar>(0,0)).name() << std::endl;
+  std::cout << typeid(m_intensity_array[0]).name() << std::endl;
 }
 
 /*!
