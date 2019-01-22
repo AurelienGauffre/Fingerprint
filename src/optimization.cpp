@@ -284,19 +284,25 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (float k = 0; k < 2*M_PI; k+= 0.1) {
+  Image modele_dft = modele.DFT();
+  for (float k = 0; k < M_PI; k+= 0.1) {
     list_angles.push_back(k);
   }
   for (unsigned int k = 0; k < list_angles.size(); k++) {
+    std::cout << "k " << k << " " << list_angles[k] << std::endl;
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
-    Image m_dft = this->dft();
-    Image modele_dft = modele.dft();
+    Image m_dft = this->DFT();
+    m_dft.display_Mat();
+    modele_dft.display_Mat();
+    Image error = m_dft.Absolute_error_image(m_dft);
+    error.display_Mat();
     if (squarred){
-      list_l.push_back(this->squared_error(modele));
+      std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
+      list_l.push_back(m_dft.squared_error(modele_dft));
     } else {
-      list_l.push_back(this->correlation(modele));
+      list_l.push_back(m_dft.correlation(modele_dft));
     }
-    m_intensity_array= copy_intensity_array;
+    m_intensity_array = copy_intensity_array;
   }
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(1);
