@@ -46,6 +46,7 @@ Image Image::Absolute_error_image(Image &modele){
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
+      // std::cout << m_intensity_array[coord_to_index(x,y)] << "  " << modele.get_intensity(coord_to_index(x,y)) << "  diff abs " << std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y))) << std::endl;
       *res.get_pointer(coord_to_index(x,y)) = std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y)));
     }
   }
