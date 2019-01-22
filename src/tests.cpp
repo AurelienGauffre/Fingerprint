@@ -61,6 +61,8 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
+  std::vector<float> p = im1.opti_better(im2, true, true);
+  std::cout << p[0] << " " << p[1] << std::endl;
 
   // cv::Mat res1 = im1.DFT();
   // Image dft1(res1,"dft1.png");
@@ -71,8 +73,8 @@ void test_optimization(char const *arg[]){
   // dft2.display_Mat();
   // dft2.save_Mat();
   // Image error = dft1.Absolute_error_image(dft2);
-  Image error = im1.Absolute_error_image(im2);
-  error.display_Mat();
+  // Image error = im1.Absolute_error_image(im2);
+  // error.display_Mat();
 }
 
 void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
@@ -86,13 +88,13 @@ void test_warp(char const *arg[], float strength, Pixel location, float radius, 
   im1.display_Mat();
 }
 
-void test_convolute(char const *arg[],std::vector<float> kernel)
-{
-  std::string m_name = (std::string)arg[1];
-  cv::Mat m_image;
-  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
-  Image im1(m_image, m_name);
-
-  im1.convolute(kernel);
-  im1.display_Mat();
-}
+// void test_convolute(char const *arg[],std::vector<float> kernel)
+// {
+//   std::string m_name = (std::string)arg[1];
+//   cv::Mat m_image;
+//   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+//   Image im1(m_image, m_name);
+//
+//   im1.convolute(kernel);
+//   im1.display_Mat();
+// }
