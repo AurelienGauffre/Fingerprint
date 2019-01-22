@@ -156,3 +156,11 @@ void Image::symetry_diag(){
   m_width = m_height;
   m_height = tmp1;
 }
+
+
+
+void Image::operator-=(Image &modele){
+  for(int i = 0; i++ ;i <m_size){
+    m_intensity_array[i]=std::abs(m_intensity_array[i]- modele.m_intensity_array[i]);
+  }
+}

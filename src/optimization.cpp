@@ -53,6 +53,8 @@ Image Image::Absolute_error_image(Image &modele){
   return res;
 }
 
+
+
 float Image::squared_error(Image &modele){
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {
@@ -289,8 +291,8 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   }
   for (unsigned int k = 0; k < list_angles.size(); k++) {
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
-    Image m_dft = this->dft();
-    Image modele_dft = modele.dft();
+    Image m_dft = this->DFT();
+    Image modele_dft = modele.DFT();
     if (squarred){
       list_l.push_back(this->squared_error(modele));
     } else {

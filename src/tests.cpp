@@ -93,7 +93,10 @@ void test_convolute(char const *arg[],std::vector<float> kernel)
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
-
+  Image im2(m_image, m_name);
   im1.convolute(kernel);
-  im1.display_Mat();
+  im2-=im1;
+  //im1.display_Mat();
+  im2.display_Mat();
+  im2.save_Mat();
 }

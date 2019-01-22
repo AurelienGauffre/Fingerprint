@@ -76,6 +76,8 @@ class Image {
     //Linear filtering
     void convolute(std::vector<float> kernel);
 
+
+    void operator-=(Image &modele);
 };
 
 
