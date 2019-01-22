@@ -88,6 +88,7 @@ void test_warp(char const *arg[], float strength, Pixel location, float radius, 
 
   im1.warp(strength, location, radius, violence);
   im1.display_Mat();
+  im1.save_Mat();
 }
 
 void test_convolute(char const *arg[],std::vector<float> kernel)
