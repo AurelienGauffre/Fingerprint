@@ -340,3 +340,73 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::cout << p[0] << std::endl;
   return p;
 }
+
+std::vector<float> Image::coord_descent(std::vector<float> p_0, Image &modele, bool squarred){
+  std::vector<float> copy_intensity_array(m_size);
+  copy_intensity_array = m_intensity_array;
+  float l;
+  std::vector<float> alpha {0.1, 0.1, 0.1};
+  this->translation(p_0[0],p_0[1]);
+  this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
+  if (squarred) {
+    l = this->squared_error(modele);
+  } else {
+    l = this->correlation(modele);
+  }
+  m_intensity_array = copy_intensity_array;
+  while (alpha[0] < 1 && alpha[1] < 1 && alpha[2] < 1){
+    this->one_step_opti(squarred, modele, p_0, alpha, 0, l, copy_intensity_array);
+    this->one_step_opti(squarred, modele, p_0, alpha, 1, l, copy_intensity_array);
+    this->one_step_opti(squarred, modele, p_0, alpha, 2, l, copy_intensity_array);
+  }
+  return p_0;
+}
+
+void Image::one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0, std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array){
+  float l_increased, l_decreased;
+  if (squarred) {
+    p_0[k] *= 1+alpha[k];
+    this->translation(p_0[0],p_0[1]);
+    this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
+    l_increased = this->squared_error(modele);
+    m_intensity_array = copy_intensity_array;
+    p_0[k] *= 1-alpha[k];
+    this->translation(p_0[0],p_0[1]);
+    this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
+    l_decreased = this->squared_error(modele);
+    m_intensity_array = copy_intensity_array;
+    if (l_increased < l && l_decreased > l_increased) {
+      l = l_increased;
+      alpha[k] += 0.1;
+      p_0[k] = p_0[k]*(1+alpha[k]);
+    } else if (l_decreased < l && l_decreased < l_increased) {
+      l = l_decreased;
+      alpha[k] += 0.1;
+      p_0[k] = p_0[k]*(1-alpha[k]);
+    } else {
+      alpha[k] *= 0.5;
+    }
+  } else {
+    p_0[k] *= 1+alpha[k];
+    this->translation(p_0[0],p_0[1]);
+    this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
+    l_increased = this->correlation(modele);
+    m_intensity_array = copy_intensity_array;
+    p_0[k] *= 1-alpha[k];
+    this->translation(p_0[0],p_0[1]);
+    this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
+    l_decreased = this->correlation(modele);
+    m_intensity_array = copy_intensity_array;
+    if (l_increased > l && l_decreased < l_increased) {
+      l = l_increased;
+      alpha[k] += 0.1;
+      p_0[k] = p_0[k]*(1+alpha[k]);
+    } else if (l_decreased > l && l_decreased > l_increased) {
+      l = l_decreased;
+      alpha[k] += 0.1;
+      p_0[k] = p_0[k]*(1-alpha[k]);
+    } else {
+      alpha[k] *= 0.5;
+    }
+  }
+}

@@ -62,26 +62,28 @@ class Image {
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
     void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
+    // Translation //
+    void translation(float p_x,float p_y); /*!< Translates the image using translate_pixels and bilinear_interpolation*/
+    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y); /*!< Translates the pixel array of p_x along the x axis and of p_y along the y axis*/
     // Optimization //
-    //int optimization(Image &modele);
-    void translation(float p_x,float p_y);
-    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y);
-    std::vector<float> opti_complex(Image &modele,bool squarred);
-    std::vector<float> opti_complex_xy(Image &modele,bool squarred);
-    float squared_error(Image &modele);
-    float correlation(Image &modele);
+    Image Absolute_error_image(Image &modele); /*!< Computes the absolute error image between the image and the model */
+    float squared_error(Image &modele); /*!< Loss function squared_error */
+    float correlation(Image &modele); /*!< Loss function correlation */
     float covariance(Image &other);
     float mean();
-    Image Absolute_error_image(Image &modele);
-    std::vector<float> opti_subpixel(Image &modele, bool squarred);
-    std::vector<float> opti_rot(Image &modele, bool squarred);
-    std::vector<float> opti_better(Image &modele, bool squarred, bool plot);
+    std::vector<float> opti_complex(Image &modele,bool squarred); /*!< Greedy strategy to find the best integer p_x */
+    std::vector<float> opti_complex_xy(Image &modele,bool squarred); /*!< Greedy strategy to find the best couple of integers (p_x, p_y) */
+    std::vector<float> opti_better(Image &modele, bool squarred, bool plot); /*!< Better strategy to find the best couple of integers (p_x, p_y) */
+    std::vector<float> opti_subpixel(Image &modele, bool squarred); /*!< Dichomomy strategy to find subpixel translation parameters */
     float compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array);
-    Image DFT();
-
+    std::vector<float> opti_rot(Image &modele, bool squarred); /*!< Greedy strategy to find the angle of rotation using a DFT */
+    std::vector<float> coord_descent(std::vector<float> p_0, Image &modele, bool squarred); /*!< Coordinate descent/ascent strategy to find the best p_x, p_y and angle */
+    void one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0, std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
     //Linear filtering
     void convolute_classic(std::vector<float> kernel);
     void convolute_dft(std::vector<float> kernel);
+    // DFT //
+    Image DFT();
 
 };
 
