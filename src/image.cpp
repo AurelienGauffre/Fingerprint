@@ -144,6 +144,16 @@ void Image::symetry_y(){
   }
 }
 
+void Image::symetry_x(){
+  for (unsigned int y = 0; y < m_height/2; y++){
+    for (unsigned int x= 0; x < m_width; x++){
+      float tmp = m_intensity_array[coord_to_index(x,y)];
+      m_intensity_array[coord_to_index(x,y)] = m_intensity_array[coord_to_index(x,m_height - 1 - y)];
+      m_intensity_array[coord_to_index(x,m_height - 1 - y)] = tmp;
+    }
+  }
+}
+
 void Image::symetry_diag(){
   std::vector<float> m_new_pixels_array;
   for (unsigned int x = 0; x < m_width; x++){
@@ -157,10 +167,37 @@ void Image::symetry_diag(){
   m_height = tmp1;
 }
 
-
-
-void Image::operator-=(Image &modele){
-  for(int i = 0; i++ ;i <m_size){
-    m_intensity_array[i]=std::abs(m_intensity_array[i]- modele.m_intensity_array[i]);
+Image Image::symetrize(){
+  std::vector<float> m_new_intensity_array(m_size*4);
+  for (unsigned int x = 0; x < m_width; x++){
+    for (unsigned int y = 0; y < m_height; y++){
+      m_new_intensity_array[y*2*m_width + x] = m_intensity_array[coord_to_index(x,y)];
+    }
   }
+  this->symetry_y();
+  for (unsigned int x = 0; x < m_width; x++){
+    for (unsigned int y = 0; y < m_height; y++){
+      m_new_intensity_array[y*2*m_width + x + m_width] = m_intensity_array[coord_to_index(x,y)];
+    }
+  }
+  this->symetry_x();
+  for (unsigned int x = 0; x < m_width; x++){
+    for (unsigned int y = 0; y < m_height; y++){
+      m_new_intensity_array[(y + m_height)*2*m_width + x + m_width] = m_intensity_array[coord_to_index(x,y)];
+    }
+  }
+  this->symetry_y();
+  for (unsigned int x = 0; x < m_width; x++){
+    for (unsigned int y = 0; y < m_height; y++){
+      m_new_intensity_array[(y + m_height)*2*m_width + x] = m_intensity_array[coord_to_index(x,y)];
+    }
+  }
+  cv::Mat res_mat(m_height*2,m_width*2,CV_8UC1);
+  for (unsigned int y = 0; y < 2*m_height; y++){
+    for (unsigned int x = 0; x < 2*m_width; x++){
+      res_mat.ptr<uchar>(y)[x] = (uchar)(255*m_new_intensity_array[y*2*m_width + x]);
+    }
+  }
+  Image res(res_mat, m_name.substr(0, m_name.size()-4) + "_symetrized.png");
+  return res;
 }

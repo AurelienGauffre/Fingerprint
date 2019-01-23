@@ -40,8 +40,10 @@ class Image {
     void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
     unsigned int coord_to_index(unsigned int x, unsigned int y);
     // unsigned int *index_to_coord(unsigned int k);
+    void symetry_x();
     void symetry_y();
     void symetry_diag();
+    Image symetrize();
     // Pressure //
     void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
     void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
@@ -76,8 +78,6 @@ class Image {
     //Linear filtering
     void convolute(std::vector<float> kernel);
 
-
-    void operator-=(Image &modele);
 };
 
 
