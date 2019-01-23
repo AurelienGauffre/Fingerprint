@@ -1,9 +1,9 @@
 #include "image.hpp"
 
 Image Image::DFT(){
+  this->back_to_Mat();
   int height = cv::getOptimalDFTSize(m_original_image->rows);
   int width = cv::getOptimalDFTSize(m_original_image->cols);
-  this->back_to_Mat();
   cv::copyMakeBorder(*m_original_image,*m_original_image,0,height - m_original_image->rows, 0, width - m_original_image->cols, cv::BORDER_CONSTANT, cv::Scalar::all(0));
   cv::Mat planes[] = {cv::Mat_<float>(*m_original_image), cv::Mat::zeros(m_original_image->size(), CV_32F)};
   cv::Mat complex;
@@ -29,7 +29,7 @@ Image Image::DFT(){
   q2.copyTo(q1);
   tmp.copyTo(q2);
   cv::normalize(magnitude, magnitude, 0, 1, cv::NORM_MINMAX);
-  magnitude.convertTo(magnitude,CV_8UC1,255.0);
+  magnitude.convertTo(magnitude,CV_16UC1,255.0);
   Image res(magnitude,m_name.substr(0, m_name.size()-4) + "_dft.png");
   return res;
 }

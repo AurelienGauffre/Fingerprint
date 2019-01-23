@@ -76,7 +76,8 @@ class Image {
     Image DFT();
 
     //Linear filtering
-    void convolute(std::vector<float> kernel);
+    void convolute_classic(std::vector<float> kernel);
+    void convolute_dft(std::vector<float> kernel);
 
 };
 

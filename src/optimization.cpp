@@ -1,7 +1,6 @@
 #include "optimization.hpp"
 
 
-
 // int Image::optimization(Image &modele){
 //   std::vector<int> list_px;
 //   for (int k = -m_width + 1; k < (int)m_width; k++) {
@@ -286,22 +285,23 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  Image modele_dft = modele.DFT();
-  for (float k = 0; k < M_PI; k+= 0.1) {
+  Image modele_sym = modele.symetrize();
+  Image modele_dft = modele_sym.DFT();
+  for (float k = 0; k < M_PI/2.0; k+= 0.1) {
     list_angles.push_back(k);
   }
   for (unsigned int k = 0; k < list_angles.size(); k++) {
-    std::cout << "k " << k << " " << list_angles[k] << std::endl;
+    // std::cout << "k " << k << " " << list_angles[k] << std::endl;
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
-    Image m_dft = this->DFT();
-
-    Image modele_dft = modele.DFT();
+  
+    Image m_sym = this->symetrize();
+    Image m_dft = m_sym.DFT();
     m_dft.display_Mat();
-    modele_dft.display_Mat();
-    Image error = m_dft.Absolute_error_image(m_dft);
-    error.display_Mat();
+    // modele_dft.display_Mat();
+    // Image error = m_dft.Absolute_error_image(modele_dft);
+    // error.display_Mat();
     if (squarred){
-      std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
+      // std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
       list_l.push_back(m_dft.squared_error(modele_dft));
     } else {
       list_l.push_back(m_dft.correlation(modele_dft));
@@ -311,6 +311,26 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(1);
   p[0] = list_angles[index];
+  std::vector<float> new_list_l(4);
+  std::vector<float> new_list_angles(4);
+  new_list_angles[0] = p[0];
+  new_list_angles[1] = M_PI - p[0];
+  new_list_angles[2] = 2*M_PI- p[0];
+  new_list_angles[3] = M_PI + p[0];
+  for (unsigned int k = 0; k < 4; k++){
+    this->rotate_bilinear(new_list_angles[k],Pixel(m_width/2,m_height/2,0));
+    std::cout << "angle " << new_list_angles[k] << std::endl;
+    // this->display_Mat();
+    if (squarred){
+      std::cout << "l " << this->squared_error(modele) << std::endl;
+      new_list_l[k] = this->squared_error(modele);
+    } else {
+      new_list_l[k] = this->correlation(modele);
+    }
+    m_intensity_array = copy_intensity_array;
+  }
+  index = optimize(new_list_l,squarred);
+  p[0] = new_list_angles[index];
   std::cout << p[0] << std::endl;
   return p;
 }
