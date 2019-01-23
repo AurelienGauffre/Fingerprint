@@ -28,9 +28,9 @@ int main(int argc, char const *argv[]) {
 
   //std::vector<float> kernel = {0,0,0,0,1,0,0,0,0};
   //std::vector<float> kernel = {1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0}  ;
-  std::vector<float> kernel = {-1,0,1,-2,0,2,-1,0,1}  ;
-  cout << "Test convolute" << endl ;
-  test_convolute_classic(argv,kernel);
+  // std::vector<float> kernel = {-1,0,1,-2,0,2,-1,0,1}  ;
+  // cout << "Test convolute" << endl ;
+  // test_convolute_classic(argv,kernel);
 
   return 0;
 
