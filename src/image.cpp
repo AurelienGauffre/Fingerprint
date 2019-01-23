@@ -36,6 +36,7 @@ Image::Image(cv::Mat& image, const std::string& name){
       m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
     }
   }
+  cv2eigen(*m_original_image, m_intensity_matrix);
 }
 
 Image::~Image(){

@@ -21,8 +21,8 @@ void test_image(char const *arg[]){
   // im1.display_Mat();
   // im1.symetry_diag();
   //
-  // im1.display_Mat();
-  im1.data_intensity();
+  im1.display_Mat();
+  // im1.data_intensity();
 }
 
 void test_pressure(char const *arg[]){
@@ -61,9 +61,9 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
-  im2.rotate_bilinear(0.44,Pixel(100,100,0));
-  im2.save_Mat();
-  std::vector<float> p = im1.opti_rot(im2, false);
+  im2.rotate_bilinear(0.44,Pixel(125,140,0));
+  im2.display_Mat();
+  std::vector<float> p = im1.opti_rot(im2,false);
 
   // Image dft1 = im1.DFT();
   // dft1.display_Mat();

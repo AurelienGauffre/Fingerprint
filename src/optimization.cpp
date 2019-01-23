@@ -57,6 +57,7 @@ float Image::squared_error(Image &modele){
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
       float diff = m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y));
+      // std::cout << "m_intensity " << m_intensity_array[coord_to_index(x,y)] << " modele " << modele.get_intensity(coord_to_index(x,y)) << " diff " << diff << " power " << std::pow(diff,2) << " sum " << sum << std::endl;
       sum += std::pow(diff,2);
     }
   }
@@ -64,6 +65,8 @@ float Image::squared_error(Image &modele){
 }
 
 float Image::correlation(Image &modele){
+  std::cout << "mean " << this->mean() << " mean modele " << modele.mean() << std::endl;
+  std::cout << " cov " << this->covariance(modele) << " var modele " << modele.covariance(modele) << " var image " << this->covariance(*this) << " correlation " << this->covariance(modele)/sqrt(modele.covariance(modele)*this->covariance(*this)) << std::endl;
   return this->covariance(modele)/sqrt(modele.covariance(modele)*this->covariance(*this));
 }
 
@@ -74,7 +77,7 @@ float Image::mean(){
       sum += m_intensity_array[coord_to_index(x,y)];
     }
   }
-  return sum/m_size;
+  return sum/(float)m_size;
 }
 
 float Image::covariance(Image &other){
@@ -291,16 +294,19 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   for (unsigned int k = 0; k < list_angles.size(); k++) {
     // std::cout << "k " << k << " " << list_angles[k] << std::endl;
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
+    this->display_Mat();
     Image m_sym = this->symetrize();
+    m_sym.display_Mat();
     Image m_dft = m_sym.DFT();
     m_dft.display_Mat();
-    // modele_dft.display_Mat();
+    modele_dft.display_Mat();
     // Image error = m_dft.Absolute_error_image(modele_dft);
     // error.display_Mat();
     if (squarred){
-      // std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
+      std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
       list_l.push_back(m_dft.squared_error(modele_dft));
     } else {
+      std::cout << "angle " << list_angles[k] << std::endl;
       list_l.push_back(m_dft.correlation(modele_dft));
     }
     m_intensity_array = copy_intensity_array;
@@ -308,26 +314,27 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(1);
   p[0] = list_angles[index];
-  std::vector<float> new_list_l(4);
-  std::vector<float> new_list_angles(4);
-  new_list_angles[0] = p[0];
-  new_list_angles[1] = M_PI - p[0];
-  new_list_angles[2] = 2*M_PI- p[0];
-  new_list_angles[3] = M_PI + p[0];
-  for (unsigned int k = 0; k < 4; k++){
-    this->rotate_bilinear(new_list_angles[k],Pixel(m_width/2,m_height/2,0));
-    std::cout << "angle " << new_list_angles[k] << std::endl;
-    // this->display_Mat();
-    if (squarred){
-      std::cout << "l " << this->squared_error(modele) << std::endl;
-      new_list_l[k] = this->squared_error(modele);
-    } else {
-      new_list_l[k] = this->correlation(modele);
-    }
-    m_intensity_array = copy_intensity_array;
-  }
-  index = optimize(new_list_l,squarred);
-  p[0] = new_list_angles[index];
+  // std::vector<float> new_list_l(4);
+  // std::vector<float> new_list_angles(4);
+  // std::cout << " hytfygyiyohyhoi " << std::endl;
+  // new_list_angles[0] = p[0];
+  // new_list_angles[1] = M_PI - p[0];
+  // new_list_angles[2] = 2*M_PI- p[0];
+  // new_list_angles[3] = M_PI + p[0];
+  // for (unsigned int k = 0; k < 4; k++){
+  //   this->rotate_bilinear(new_list_angles[k],Pixel(m_width/2,m_height/2,0));
+  //   std::cout << "angle " << new_list_angles[k] << std::endl;
+  //   // this->display_Mat();
+  //   if (squarred){
+  //     std::cout << "l " << this->squared_error(modele) << std::endl;
+  //     new_list_l[k] = this->squared_error(modele);
+  //   } else {
+  //     new_list_l[k] = this->correlation(modele);
+  //   }
+  //   m_intensity_array = copy_intensity_array;
+  // }
+  // index = optimize(new_list_l,squarred);
+  // p[0] = new_list_angles[index];
   std::cout << p[0] << std::endl;
   return p;
 }

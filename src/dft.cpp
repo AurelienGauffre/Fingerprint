@@ -29,7 +29,7 @@ Image Image::DFT(){
   q2.copyTo(q1);
   tmp.copyTo(q2);
   cv::normalize(magnitude, magnitude, 0, 1, cv::NORM_MINMAX);
-  magnitude.convertTo(magnitude,CV_16UC1,255.0);
+  magnitude.convertTo(magnitude,CV_8UC1,255.0);
   Image res(magnitude,m_name.substr(0, m_name.size()-4) + "_dft.png");
   return res;
 }

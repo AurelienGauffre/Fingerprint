@@ -19,17 +19,19 @@ list( APPEND PROJ_INCLUDE_DIRS
     ${OpenCV_INCLUDE_DIRS}
 )
 
-#find_package(Eigen3 REQUIRED)
+find_package(Eigen3 REQUIRED)
 
 # Add OpenCV Flags to Compilation Flags
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenCV_CFLAGS}")
 
 include_directories(${OpenCV_INCLUDE_DIRS})
+include_directories(${EIGEN3_INCLUDE_DIRS})
 include_directories(${PROJECT_SOURCE_DIR}/inc)
+
 MESSAGE(STATUS ${PROJ_LIBRARY_DIRS})
 
 add_executable(fingerprints
 	"./src/image.cpp" "./src/pixel.cpp" "./src/pressure.cpp" "./src/dft.cpp" "./src/rotation.cpp" "./src/tests.cpp"  "./src/warpping.cpp" "./src/translation.cpp" "./src/optimization.cpp"  "./src/maths_tools.cpp" "./src/linear_filter.cpp" "./src/main.cpp"
 )
 MESSAGE(STATUS ${OpenCV_LIBRARIES})
-target_link_libraries(fingerprints ${OpenCV_LIBRARIES})
+target_link_libraries(fingerprints ${OpenCV_LIBRARIES} ${Eigen3_LIBS})
