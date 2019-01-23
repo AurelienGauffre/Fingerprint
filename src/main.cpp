@@ -23,14 +23,14 @@ int main(int argc, char const *argv[]) {
   // test_warp(argv, M_PI/6, Pixel(110, 220), 50, 4);
 
 
-  cout << "Test optimization :" << endl;
-  test_optimization(argv);
+  // cout << "Test optimization :" << endl;
+  // test_optimization(argv);
 
   //std::vector<float> kernel = {0,0,0,0,1,0,0,0,0};
   //std::vector<float> kernel = {1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0,1/9.0}  ;
-  std::vector<float> kernel = {-1,0,1,-2,0,2,-1,0,1}  ;
+  std::vector<float> kernel = {1.0/9, 1.0/9, 1.0/9, 1.0/9, 1.0/9, 1.0/9, 1.0/9, 1.0/9, 1.0/9}  ;
   cout << "Test convolute" << endl ;
-  test_convolute_classic(argv,kernel);
+  test_convolute_dft(argv,kernel);
 
   return 0;
 

@@ -48,8 +48,10 @@ void Image::convolute_classic(std::vector<float> kernel){
 
 void Image::convolute_dft(std::vector<float> kernel) {
   Image image_ft = this->DFT();
-  Image kernel_ft = kernel_expansion(kernel, m_width, m_height);
+  Image kernel_image = kernel_expansion(kernel, m_width, m_height);
+  Image kernel_ft = kernel_image.DFT();
   kernel_ft.display_Mat();
+  //kernel_ft.display_Mat();
 }
 
 Image kernel_expansion(std::vector<float> kernel, int width, int height) {
@@ -63,7 +65,7 @@ Image kernel_expansion(std::vector<float> kernel, int width, int height) {
   int kernel_index = 0;
   for (int j = y_top_left; j < y_top_left+2*a+1; j++) {
     for (int i = x_top_left; i< x_top_left+2*a+1; i++) {
-      *im.get_pointer(im.coord_to_index(i,j)) = kernel[kernel_index]/255;
+      *im.get_pointer(im.coord_to_index(i,j)) = kernel[kernel_index];
       kernel_index++;
     }
   }
