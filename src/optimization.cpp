@@ -52,6 +52,8 @@ Image Image::Absolute_error_image(Image &modele){
   return res;
 }
 
+
+
 float Image::squared_error(Image &modele){
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {

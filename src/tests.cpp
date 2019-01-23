@@ -110,5 +110,7 @@ void test_convolute_dft(char const *arg[],std::vector<float> kernel)
   Image im1(m_image, m_name);
 
   im1.convolute_dft(kernel);
+
   im1.display_Mat();
+
 }
