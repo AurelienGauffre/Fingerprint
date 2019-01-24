@@ -52,6 +52,10 @@ float *Image::get_pointer(unsigned int k){
   return &m_intensity_array[k];
 }
 
+cv::Mat get_original_image() {
+  return *m_original_image;
+}
+
 void Image::data_intensity(){
   std::string nom_fichier = "../results/intensities_" + m_name + ".txt";
   std::ofstream fichier;

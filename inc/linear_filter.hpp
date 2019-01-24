@@ -9,4 +9,5 @@
 #include "pixel.hpp"
 #include "maths_tools.hpp"
 
-Image kernel_expansion(std::vector<float> kernel,int width, int height);
+Image centered_kernel_expansion(std::vector<float> kernel,int width, int height);
+Image zeropad_kernel_expansion(std::vector<float> kernel,int width, int height);

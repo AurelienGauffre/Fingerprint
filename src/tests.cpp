@@ -114,3 +114,37 @@ void test_convolute_dft(char const *arg[],std::vector<float> kernel)
   im1.display_Mat();
 
 }
+
+void test_inv_ft(char const *arg[]) {
+    // Load an image
+  std::string m_name = (std::string)arg[1];
+  cv::Mat inputImage = cv::imread(m_name, 0);
+
+  // Go float
+  cv::Mat fImage;
+  inputImage.convertTo(fImage, CV_32F);
+  std::cout << "1rst convertion ok" << '\n';
+
+  // FFT
+  std::cout << "Direct transform...\n";
+  cv::Mat fourierTransform;
+  cv::dft(fImage, fourierTransform, cv::DFT_SCALE|cv::DFT_COMPLEX_OUTPUT);
+  std::cout << "Fourier tf ok" << '\n';
+  //std::cout << fourierTransform << '\n';
+
+
+  // IFFT
+  std::cout << "Inverse transform...\n";
+  cv::Mat inverseTransform;
+  cv::dft(fourierTransform, inverseTransform, cv::DFT_INVERSE|cv::DFT_REAL_OUTPUT);
+
+  //Back to 8-bits
+  cv::Mat finalImage;
+  fourierTransform.convertTo(finalImage, CV_8U);
+  std::cout << "2nd convertion ok" << '\n';
+  std::cout << finalImage << '\n';
+
+  cv::namedWindow("result.png", 100000);
+  cv::imshow("result.png", finalImage);
+  cv::waitKey(0);
+}
