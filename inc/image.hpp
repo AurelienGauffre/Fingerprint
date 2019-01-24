@@ -85,6 +85,11 @@ class Image {
     // DFT //
     Image DFT();
 
+    // operation
+    Image& operator-(float value);
+    Image& operator+(float value);
+    Image& operator*(float value);
+
 };
 
 

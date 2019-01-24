@@ -4,6 +4,8 @@
 void Image::convolute_classic(std::vector<float> kernel){
   int a = ((int)(std::pow(kernel.size(),0.5))-1)/2;
   int b = a ;
+  float mini_intensity = 0 ;
+  float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);
   for(int y = 0;  y<m_height; y++){
     for(int x = 0;  x<m_width;x++){
@@ -17,7 +19,7 @@ void Image::convolute_classic(std::vector<float> kernel){
             intensity = m_intensity_array[coord_to_index(x-i,y-j)];
           }
           else if(!(in_width)&&!(in_height)){ // The pixel is on the diagonal of the image
-            intensity = m_intensity_array[coord_to_index(m_width*(1-(x-i)<0),m_height*(1-(y-j)<0))] ;
+            intensity = m_intensity_array[coord_to_index((m_width-1)*(1-(x-i)<0),(m_height-1)*(1-(y-j)<0))] ;
           }
           else if(!(in_height)){ // The pixel is either over or under the image
             if(y-j < 0){ // The pixel is above the image
@@ -40,10 +42,13 @@ void Image::convolute_classic(std::vector<float> kernel){
         }
       }
       new_intensity[coord_to_index(x,y)] = res;
+      if (res>maxi_intensity) maxi_intensity = res ;
+      if (res<mini_intensity) mini_intensity = res ;
     }
   }
   std::cout <<  between(-1,0,m_width)<< std::endl ;
   m_intensity_array = new_intensity ;
+  *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
 
 void Image::convolute_dft(std::vector<float> kernel) {

@@ -218,3 +218,27 @@ Image Image::symetrize(){
   Image res(res_mat, m_name.substr(0, m_name.size()-4) + "_symetrized.png");
   return res;
 }
+
+
+Image& Image::operator-(float value){
+  for(int i = 0 ; i<m_size ; i++){
+    m_intensity_array[i]-=value ;
+  }
+  return *this ;
+}
+
+
+Image& Image::operator+(float value){
+  for(int i = 0 ; i<m_size ; i++){
+    m_intensity_array[i]+=value ;
+  }
+  return *this ;
+}
+
+
+Image& Image::operator*(float value){
+  for(int i = 0 ; i<m_size ; i++){
+    m_intensity_array[i]*=value ;
+  }
+  return *this ;
+}
