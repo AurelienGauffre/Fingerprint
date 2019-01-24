@@ -296,7 +296,7 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   for (unsigned int k = 0; k < list_angles.size(); k++) {
     // std::cout << "k " << k << " " << list_angles[k] << std::endl;
     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
-    this->display_Mat();
+    // this->display_Mat();
     Image m_sym = this->symetrize();
     m_sym.display_Mat();
     Image m_dft = m_sym.DFT();
@@ -305,10 +305,10 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
     // Image error = m_dft.Absolute_error_image(modele_dft);
     // error.display_Mat();
     if (squarred){
-      std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
+      // std::cout << "l " << m_dft.squared_error(modele_dft) << std::endl;
       list_l.push_back(m_dft.squared_error(modele_dft));
     } else {
-      std::cout << "angle " << list_angles[k] << std::endl;
+      // std::cout << "angle " << list_angles[k] << std::endl;
       list_l.push_back(m_dft.correlation(modele_dft));
     }
     m_intensity_array = copy_intensity_array;
@@ -318,17 +318,16 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   p[0] = list_angles[index];
   // std::vector<float> new_list_l(4);
   // std::vector<float> new_list_angles(4);
-  // std::cout << " hytfygyiyohyhoi " << std::endl;
   // new_list_angles[0] = p[0];
   // new_list_angles[1] = M_PI - p[0];
   // new_list_angles[2] = 2*M_PI- p[0];
   // new_list_angles[3] = M_PI + p[0];
   // for (unsigned int k = 0; k < 4; k++){
   //   this->rotate_bilinear(new_list_angles[k],Pixel(m_width/2,m_height/2,0));
-  //   std::cout << "angle " << new_list_angles[k] << std::endl;
+  //   // std::cout << "angle " << new_list_angles[k] << std::endl;
   //   // this->display_Mat();
   //   if (squarred){
-  //     std::cout << "l " << this->squared_error(modele) << std::endl;
+  //     // std::cout << "l " << this->squared_error(modele) << std::endl;
   //     new_list_l[k] = this->squared_error(modele);
   //   } else {
   //     new_list_l[k] = this->correlation(modele);
@@ -341,11 +340,21 @@ std::vector<float> Image::opti_rot(Image &modele, bool squarred){
   return p;
 }
 
+bool equal_vector(std::vector<float> &v, std::vector<float> &w){
+  for (unsigned int k = 0; k < v.size(); k++){
+    if (std::abs(v[k] - w[k]) > 0.001 ) {
+      return false;
+    }
+  }
+  return true;
+}
+
 std::vector<float> Image::coord_descent(std::vector<float> p_0, Image &modele, bool squarred){
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
   float l;
   std::vector<float> alpha {0.1, 0.1, 0.1};
+  std::vector<float> alpha_prec(3);
   this->translation(p_0[0],p_0[1]);
   this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
   if (squarred) {
@@ -354,11 +363,13 @@ std::vector<float> Image::coord_descent(std::vector<float> p_0, Image &modele, b
     l = this->correlation(modele);
   }
   m_intensity_array = copy_intensity_array;
-  while (alpha[0] < 1 && alpha[1] < 1 && alpha[2] < 1){
+  while (not equal_vector(alpha,alpha_prec)) {
+    alpha_prec = alpha;
     this->one_step_opti(squarred, modele, p_0, alpha, 0, l, copy_intensity_array);
     this->one_step_opti(squarred, modele, p_0, alpha, 1, l, copy_intensity_array);
     this->one_step_opti(squarred, modele, p_0, alpha, 2, l, copy_intensity_array);
   }
+  std::cout << p_0[0] << " " << p_0[1] << " " << p_0[2] << std::endl;
   return p_0;
 }
 
@@ -409,4 +420,5 @@ void Image::one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0,
       alpha[k] *= 0.5;
     }
   }
+  std::cout << p_0[0] << " " << p_0[1] << " " << p_0[2] << std::endl;
 }

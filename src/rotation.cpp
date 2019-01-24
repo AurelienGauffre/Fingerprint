@@ -47,7 +47,7 @@ void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
     int y1 = (int)y ;
     int y2 = y1 + 1 ;
 
-    if ((x1 < (int)m_width)&&(x1 >= 0)&&(y1 < (int)m_height)&&(y1>=0)) {
+    if ((x2 < (int)m_width)&&(x1 >= 0)&&(y2 < (int)m_height)&&(y1>=0)) {
       new_pixels_array[i] =  former_pixels[coord_to_index(x1,y1)].get_intensity()*(x2-x)*(y2-y)+ \
       former_pixels[coord_to_index(x2,y1)].get_intensity()*(x-x1)*(y2-y)+ \
       former_pixels[coord_to_index(x1,y2)].get_intensity()*(x2-x)*(y-y1)+ \
