@@ -51,42 +51,42 @@ void Image::convolute_classic(std::vector<float> kernel){
   *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
 
-void Image::convolute_dft(std::vector<float> kernel) {
-  Image kernel_image = centered_kernel_expansion(kernel, m_width, m_height);
-  cv::Mat kernel_mat = kernel_image.get_original_image();
-  int dft_M = cvGetOptimalDFTSize( m_original_image.rows+kernel_mat.rows-1 );
-  int dft_N = cvGetOptimalDFTSize( m_original_image.cols+kernel_mat.cols-1 );
-
-  Cv::Mat* dft_A = cvCreateMat( dft_M, dft_N, m_original_image.type );
-  Cv::Mat* dft_B = cvCreateMat( dft_M, dft_N, kernel_mat.type );
-  Cv::Mat tmp;
-
-  cv::GetSubRect( dft_A, &tmp, cvRect(0,0,m_original_image.cols,m_original_image.rows));
-  cvCopy( &m_original_image, &tmp );
-  cv::GetSubRect(
-    dft_A,
-    &tmp,
-    cv::Rect( m_original_image.cols, 0, m_original_image.cols-m_original_image.cols, m_original_image.rows )
-  );
-  cv::Zero( &tmp );
-
-  cv::DFT( dft_A, dft_A, CV_DXT_FORWARD, m_original_image.rows );
-
-  cv::GetSubRect( dft_A, &tmp, cvRect(0,0,kernel_mat.cols,kernel_mat.rows));
-  cv::Copy( &kernel_mat, &tmp );
-  cv::GetSubRect(
-    dft_A,
-    &tmp,
-    cv::Rect( kernel_mat.cols, 0, kernel_mat.cols-kernel_mat.cols, kernel_mat.rows )
-  );
-
-  cv::DFT( dft_B, dft_B, CV_DXT_FORWARD, kernel_image.rows );
-
-  cv::MulSpectrums( dft_A, dft_B, dft_A, 0 );
-
-  cv::DFT( dft_A, dft_A, CV_DXT_INV_SCALE, C->rows );
-  cvGetSubRect( dft_A, &tmp, cvRect(0,0,conv->cols,C->rows) );
-}
+// void Image::convolute_dft(std::vector<float> kernel) {
+//   Image kernel_image = centered_kernel_expansion(kernel, m_width, m_height);
+//   cv::Mat kernel_mat = kernel_image.get_original_image();
+//   int dft_M = cv::getOptimalDFTSize( m_original_image->rows+kernel_mat.rows-1 );
+//   int dft_N = cv::getOptimalDFTSize( m_original_image->cols+kernel_mat.cols-1 );
+//
+//   cv::Mat* dft_A = cv::CreateMat( dft_M, dft_N, m_original_image->type() );
+//   cv::Mat* dft_B = cv::CreateMat( dft_M, dft_N, kernel_mat.type() );
+//   cv::Mat tmp;
+//
+//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,m_original_image->cols,m_original_image->rows));
+//   cv::Copy( &m_original_image, &tmp );
+//   cvGetSubRect(
+//     dft_A,
+//     &tmp,
+//     cv::Rect( m_original_image->cols, 0, m_original_image->cols-m_original_image->cols, m_original_image->rows )
+//   );
+//   cv::Zero( &tmp );
+//
+//   DFT( dft_A, dft_A, CV_DXT_FORWARD, m_original_image->rows );
+//
+//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,kernel_mat.cols,kernel_mat.rows));
+//   cv::Copy( &kernel_mat, &tmp );
+//   cvGetSubRect(
+//     dft_A,
+//     &tmp,
+//     cv::Rect( kernel_mat.cols, 0, kernel_mat.cols, kernel_mat.cols, kernel_mat.rows )
+//   );
+//
+//   DFT( dft_B, dft_B, CV_DXT_FORWARD, kernel_image.rows );
+//
+//   mulSpectrums( dft_A, dft_B, dft_A, 0 );
+//
+//   cv::DFT( dft_A, dft_A, CV_DXT_INV_SCALE, C->rows );
+//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,conv->cols,C->rows) );
+// }
 
 Image centered_kernel_expansion(std::vector<float> kernel, int width, int height) {
   cv::Mat extended_kernel = cv::Mat::zeros(cv::Size(width, height), CV_8UC1);
