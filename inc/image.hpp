@@ -34,7 +34,7 @@ class Image {
     ~Image();
     float get_intensity(unsigned int k);
     float *get_pointer(unsigned int k);
-    cv::Mat get_original_image();
+    cv::Mat* get_original_image();
     void display_attributes();
     void data_intensity();
     void back_to_Mat();  /*!< Update the Mat version of Image*/
@@ -82,7 +82,8 @@ class Image {
     void one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0, std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
     //Linear filtering
     void convolute_classic(std::vector<float> kernel);
-    void convolute_dft(std::vector<float> kernel);
+    cv::Mat convolute_dft(std::vector<float> kernel);
+    void fourier_convolution(cv::Mat& kernel);
     // DFT //
     Image DFT();
 

@@ -52,8 +52,8 @@ float *Image::get_pointer(unsigned int k){
   return &m_intensity_array[k];
 }
 
-cv::Mat get_original_image() {
-  return *m_original_image;
+cv::Mat* Image::get_original_image() {
+  return m_original_image;
 }
 
 void Image::data_intensity(){
@@ -90,14 +90,9 @@ void Image::back_to_Mat(){
 }
 
 void Image::display_Mat(){
-<<<<<<< HEAD
-  std::cout << typeid(m_original_image->at<uchar>(0, 0)).name() << std::endl;
-  std::cout << typeid(m_intensity_array[0]).name() << std::endl;
-=======
   // std::cout << "avant " << std::endl;
   // std::cout << typeid(m_original_image->at<uchar>(0, 0)).name() << std::endl;
   // std::cout << typeid(m_intensity_array[0]).name() << std::endl;
->>>>>>> 16900088958d083770d598d63bcddc32c68e0389
   // for (unsigned int k = 0; k < m_intensity_array.size(); k++){
   //   std::cout <<  m_intensity_array[k] << " ";
   // }
@@ -107,10 +102,6 @@ void Image::display_Mat(){
   cv::namedWindow("result.png", 100000);
   cv::imshow("result.png", *m_original_image);
   cv::waitKey(0);
-<<<<<<< HEAD
-=======
-  // std::cout << "apres " << std::endl;
->>>>>>> 16900088958d083770d598d63bcddc32c68e0389
   // for (unsigned int k = 0; k < m_intensity_array.size(); k++){
   //   std::cout <<  m_intensity_array[k] << " ";
   // }
@@ -233,7 +224,7 @@ Image Image::symetrize(){
 
 
 Image& Image::operator-(float value){
-  for(int i = 0 ; i<m_size ; i++){
+  for(unsigned int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]-=value ;
   }
   return *this ;
@@ -241,7 +232,7 @@ Image& Image::operator-(float value){
 
 
 Image& Image::operator+(float value){
-  for(int i = 0 ; i<m_size ; i++){
+  for(unsigned int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]+=value ;
   }
   return *this ;
@@ -249,7 +240,7 @@ Image& Image::operator+(float value){
 
 
 Image& Image::operator*(float value){
-  for(int i = 0 ; i<m_size ; i++){
+  for(unsigned int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]*=value ;
   }
   return *this ;
