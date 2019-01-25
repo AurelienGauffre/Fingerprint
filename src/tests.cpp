@@ -33,7 +33,7 @@ void test_pressure(char const *arg[]){
   im1.weight_coeff(128,170);
   // im1.weight_coeff_ellipse(0.85);
   im1.save_Mat();
-  im1.display_Mat();
+  // im1.display_Mat();
 }
 
 void test_rotation(char const *arg[], float angle, Pixel rot_point) {
@@ -61,13 +61,11 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
-
-  im2.rotate_bilinear(0.44,Pixel(125,140,0));
-  im2.display_Mat();
-  std::vector<float> p = im1.opti_rot(im2,false);
-
-  // std::vector<float> p_0 {20,20,0.5};
-  // im1.coord_descent(p_0,im2,true);
+  im2.translation(-15.386,6.778);
+  im2.rotate_bilinear(0.2612,Pixel(83,94,0));
+  im2.save_Mat();
+  std::vector<float> p_0 = im1.opti_greedy_fast(im2,false);
+  // std::vector<float> p = im1.coord_descent(p_0,im2,true);
 
 }
 
@@ -89,6 +87,7 @@ void test_convolute_classic(char const *arg[],std::vector<float> kernel)
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
+
   im1.convolute_classic(kernel);
   im1.display_Mat();
 }
@@ -100,11 +99,12 @@ void test_convolute_dft(char const *arg[],std::vector<float> kernel)
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
 
-  im1.convolute_dft(kernel);
+  // im1.convolute_dft(kernel);
 
   im1.display_Mat();
 
 }
+<<<<<<< HEAD
 
 void test_inv_ft(char const *arg[]) {
   std::string m_name = (std::string)arg[1];
@@ -117,3 +117,5 @@ void test_inv_ft(char const *arg[]) {
   im1.fourier_convolution(kernel);
   im1.display_Mat();
 }
+=======
+>>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69

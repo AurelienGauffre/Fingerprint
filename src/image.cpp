@@ -44,7 +44,7 @@ Image::~Image(){
   delete m_original_image;
 }
 
-float Image::get_intensity(unsigned int k){
+float Image::get_intensity(unsigned int k)const{
   return m_intensity_array[k];
 }
 
@@ -52,8 +52,13 @@ float *Image::get_pointer(unsigned int k){
   return &m_intensity_array[k];
 }
 
+<<<<<<< HEAD
 cv::Mat* Image::get_original_image() {
   return m_original_image;
+=======
+cv::Mat Image::get_original_image() {
+  return *m_original_image;
+>>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
 }
 
 void Image::data_intensity(){
@@ -90,6 +95,7 @@ void Image::back_to_Mat(){
 }
 
 void Image::display_Mat(){
+<<<<<<< HEAD
   // std::cout << "avant " << std::endl;
   // std::cout << typeid(m_original_image->at<uchar>(0, 0)).name() << std::endl;
   // std::cout << typeid(m_intensity_array[0]).name() << std::endl;
@@ -98,16 +104,21 @@ void Image::display_Mat(){
   // }
   // std::cout << *m_original_image;
   // std::cout << std::endl;
+=======
+>>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
   this->back_to_Mat();
   cv::namedWindow("result.png", 100000);
   cv::imshow("result.png", *m_original_image);
   cv::waitKey(0);
+<<<<<<< HEAD
   // for (unsigned int k = 0; k < m_intensity_array.size(); k++){
   //   std::cout <<  m_intensity_array[k] << " ";
   // }
   // std::cout << *m_original_image << std::endl;
   // std::cout << typeid(m_original_image->at<uchar>(0,0)).name() << std::endl;
   // std::cout << typeid(m_intensity_array[0]).name() << std::endl;
+=======
+>>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
 }
 
 /*!
@@ -125,10 +136,10 @@ void Image::save_Mat(std::string name){
   cv::imwrite(name,*m_original_image);
 }
 
-float Image::min_intensity(){
+float Image::min_intensity()const{
   return *std::min_element(m_intensity_array.begin(),m_intensity_array.end());
 }
-float Image::max_intensity(){
+float Image::max_intensity()const{
   return *std::max_element(m_intensity_array.begin(),m_intensity_array.end());
 }
 
