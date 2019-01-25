@@ -52,11 +52,11 @@ void Image::convolute_classic(std::vector<float> kernel){
   *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
 
-<<<<<<< HEAD
+
 cv::Mat Image::convolute_dft(std::vector<float> kernel) {
 
 }
-=======
+
 // void Image::convolute_dft(std::vector<float> kernel) {
 //   Image kernel_image = centered_kernel_expansion(kernel, m_width, m_height);
 //   cv::Mat kernel_mat = kernel_image.get_original_image();
@@ -93,7 +93,7 @@ cv::Mat Image::convolute_dft(std::vector<float> kernel) {
 //   cv::DFT( dft_A, dft_A, CV_DXT_INV_SCALE, C->rows );
 //   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,conv->cols,C->rows) );
 // }
->>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
+
 
 Image centered_kernel_expansion(std::vector<float> kernel, int width, int height) {
   cv::Mat extended_kernel = cv::Mat::zeros(cv::Size(width, height), CV_8UC1);

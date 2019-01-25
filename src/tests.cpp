@@ -101,7 +101,7 @@ void test_convolute_dft(char const *arg[],std::vector<float> kernel)
   im1.display_Mat();
 
 }
-<<<<<<< HEAD
+
 
 void test_inv_ft(char const *arg[]) {
   std::string m_name = (std::string)arg[1];
@@ -114,5 +114,3 @@ void test_inv_ft(char const *arg[]) {
   im1.fourier_convolution(kernel);
   im1.display_Mat();
 }
-=======
->>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
