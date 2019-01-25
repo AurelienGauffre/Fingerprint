@@ -34,9 +34,10 @@ class Image {
     ~Image();
     float get_intensity(unsigned int k);
     float *get_pointer(unsigned int k);
+    cv::Mat get_original_image();
     void display_attributes();
     void data_intensity();
-    void back_to_Mat(); /*!< Update the Mat version of Image*/
+    void back_to_Mat();  /*!< Update the Mat version of Image*/
     void display_Mat();
     float min_intensity();
     float max_intensity();
