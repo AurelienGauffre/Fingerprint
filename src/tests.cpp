@@ -61,14 +61,11 @@ void test_optimization(char const *arg[]){
   // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
-  im1.translation(-31.5,14.8);
-  im1.rotate_bilinear(0.098,Pixel(128,144,0));
-  im1.display_Mat();
-  // std::vector<float> p = im1.opti_greedy_fast(im2,true);
-  // std::vector<float> p_0 {-42,15,0.1};
+  im2.translation(-15.386,6.778);
+  im2.rotate_bilinear(0.2612,Pixel(83,94,0));
+  im2.save_Mat();
+  std::vector<float> p_0 = im1.opti_greedy_fast(im2,false);
   // std::vector<float> p = im1.coord_descent(p_0,im2,true);
-  // std::vector<float> p_0 {20,20,0.5};
-  // im1.coord_descent(p_0,im2,true);
 
 }
 

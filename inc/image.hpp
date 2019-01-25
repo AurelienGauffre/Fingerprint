@@ -32,15 +32,15 @@ class Image {
   public:
     Image(cv::Mat& image,const std::string& name);
     ~Image();
-    float get_intensity(unsigned int k);
+    float get_intensity(unsigned int k)const;
     float *get_pointer(unsigned int k);
     cv::Mat get_original_image();
     void display_attributes();
     void data_intensity();
     void back_to_Mat();  /*!< Update the Mat version of Image*/
     void display_Mat();
-    float min_intensity();
-    float max_intensity();
+    float min_intensity() const;
+    float max_intensity() const;
     void save_Mat(std::string name = "");
     void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
     unsigned int coord_to_index(unsigned int x, unsigned int y);

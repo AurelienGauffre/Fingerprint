@@ -44,7 +44,7 @@ Image::~Image(){
   delete m_original_image;
 }
 
-float Image::get_intensity(unsigned int k){
+float Image::get_intensity(unsigned int k)const{
   return m_intensity_array[k];
 }
 
@@ -111,10 +111,10 @@ void Image::save_Mat(std::string name){
   cv::imwrite(name,*m_original_image);
 }
 
-float Image::min_intensity(){
+float Image::min_intensity()const{
   return *std::min_element(m_intensity_array.begin(),m_intensity_array.end());
 }
-float Image::max_intensity(){
+float Image::max_intensity()const{
   return *std::max_element(m_intensity_array.begin(),m_intensity_array.end());
 }
 

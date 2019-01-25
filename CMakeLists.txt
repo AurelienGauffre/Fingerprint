@@ -1,6 +1,6 @@
-cmake_minimum_required(VERSION 2.8.0)
+cmake_minimum_required(VERSION 3.5.0)
 
-project(fingerprints)
+project(fingerprints CXX)
 
 #Compiler definition and options
 set(CMAKE_CXX_COMPILER "clang++")
@@ -30,8 +30,10 @@ include_directories(${PROJECT_SOURCE_DIR}/inc)
 
 MESSAGE(STATUS ${PROJ_LIBRARY_DIRS})
 
-add_executable(fingerprints
-	"./src/image.cpp" "./src/pixel.cpp" "./src/pressure.cpp" "./src/dft.cpp" "./src/rotation.cpp" "./src/tests.cpp"  "./src/warpping.cpp" "./src/translation.cpp" "./src/optimization.cpp"  "./src/maths_tools.cpp" "./src/linear_filter.cpp" "./src/main.cpp"
-)
-MESSAGE(STATUS ${OpenCV_LIBRARIES})
-target_link_libraries(fingerprints ${OpenCV_LIBRARIES} ${Eigen3_LIBS})
+add_subdirectory(src)
+add_subdirectory(demo)
+# add_executable(fingerprints
+# 	"./src/image.cpp" "./src/pixel.cpp" "./src/pressure.cpp" "./src/dft.cpp" "./src/rotation.cpp" "./src/tests.cpp"  "./src/warpping.cpp" "./src/translation.cpp" "./src/optimization.cpp"  "./src/maths_tools.cpp" "./src/linear_filter.cpp" "./src/main.cpp"
+# )
+# MESSAGE(STATUS ${OpenCV_LIBRARIES})
+# target_link_libraries(fingerprints ${OpenCV_LIBRARIES} ${Eigen3_LIBS})
