@@ -34,7 +34,7 @@ class Image {
     ~Image();
     float get_intensity(unsigned int k)const;
     float *get_pointer(unsigned int k);
-    cv::Mat get_original_image();
+    cv::Mat* get_original_image();
     void display_attributes();
     void data_intensity();
     void back_to_Mat();  /*!< Update the Mat version of Image*/
@@ -84,7 +84,8 @@ class Image {
     std::vector<float> opti_pixel_approx(Image &modele, bool squarred);
     //Linear filtering
     void convolute_classic(std::vector<float> kernel);
-    void convolute_dft(std::vector<float> kernel);
+    cv::Mat convolute_dft(std::vector<float> kernel);
+    void fourier_convolution(cv::Mat& kernel);
     // DFT //
     Image DFT();
 

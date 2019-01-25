@@ -101,3 +101,18 @@ void test_convolute_dft(char const *arg[],std::vector<float> kernel)
   im1.display_Mat();
 
 }
+<<<<<<< HEAD
+
+void test_inv_ft(char const *arg[]) {
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+  Image im1(m_image, m_name);
+  int r = 10;
+  float sigma_clip = 6.0;
+  cv::Mat kernel = createGausFilterMask(cv::Size(cv::getOptimalDFTSize((im1.get_original_image())->rows), cv::getOptimalDFTSize((im1.get_original_image())->cols)), r, sigma_clip);
+  im1.fourier_convolution(kernel);
+  im1.display_Mat();
+}
+=======
+>>>>>>> f2bdc2cda1305dc9bf43b886e9c9f01df1978b69
