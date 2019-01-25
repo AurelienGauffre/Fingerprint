@@ -92,7 +92,7 @@ float Image::covariance(Image &other){
   return sum;
 }
 
-unsigned int optimize(std::vector<float> list_l, bool max){
+unsigned int optimize(std::vector<float> list_l, bool squarred){
   float l_opt = list_l[0];
   unsigned int index = 0;
   while (std::isnan(std::abs(l_opt))){
@@ -100,7 +100,7 @@ unsigned int optimize(std::vector<float> list_l, bool max){
     l_opt = list_l[index];
   }
   for (unsigned int k = index+1; k < list_l.size(); k++){
-    if (max) {
+    if (squarred) {
       if (list_l[k] < l_opt){
         l_opt = list_l[k];
         index = k;
@@ -136,6 +136,7 @@ std::vector<float> Image::opti_greedy_x(Image &modele, bool squarred){
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(1);
   p[0] = list_px[index];
+  std::cout << "px : " << p[0] << std::endl;
   return p;
 }
 
@@ -165,9 +166,9 @@ std::vector<float> Image::opti_greedy_xy(Image &modele, bool squarred){
   }
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(2);
-  // std::cout << " 0 " << list_px[index/list_py.size()] << " 1 "  <<list_py[index%list_py.size()] << std::endl;
   p[0] = list_px[index/list_py.size()];
   p[1] = list_py[index%list_py.size()];
+  std::cout << "px : " << p[0] << " py : " << p[1] << std::endl;
   return p;
 }
 
@@ -223,6 +224,7 @@ std::vector<float> Image::opti_subpixel(Image &modele, bool squarred){
   std::vector<float> res(2);
   res[0] = px;
   res[1] = py;
+  std::cout << "px : " << res[0] << " py : " << res[1] << std::endl;
   return res;
 }
 
@@ -274,9 +276,9 @@ std::vector<float> Image::opti_greedy_fast_xy(Image &modele, bool squarred, bool
   }
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(2);
-  // std::cout << " 0 " << list_px[index/list_py.size()] << " 1 "  <<list_py[index%list_py.size()] << std::endl;
   p[0] = list_px[index/list_py.size()] + diff_x;
   p[1] = list_py[index%list_py.size()] + diff_y;
+  std::cout << "px : " << p[0] << " py : " << p[1] << std::endl;
   return p;
 }
 
@@ -337,85 +339,74 @@ std::vector<float> Image::opti_greedy_fast_xy(Image &modele, bool squarred, bool
 //   std::cout << p[0] << std::endl;
 //   return p;
 // }
+
+
 std::vector<float> Image::opti_pixel_approx(Image &modele, bool squarred){
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  std::vector<float> kernel(100,0.01);
+  std::vector<float> kernel(81,0.01);
   this->convolute_classic(kernel);
-  this->save_Mat();
+  this->display_Mat();
   std::vector<int> list_px;
   std::vector<int> list_py;
+  std::vector<float> list_angles;
   std::vector<float> list_l;
   std::vector<float> blured_intensity_array(m_size);
   blured_intensity_array = m_intensity_array;
-  for (int k = -m_width + 1; k < (int)m_width; k+= 10) {
+  for (int k = (int)((int)(-m_width)/2); k < (int)(m_width/2); k+=10) {
     list_px.push_back(k);
   }
-  for (int k = -m_height + 1; k < (int)m_height; k+=10) {
+  for (int k = (int)((int)(-m_height)/2); k < (int)(m_height/2); k+=10) {
     list_py.push_back(k);
   }
-  for (unsigned int i = 0; i < list_px.size(); i++) {
+  for (float k = 0; k < 2*M_PI; k+=0.5) {
+    list_angles.push_back(k);
+  }
+  for (unsigned int i = 0; i < list_angles.size(); i++) {
     for (unsigned int j = 0; j < list_py.size(); j++) {
-      this->translation(list_px[i],list_py[j]);
-      if (squarred){
-        list_l.push_back(this->squared_error(modele));
-      } else {
-        list_l.push_back(this->correlation(modele));
+      for (unsigned int k = 0; k < list_px.size(); k++) {
+        this->translation(list_px[k],list_py[j]);
+        this->rotate_bilinear(list_angles[i],Pixel(m_width/2,m_height/2,0));
+        if (squarred){
+          list_l.push_back(this->squared_error(modele));
+        } else {
+          list_l.push_back(this->correlation(modele));
+        }
+        m_intensity_array= blured_intensity_array;
       }
-      m_intensity_array= blured_intensity_array;
     }
   }
   unsigned int index = optimize(list_l,squarred);
-  std::vector<float> p(2);
-  p[0] = list_px[index/list_py.size()];
-  p[1] = list_py[index%list_py.size()];
-  std::cout << "approx " << p[0] << " " << p[1] << std::endl;
+  std::vector<float> p(3);
+  p[0] = list_px[((index)%(list_px.size()*list_py.size()))%list_px.size()];
+  p[1] = list_py[((index)%(list_px.size()*list_py.size()))/list_px.size()];
+  p[2] = list_angles[(int)((float)index)/(float)(list_px.size()*list_py.size())];
+  std::cout << "After approx px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
   m_intensity_array = copy_intensity_array;
   return p;
 }
 
+
 std::vector<float> Image::opti_greedy_fast(Image &modele, bool squarred){
-  std::cout << " 1 " << std::endl;
-  // unsigned int *max_intensity1 = this->find_max_intensity();
-  // unsigned int *max_intensity2 = modele.find_max_intensity();
-  // int diff_x = max_intensity2[0] - max_intensity1[0];
-  // int diff_y = max_intensity2[1] - max_intensity1[1];
-  // std::cout << "max im 2 " << max_intensity2[0] << " " << max_intensity2[1] << std::endl;
-  // std::cout << "max im 1 " << max_intensity1[0] << " " << max_intensity1[1] << std::endl;
-  // std::cout << "diff x " << diff_x << " diff y " << diff_y << std::endl;
-  // this->translation(diff_x,diff_y);
-  float percentage = 0.4;
   std::vector<float> p_approx = opti_pixel_approx(modele,squarred);
-  std::cout << " 2 " << std::endl;
   std::vector<int> list_px, list_py;
   std::vector<float> list_l;
   std::vector<float> list_angles;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  std::cout << " 3 " << std::endl;
-  // for (int k = -(int)(percentage*m_width) + 1; k < (int)(percentage*m_width); k++) {
-  //   list_px.push_back(k);
-  // }
-  for (int k = p_approx[0] -15; k < p_approx[0] + 15; k++) {
+  for (int k = p_approx[0] -15; k < p_approx[0] + 15; k+=3) {
     list_px.push_back(k);
   }
-  // std::cout << " p_y interval " << -(int)(percentage*m_height) << " " << (int)(percentage*m_height) << std::endl;
-  // for (int k = -(int)(percentage*m_height) + 1; k < (int)(percentage*m_height); k++) {
-  //   list_py.push_back(k);
-  // }
-  for (int k = p_approx[1] -10; k < p_approx[1] + 10; k++) {
+  for (int k = p_approx[1] -15; k < p_approx[1] + 15; k+=3) {
     list_py.push_back(k);
   }
-  std::cout << " 5 " << std::endl;
-  for (float k = 0; k < 0.6; k+=0.1) {
-    std::cout << k << std::endl;
+  for (float k = 0; k < 6; k+=0.2) {
     list_angles.push_back(k);
   }
-  std::cout << " 6 " << std::endl;
   for (unsigned int i = 0; i < list_angles.size(); i++) {
-    for (unsigned int j = 0; j < list_px.size(); j++) {
-      for (unsigned int k = 0; k < list_py.size(); k++) {
-        this->translation(list_px[j],list_py[k]);
+    for (unsigned int j = 0; j < list_py.size(); j++) {
+      for (unsigned int k = 0; k < list_px.size(); k++) {
+        this->translation(list_px[k],list_py[j]);
         this->rotate_bilinear(list_angles[i], Pixel(m_width/2, m_height/2, 0));
         if (squarred){
           list_l.push_back(this->squared_error(modele));
@@ -426,21 +417,12 @@ std::vector<float> Image::opti_greedy_fast(Image &modele, bool squarred){
       }
     }
   }
-  std::cout << " 7 " << std::endl;
   unsigned int index = optimize(list_l,squarred);
   std::vector<float> p(3);
-  std::cout << " index " << index << std::endl;
-  for (unsigned int k = 0; k < list_px.size(); k++){
-    std::cout << list_px[k] << " ";
-  }
-  std::cout << std::endl;
-  p[0] = list_px[((index)%(list_px.size()*list_py.size()))/list_py.size()];
-  std::cout << " après p_x ";
-  p[1] = list_py[((index)%(list_px.size()*list_py.size()))%list_py.size()];
-  std::cout << " après p_y ";
+  p[0] = list_px[((index)%(list_px.size()*list_py.size()))%list_px.size()];
+  p[1] = list_py[((index)%(list_px.size()*list_py.size()))/list_px.size()];
   p[2] = list_angles[(int)((float)index)/(float)(list_px.size()*list_py.size())];
-  std::cout << " après angle ";
-  std::cout << "px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
+  std::cout << "After greedy_strategy : px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
   return p;
 }
 
@@ -454,12 +436,13 @@ bool equal_vector(std::vector<float> &v, std::vector<float> &w){
   return true;
 }
 
+
 std::vector<float> Image::coord_descent(std::vector<float> p_0, Image &modele, bool squarred){
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
   float l;
   std::vector<float> alpha {0.1, 0.1, 0.1};
-  std::vector<float> alpha_prec {0, 0, 0};
+  std::vector<float> zeros {0.0, 0.0, 0.0};
   this->translation(p_0[0],p_0[1]);
   this->rotate_bilinear(p_0[2],Pixel(m_width/2,m_height/2));
   if (squarred) {
@@ -468,15 +451,15 @@ std::vector<float> Image::coord_descent(std::vector<float> p_0, Image &modele, b
     l = this->correlation(modele);
   }
   m_intensity_array = copy_intensity_array;
-  while (not equal_vector(alpha,alpha_prec)) {
-    alpha_prec = alpha;
+  while (not equal_vector(alpha,zeros)) {
     this->one_step_opti(squarred, modele, p_0, alpha, 0, l, copy_intensity_array);
     this->one_step_opti(squarred, modele, p_0, alpha, 1, l, copy_intensity_array);
     this->one_step_opti(squarred, modele, p_0, alpha, 2, l, copy_intensity_array);
   }
-  std::cout << p_0[0] << " " << p_0[1] << " " << p_0[2] << std::endl;
+  std::cout << "Result : px : " << p_0[0] << " py : " << p_0[1] << " angle : " << p_0[2] << std::endl;
   return p_0;
 }
+
 
 void Image::one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0, std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array){
   float l_increased, l_decreased;
@@ -497,12 +480,12 @@ void Image::one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0,
     p_0 = p_copy;
     if (l_increased < l && l_decreased > l_increased) {
       l = l_increased;
-      alpha[k] += 0.1;
       p_0[k] = p_0[k]*(1+alpha[k]);
+      alpha[k] += 0.1;
     } else if (l_decreased < l && l_decreased < l_increased) {
       l = l_decreased;
-      alpha[k] += 0.1;
       p_0[k] = p_0[k]*(1-alpha[k]);
+      alpha[k] += 0.1;
     } else {
       alpha[k] *= 0.5;
     }
@@ -521,15 +504,14 @@ void Image::one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0,
     p_0 = p_copy;
     if (l_increased > l && l_decreased < l_increased) {
       l = l_increased;
-      alpha[k] += 0.1;
       p_0[k] = p_0[k]*(1+alpha[k]);
+      alpha[k] += 0.1;
     } else if (l_decreased > l && l_decreased > l_increased) {
       l = l_decreased;
-      alpha[k] += 0.1;
       p_0[k] = p_0[k]*(1-alpha[k]);
+      alpha[k] += 0.1;
     } else {
       alpha[k] *= 0.5;
     }
   }
-  std::cout << p_0[0] << " " << p_0[1] << " " << p_0[2] << std::endl;
 }

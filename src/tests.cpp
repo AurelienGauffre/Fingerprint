@@ -57,16 +57,13 @@ void test_optimization(char const *arg[]){
   m_image2 = cv::imread(m_name2, cv::IMREAD_GRAYSCALE);
   Image im2(m_image2, m_name2);
   // std::vector<float> p = im1.opti_subpixel(im2,true);
-  // std::cout << p[0] << " " << p[1] << std::endl;
-  // im1.translation(p[0],p[1]);
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
-  im2.translation(-15.386,6.778);
-  im2.rotate_bilinear(0.2612,Pixel(83,94,0));
-  im2.save_Mat();
-  std::vector<float> p_0 = im1.opti_greedy_fast(im2,false);
-  // std::vector<float> p = im1.coord_descent(p_0,im2,true);
-
+  // im2.translation(-18.51,25.51);
+  // im2.rotate_bilinear(5.53,Pixel(83,93,0));
+  // im2.display_Mat();
+  std::vector<float> p_0 = im1.opti_greedy_fast(im2,true);
+  std::vector<float> p = im1.coord_descent(p_0,im2,true);
 }
 
 void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)
