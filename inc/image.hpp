@@ -84,8 +84,7 @@ class Image {
     std::vector<float> opti_pixel_approx(Image &modele, bool squarred);
     //Linear filtering
     void convolute_classic(std::vector<float> kernel);
-    cv::Mat convolute_dft(std::vector<float> kernel);
-    void fourier_convolution(cv::Mat& kernel);
+    cv::Mat fourier_convolution(cv::Mat& kernel);
     // DFT //
     Image DFT();
 

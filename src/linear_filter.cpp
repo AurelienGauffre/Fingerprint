@@ -53,47 +53,6 @@ void Image::convolute_classic(std::vector<float> kernel){
 }
 
 
-cv::Mat Image::convolute_dft(std::vector<float> kernel) {
-
-}
-
-// void Image::convolute_dft(std::vector<float> kernel) {
-//   Image kernel_image = centered_kernel_expansion(kernel, m_width, m_height);
-//   cv::Mat kernel_mat = kernel_image.get_original_image();
-//   int dft_M = cv::getOptimalDFTSize( m_original_image->rows+kernel_mat.rows-1 );
-//   int dft_N = cv::getOptimalDFTSize( m_original_image->cols+kernel_mat.cols-1 );
-//
-//   cv::Mat* dft_A = cv::CreateMat( dft_M, dft_N, m_original_image->type() );
-//   cv::Mat* dft_B = cv::CreateMat( dft_M, dft_N, kernel_mat.type() );
-//   cv::Mat tmp;
-//
-//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,m_original_image->cols,m_original_image->rows));
-//   cv::Copy( &m_original_image, &tmp );
-//   cvGetSubRect(
-//     dft_A,
-//     &tmp,
-//     cv::Rect( m_original_image->cols, 0, m_original_image->cols-m_original_image->cols, m_original_image->rows )
-//   );
-//   cv::Zero( &tmp );
-//
-//   DFT( dft_A, dft_A, CV_DXT_FORWARD, m_original_image->rows );
-//
-//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,kernel_mat.cols,kernel_mat.rows));
-//   cv::Copy( &kernel_mat, &tmp );
-//   cvGetSubRect(
-//     dft_A,
-//     &tmp,
-//     cv::Rect( kernel_mat.cols, 0, kernel_mat.cols, kernel_mat.cols, kernel_mat.rows )
-//   );
-//
-//   DFT( dft_B, dft_B, CV_DXT_FORWARD, kernel_image.rows );
-//
-//   mulSpectrums( dft_A, dft_B, dft_A, 0 );
-//
-//   cv::DFT( dft_A, dft_A, CV_DXT_INV_SCALE, C->rows );
-//   cvGetSubRect( dft_A, &tmp, cv::Rect(0,0,conv->cols,C->rows) );
-// }
-
 
 Image centered_kernel_expansion(std::vector<float> kernel, int width, int height) {
   cv::Mat extended_kernel = cv::Mat::zeros(cv::Size(width, height), CV_8UC1);
@@ -191,26 +150,13 @@ normalize(magI, magI, 1, 0, NORM_INF); // Transform the matrix with float values
    return ret;
  }
 
- float search_max(const Mat& image) {
-   int i = 0;
-   float maxi = 0.0;
-   while (i<image.rows*image.cols) {
-     float cur = (float)image.at<uchar>(i%image.cols, i/image.rows);
-     if (cur>maxi) {
-       maxi = cur;
-     }
-     i++;
-   }
- }
 
-void Image::fourier_convolution(Mat& kernel)
+Mat Image::fourier_convolution(Mat& kernel)
  {
 
    Mat* image_8bit = m_original_image;
    Mat image;
    (*image_8bit).convertTo(image, CV_32F);
-
-
 
    // Expand input image to optimal size, on the border add zero values
    Mat padded;
@@ -220,41 +166,25 @@ void Image::fourier_convolution(Mat& kernel)
 
    // Computing DFT
    Mat DFTimage;
-   std::cout <<"Type paddded :"<< padded.type() << '\n';
    dft(padded, DFTimage, DFT_COMPLEX_OUTPUT);
 
    // Forming the Gaussian filter
-   imshow("Kernel", kernel);
-   cv::waitKey(0);
    shift(kernel);
-   imshow("Kernel", kernel);
-   cv::waitKey(0);
-   std::cout <<"Type kernel :"<< kernel.type() << '\n';
    Mat kernel_converted;
-   //std::cout << kernel << '\n';
    kernel.convertTo(kernel_converted, CV_32F);
-   std::cout <<"Type kernel :"<< kernel_converted.type() << '\n';
    Mat DFTkernel;
    dft(kernel_converted, DFTkernel, DFT_COMPLEX_OUTPUT);
 
    // Convolution
-   std::cout << DFTimage.type() << '\n';
-   std::cout << DFTkernel.type() << '\n';
    mulSpectrums(DFTimage, DFTkernel, DFTimage, 0);
 
    // Display Fourier-domain result
    Mat magI = updateMag(DFTimage);
-   imshow("spectrum magnitude", magI);
-   cv::waitKey(0);
    // IDFT
    Mat work;
    idft(DFTimage, work, DFT_REAL_OUTPUT); // <- NOTE! Don't inverse transform log-transformed magnitude image!
 
    Mat output_image;
-   //std::cout << work << '\n';
-   work.convertTo(output_image, CV_8UC1, 1.0/search_max(work)*255.0);
-   imshow("spectrum magnitude", output_image);
-   cv::waitKey(0);
-   *(this->get_original_image()) = output_image;
-
+   work.convertTo(output_image, CV_8UC1, 255.0/16777216); // We have to rescale by 2^24, then multiply by 255.
+   return output_image;
 }
