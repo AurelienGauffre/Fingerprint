@@ -61,11 +61,6 @@ Image Image::Absolute_error_image(Image &modele){
 }
 
 
-/*!
-    *  \brief lost function : sum of squared errors between the pixels of two images.
-    *
-    *  \param Image : the modele image
-    */
 float Image::squared_error(Image &modele){
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {
@@ -79,20 +74,11 @@ float Image::squared_error(Image &modele){
 }
 
 
-/*!
-    *  \brief lost function : Correlation between the pixels of two images.
-    *
-    *  \param Image : the modele image
-    */
 float Image::correlation(Image &modele){
   return this->covariance(modele)/sqrt(modele.covariance(modele)*this->covariance(*this));
 }
 
 
-/*!
-    *  \brief Mean of its pixels.
-    *
-    */
 float Image::mean(){
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {
@@ -104,11 +90,6 @@ float Image::mean(){
 }
 
 
-/*!
-    *  \brief Covariance between the pixels of two images.
-    *
-    *  \param Image : the modele image
-    */
 float Image::covariance(Image &other){
   float sum = 0;
   float mean1 = this->mean();
@@ -122,13 +103,6 @@ float Image::covariance(Image &other){
 }
 
 
-/*!
-    *  \fn unsigned int optimize(std::vector<float> list_l, bool squared)
-    *  \brief Find the index of the maximum or the minimum (correlation or squared error) of the values of loss function in the vector.
-    *
-    *  \param a vector of the loss function values for a set of images, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    *  \return the index of the optimized value in the vector
-    */
 unsigned int optimize(std::vector<float> list_l, bool squared){
   float l_opt = list_l[0];
   unsigned int index = 0;
@@ -153,11 +127,6 @@ unsigned int optimize(std::vector<float> list_l, bool squared){
 }
 
 
-/*!
-    *  \brief Greedy strategy to optimize the integer parameter of translation along the x-axis of the image, in order to correspond to the modele.
-    *
-    *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_greedy_x(float &px, Image &modele, bool squared){
   std::vector<int> list_px;
   std::vector<float> list_l;
@@ -176,11 +145,6 @@ void Image::opti_greedy_x(float &px, Image &modele, bool squared){
 }
 
 
-/*!
-    *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_greedy_xy(float p[2], Image &modele, bool squared){
   std::vector<int> list_px;
   std::vector<int> list_py;
@@ -206,15 +170,6 @@ void Image::opti_greedy_xy(float p[2], Image &modele, bool squared){
 }
 
 
-/*!
-    *  \brief Compute the loss function between the modele and the image translated.
-    *
-    *  The image is translated to compute the loss function and then put back to the original image in the function.
-    *
-    *  \param Image : the modele image, the parameter of translation along the x-axis, the parameter of translation along the y-axis,
-    *  a boolean which is true if the loss function used is the squared error, false if it's the correlation, a copy of the pixel of the image before modifications.
-    *  \return the value of the loss function
-    */
 float Image::compute_l_xy(Image &modele, float px, float py, bool squared, std::vector<float> &copy_intensity_array){
   float l;
   if (squared){
@@ -230,14 +185,6 @@ float Image::compute_l_xy(Image &modele, float px, float py, bool squared, std::
 }
 
 
-/*!
-    *  \brief Compute the loss function between the modele and the image translated and rotated.
-    *
-    *  The image is translated and rotated to compute the loss function and then put back to the original image in the function.
-    *
-    *  \param Image : the modele image, the parameter of translation along the x-axis, the parameter of translation along the y-axis, the parameter of rotation,
-    *  a boolean which is true if the loss function used is the squared error, false if it's the correlation, a copy of the pixel of the image before modifications.
-    */
 float Image::compute_l_rxy(Image &modele, float px, float py, float angle, bool squared, std::vector<float> &copy_intensity_array){
   float l;
   if (squared){
@@ -255,13 +202,6 @@ float Image::compute_l_rxy(Image &modele, float px, float py, float angle, bool 
 }
 
 
-/*!
-    *  \brief Optimize the couple of float parameters of translations along the x and y axis of the image, in order to correspond to the modele.
-    *
-    *  It uses the function opti_greedy_fast_xy to find the integer parameter and by dichotomy finds the float ones.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_subpixel(float p[2], Image &modele, bool squared){
   this->opti_greedy_fast_xy(p, modele, squared, false);
   std::vector<float> copy_intensity_array(m_size);
@@ -299,13 +239,6 @@ void Image::opti_subpixel(float p[2], Image &modele, bool squared){
 }
 
 
-/*!
-    *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
-    *
-    *  A first translation is done to match the pixel with the maximum of intensity of each image. The greedy strategy is apply on a lower number of pixels around this point.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool plot){
   std::ofstream fichier;
   if (plot == true) {
@@ -408,13 +341,6 @@ void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool pl
 // }
 
 
-/*!
-    *  \brief Rough optimization of the parameters of translations along the x and y axis and of rotation, in order to correspond to the modele.
-    *
-    *  Only 1/100 of the pixels are tested to give a first approximation of the parameters of optimization.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_rough(float p[3], Image &modele, bool squared){
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
@@ -452,14 +378,6 @@ void Image::opti_rough(float p[3], Image &modele, bool squared){
   m_intensity_array = copy_intensity_array;
 }
 
-
-/*!
-    *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image and the parameter of rotation, in order to correspond to the modele.
-    *
-    *  The greedy strategy is applied on a little number of pixels around the values of the parameters found by the function opti_rough, to affine them.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
   this->opti_rough(p, modele, squared);
   std::vector<int> list_px, list_py;
@@ -491,13 +409,6 @@ void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
   std::cout << "After greedy_strategy : px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
 }
 
-
-/*!
-    *  \fn bool equal_vector(std::vector<float> &v, std::vector<float> &w)
-    *  \brief Function which return true if the two vectors are equals down to 0.001, false otherwise.
-    *
-    *  \param two vectors
-    */
 bool equal_vector(std::vector<float> &v, std::vector<float> &w){
   for (unsigned int k = 0; k < v.size(); k++){
     if (std::abs(v[k] - w[k]) > 0.001 ) {
@@ -507,14 +418,6 @@ bool equal_vector(std::vector<float> &v, std::vector<float> &w){
   return true;
 }
 
-
-/*!
-    *  \brief Strategy of coordinates descent to affine the values of the parameters of translations and rotation, in order to correspond perfectly to the modele.
-    *
-    *  The algorithm of coordinates descent is applied from the reslut of a first greedy strategy solution.
-    *
-    *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
-    */
 void Image::coord_descent(float p_0[3], Image &modele, bool squared){
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
@@ -530,13 +433,6 @@ void Image::coord_descent(float p_0[3], Image &modele, bool squared){
   std::cout << "Result : px : " << p_0[0] << " py : " << p_0[1] << " angle : " << p_0[2] << std::endl;
 }
 
-
-/*!
-    *  \brief Compute one step on the algorithm of coordinates descent for one parameter.
-    *
-    *  \param  a boolean : true if the loss function used is the squared error, false if it's the correlation, the modele image,
-    *  table in which we put the parameters, a vector with the percentages of increasing or decreasing of each parameter, the value of the loss function, a copy of the pixel values of the original image.
-    */
 void Image::one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array){
   float l_increased, l_decreased;
   float p_copy[3];
@@ -592,12 +488,6 @@ void Image::one_step_opti(bool squared, Image &modele, float p_0[3], std::vector
   }
 }
 
-
-/*!
-    *  \brief Made a copy of a table of size 3 in an other.
-    *
-    *  \param two tables of size 3.
-    */
 void copy_tab3(float tab1[3], float tab2[3]){
   for (unsigned int k=0; k<3; k++) {
     tab1[k] = tab2[k];
