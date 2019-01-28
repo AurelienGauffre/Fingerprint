@@ -90,14 +90,15 @@ void test_convolute_classic(char const *arg[],std::vector<float> kernel)
 }
 
 
-void test_inv_ft(char const *arg[]) {
+void dft_convolution(char const *arg[]) {
   std::string m_name = (std::string)arg[1];
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);
-  int r = 50;
-  float sigma_clip = 6.0;
-  cv::Mat kernel = createGausFilterMask(cv::Size(cv::getOptimalDFTSize((im1.get_original_image())->cols), cv::getOptimalDFTSize((im1.get_original_image())->rows)), r, sigma_clip);
+  int r = 7;
+  float sigma_clip = 6;
+  cv::Size opti_size = cv::Size(cv::getOptimalDFTSize((im1.get_original_image())->cols), cv::getOptimalDFTSize((im1.get_original_image())->rows));
+  cv::Mat kernel = createGausFilterMask(opti_size, r, sigma_clip);
   cv::Mat convoluted = im1.fourier_convolution(kernel);
   Image im_result(convoluted, "image_convoluted");
   im_result.display_Mat();

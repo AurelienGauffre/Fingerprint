@@ -1,7 +1,21 @@
+/*!
+ * \file linear_filter.cpp
+ * \brief Implementation of functions used for 2D convolution
+ * \author Perrine, Célestine, Aurélien, Lucas
+ * \date 19.01.2019
+ */
+
 #include "linear_filter.hpp"
 
 using namespace cv;
 
+/*!
+     *  \brief Classic 2D Convolution on Image
+     *
+     *  Convolute the image with a separable kernel.
+     *
+     *  \param listSongs : kernel under 1D std::vector form.
+     */
 void Image::convolute_classic(std::vector<float> kernel){
   int a = ((int)(std::pow(kernel.size(),0.5))-1)/2;
   int b = a ;
@@ -52,39 +66,6 @@ void Image::convolute_classic(std::vector<float> kernel){
   *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
 
-
-
-Image centered_kernel_expansion(std::vector<float> kernel, int width, int height) {
-  cv::Mat extended_kernel = cv::Mat::zeros(cv::Size(width, height), CV_8UC1);
-  Image im(extended_kernel, "kernel_extended");
-  int a = ((int)(std::pow(kernel.size(),0.5))-1)/2;
-  int x_middle = width/2-1;
-  int y_middle = height/2-1;
-  int x_top_left = x_middle-a;
-  int y_top_left = y_middle-a;
-  int kernel_index = 0;
-  for (int j = y_top_left; j < y_top_left+2*a+1; j++) {
-    for (int i = x_top_left; i< x_top_left+2*a+1; i++) {
-      *im.get_pointer(im.coord_to_index(i,j)) = kernel[kernel_index];
-      kernel_index++;
-    }
-  }
-  im.display_Mat();
-  return im;
-}
-
-void updateResult(Mat complex)
-{
-Mat work;
-idft(complex, work);
-Mat planes[] = {Mat::zeros(complex.size(), CV_32F), Mat::zeros(complex.size(), CV_32F)};
-split(work, planes);                // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
-
-magnitude(planes[0], planes[1], work);    // === sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-normalize(work, work, 0, 1, NORM_MINMAX);
-imshow("result", work);
-}
-
 void shift(Mat magI) {
 
 // crop if it has an odd number of rows or columns
@@ -107,33 +88,33 @@ q2.copyTo(q1);
 tmp.copyTo(q2);
 }
 
-Mat updateMag(Mat complex )
-{
+Mat updateMag(Mat complex ) {
+  Mat magI;
+  Mat planes[] = {Mat::zeros(complex.size(), CV_32F), Mat::zeros(complex.size(), CV_32F)};
+  split(complex, planes);                // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
 
-Mat magI;
-Mat planes[] = {Mat::zeros(complex.size(), CV_32F), Mat::zeros(complex.size(), CV_32F)};
-split(complex, planes);                // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
+  magnitude(planes[0], planes[1], magI);    // sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
 
-magnitude(planes[0], planes[1], magI);    // sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
+  // switch to logarithmic scale: log(1 + magnitude)
+  magI += Scalar::all(1);
+  log(magI, magI);
 
-// switch to logarithmic scale: log(1 + magnitude)
-magI += Scalar::all(1);
-log(magI, magI);
-
-shift(magI);
-normalize(magI, magI, 1, 0, NORM_INF); // Transform the matrix with float values into a
-         return magI;                                 // viewable image form (float between values 0 and 1).
-//imshow("spectrum", magI);
- }
+  shift(magI);
+  normalize(magI, magI, 1, 0, NORM_INF); // Transform the matrix with float values into a
+  return magI;
+}
 
  Mat createGausFilterMask(Size imsize, int radius, float sigma_clip) {
 
    // call openCV gaussian kernel generator
-   double sigma = (radius/sigma_clip+0.5f);
+   double sigma = (radius/sigma_clip+0.5f); // New sigma calculated s.t. the sum of kernel terms equals 1.
    Mat kernelX = getGaussianKernel(2*radius+1, sigma, CV_32F);
    Mat kernelY = getGaussianKernel(2*radius+1, sigma, CV_32F);
    // create 2d gaus
    Mat kernel = kernelX * kernelY.t();
+   cv::Scalar s = cv::sum(kernel)[0];
+   std::cout << kernel << '\n';
+   std::cout << "Somme kernel " << s << '\n';
 
    int w = imsize.width-kernel.cols;
    int h = imsize.height-kernel.rows;
@@ -180,6 +161,9 @@ Mat Image::fourier_convolution(Mat& kernel)
 
    // Display Fourier-domain result
    Mat magI = updateMag(DFTimage);
+   imshow("spectrum magnitude", magI);
+   cv::waitKey(0);
+
    // IDFT
    Mat work;
    idft(DFTimage, work, DFT_REAL_OUTPUT); // <- NOTE! Don't inverse transform log-transformed magnitude image!

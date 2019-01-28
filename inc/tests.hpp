@@ -21,5 +21,5 @@ void test_optimization(char const *arg[]);
 void test_warp(char const *arg[], float angle, Pixel rot_point, float radius, int violence);
 void test_convolute_classic(char const *arg[],std::vector<float> kernel);
 void test_convolute_dft(char const *arg[],std::vector<float> kernel);
-void test_inv_ft(char const *arg[]);
+void dft_convolution(char const *arg[]);
 #endif

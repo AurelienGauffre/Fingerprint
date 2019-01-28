@@ -11,6 +11,6 @@ using namespace std;
 
 int main(int argc, char const *argv[]) {
   cout << "Test convolution :" << endl ;
-  test_inv_ft(argv);
+  dft_convolution(argv);
   return 0;
 }

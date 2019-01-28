@@ -32,7 +32,7 @@ class Image {
   public:
     Image(cv::Mat& image,const std::string& name);
     ~Image();
-    float get_intensity(unsigned int k)const;
+    float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
     float *get_pointer(unsigned int k);
     cv::Mat* get_original_image();
     void display_attributes();
@@ -62,7 +62,7 @@ class Image {
     void bilinear_interpolation(std::vector<Pixel> &former_pixels);
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
-    void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
+    void warp(float strength,  Pixel &location, float radius, int violence); /*!< \brief Warps a part of image \param strength : "strength" of rotation \param location : pixel around which the warps occurs*/
     // Translation //
     void translation(float p_x,float p_y); /*!< Translates the image using translate_pixels and bilinear_interpolation*/
     std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y); /*!< Translates the pixel array of p_x along the x axis and of p_y along the y axis*/
