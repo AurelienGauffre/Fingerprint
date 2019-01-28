@@ -61,7 +61,6 @@ void Image::convolute_classic(std::vector<float> kernel){
       if (res<mini_intensity) mini_intensity = res ;
     }
   }
-  std::cout <<  between(-1,0,m_width)<< std::endl ;
   m_intensity_array = new_intensity ;
   *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
@@ -90,15 +89,13 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
             intensity = m_intensity_array[coord_to_index(x,2*m_height-y-j+1)] ;
           }
         }
-        res+= intensity*kernel_col[j];
-
+        res+= intensity*kernel_col[b-j];
       }
-
       new_intensity[coord_to_index(x,y)] = res;
     }
 
   }
-
+  m_intensity_array = new_intensity ;
   for(int y = 0;  y<m_height; y++){
     for(int x = 0;  x<m_width;x++){
       float res = 0 ;
@@ -109,45 +106,92 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
         if(in_width){ // The pixel is in the image
           intensity = m_intensity_array[coord_to_index(x-i,y)];
         }
-
-
         else{ // The pixel is either on the right or on the left of the image
-
           if(x-i < 0){ // The pixel is on  left of the image
             intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
-
           }
           else{ // The pixel is on the right of the image
             intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y)];
-
           }
-
         }
-        res+= intensity*kernel_line[i];
-
+        res+= intensity*kernel_line[a-i];
       }
       new_intensity[coord_to_index(x,y)] = res;
-
       if (res>maxi_intensity) maxi_intensity = res ;
+
       if (res<mini_intensity) mini_intensity = res ;
     }
   }
 
   m_intensity_array = new_intensity ;
-  *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
+  *this = (*this-mini_intensity)*(1.0/(maxi_intensity-mini_intensity)) ;
+
 }
 
 
-void updateResult(Mat complex)
-{
-  Mat work;
-  idft(complex, work);
-  Mat planes[] = {Mat::zeros(complex.size(), CV_32F), Mat::zeros(complex.size(), CV_32F)};
-  split(work, planes);                // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
+void Image::convolute_blur(float size,float r,float s){
+  std::vector<float> kernel_col = {1,2,4,2,1};
+  std::vector<float> kernel_line = {1,2,4,2,1};
+  int a = (int)((kernel_col.size()-1)/2);
+  int b = a ;
+  float mini_intensity = 0 ;
+  float maxi_intensity = 1 ;
+  std::vector<float> new_intensity(m_size);
 
-  magnitude(planes[0], planes[1], work);    // === sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-  normalize(work, work, 0, 1, NORM_MINMAX);
-  imshow("result", work);
+  for(int y = 0;  y<m_height; y++){
+    for(int x = 0;  x<m_width;x++){
+      float res = 0 ;
+      for(int j = -b;j<=b;j++){
+        float intensity = 0 ;
+        bool in_height= between(y-j,0,m_height);
+        if(in_height){ // The pixel is in the image
+          intensity = m_intensity_array[coord_to_index(x,y-j)];
+        }
+        else{ // The pixel is either over or under the image
+          if(y-j < 0){ // The pixel is above the image
+            intensity = m_intensity_array[coord_to_index(x,-y+j-1)];
+          }
+          else{ // The pixel is under the image
+            intensity = m_intensity_array[coord_to_index(x,2*m_height-y-j+1)] ;
+          }
+        }
+        res+= intensity*kernel_col[b-j];
+      }
+      new_intensity[coord_to_index(x,y)] = res;
+    }
+
+  }
+  m_intensity_array = new_intensity ;
+  for(int y = 0;  y<m_height; y++){
+    for(int x = 0;  x<m_width;x++){
+      float res = 0 ;
+      for(int i = -a;i<=a;i++){
+        float intensity = 0 ;
+        bool in_width = between(x-i,0,m_width);
+
+        if(in_width){ // The pixel is in the image
+          intensity = m_intensity_array[coord_to_index(x-i,y)];
+        }
+        else{ // The pixel is either on the right or on the left of the image
+          if(x-i < 0){ // The pixel is on  left of the image
+            intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
+          }
+          else{ // The pixel is on the right of the image
+            intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y)];
+          }
+        }
+        res+= intensity*kernel_line[a-i];
+      }
+      new_intensity[coord_to_index(x,y)] = res;
+      if (res>maxi_intensity) maxi_intensity = res ;
+
+      if (res<mini_intensity) mini_intensity = res ;
+    }
+  }
+
+  m_intensity_array = new_intensity ;
+  *this = (*this-mini_intensity)*(1.0/(maxi_intensity-mini_intensity)) ;
+
 }
 
 void shift(Mat magI) {
@@ -188,12 +232,8 @@ Mat updateMag(Mat complex ) {
   return magI;
 }
 
-Mat createGausFilterMask(Size imsize, int radius, float sigma_clip) {
+Mat createFilterMask(Size imsize, const Mat& kernelX, const Mat& kernelY) {
 
-  // call openCV gaussian kernel generator
-  double sigma = (radius/sigma_clip+0.5f);
-  Mat kernelX = getGaussianKernel(2*radius+1, sigma, CV_32F);
-  Mat kernelY = getGaussianKernel(2*radius+1, sigma, CV_32F);
   // create 2d gaus
   Mat kernel = kernelX * kernelY.t();
 
@@ -252,4 +292,17 @@ Mat Image::fourier_convolution(Mat& kernel)
    Mat output_image;
    work.convertTo(output_image, CV_8UC1, 255.0/16777216); // We have to rescale by 2^24, then multiply by 255.
    return output_image;
+}
+
+std::vector<float> Mat_to_vector(const Mat& matrix) {
+  std::vector<float> array;
+  if (matrix.isContinuous()) {
+    std::cout << "Is Continous" << '\n';
+    array.assign((float*)matrix.datastart, (float*)matrix.dataend);
+  } else {
+    for (int i = 0; i < matrix.rows; ++i) {
+      array.insert(array.end(), matrix.ptr<float>(i), matrix.ptr<float>(i)+matrix.cols);
+    }
+  }
+  return array;
 }
