@@ -124,13 +124,14 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
   }
 
   m_intensity_array = new_intensity ;
-<<<<<<< HEAD
   *this = (*this-mini_intensity)*(1.0/(maxi_intensity-mini_intensity)) ;
 
 }
 
 
 void Image::convolute_blur(float size,float r,float s){
+  std::vector<float> kernel_col = {1,2,4,2,1};
+  std::vector<float> kernel_line = {1,2,4,2,1};
   int a = (int)((kernel_col.size()-1)/2);
   int b = a ;
   float mini_intensity = 0 ;
@@ -195,21 +196,6 @@ void Image::convolute_blur(float size,float r,float s){
 
 
 
-
-
-
-
-
-
-
-
-
-=======
-  *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
-}
-
-
->>>>>>> c3db4be7f1fc033e0fd3038130c286b072a57d7f
 void updateResult(Mat complex)
 {
   Mat work;

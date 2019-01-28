@@ -18,7 +18,6 @@ void shift(cv::Mat magI);
 cv::Mat updateMag(cv::Mat complex );
 cv::Mat createFilterMask(cv::Size imsize, const cv::Mat& kernelX, const cv::Mat& kernelY);
 float search_max(const cv::Mat& image);
-void Image::convolute_blur(float size,float r,float s);
 std::vector<float> Mat_to_vector(const cv::Mat& matrix);
 
 #endif
