@@ -1,11 +1,22 @@
-#include <iostream>
-#include <cmath>
-#include <math.h>
-
+/*!
+    * \file pressure.cpp
+    * \brief Set of methods and functions to simulate a variation of finger pressure during acquisition.
+    *
+    */
 #include "pressure.hpp"
 
+/*!
+    *  \def attenuation_power
+    *
+    *  \brief Power of the exponential attenuation function which caracterizes the attenuation.
+    */
 #define attenuation_power 70
 
+/*!
+    *  \brief Application of a weight function (Exponential) on the pixels to keep just a circle of the fingerprint.
+    *
+    *  \param Coordinates of the circle center.
+    */
 void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
   for (unsigned int y = 0; y < m_height; y++) {
     for (unsigned int x = 0; x < m_width; x++) {
@@ -18,10 +29,21 @@ void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
   }
 }
 
+/*!
+    *  \fn float weight_exp(float coeff, unsigned int power, float r)
+    *  \brief Exponential attenuation function.
+    *
+    *  \param Image : float : coefficient of attenuation, unsigned int : power, float : parameter.
+    */
 float weight_exp(float coeff, unsigned int power, float r){
   return std::exp(-std::pow(coeff*r,power));
 }
 
+/*!
+    *  \brief Application of a weight function (Exponential) on the pixels to keep just an ellipse of the fingerprint.
+    *
+    *  \param percentage of variation of the ellipse size.
+    */
 void Image::weight_coeff_ellipse(float percentage){
   unsigned int *ellipse = this->find_ellipse();
   float coeff = 1.0/(percentage*ellipse[2]);
@@ -38,6 +60,11 @@ void Image::weight_coeff_ellipse(float percentage){
   delete ellipse;
 }
 
+/*!
+    *  \brief Method to find the pixel of the image at the intersection between the row and the column with the max of intensity.
+    *
+    *  \return Pointer to the coordinates of the pixel found.
+    */
 unsigned int *Image::find_max_intensity(){
   unsigned int *res = new unsigned int[2];
   float intensity_col_min = m_height;
@@ -65,6 +92,11 @@ unsigned int *Image::find_max_intensity(){
   return res;
 }
 
+/*!
+    *  \brief Method to find the parameters of the ellipse that best represents the finger.
+    *
+    *  \return Pointer to the coordinates of the ellipse middle, its width and its height.
+    */
 unsigned int *Image::find_ellipse(){
   unsigned int *max_intensity = this->find_max_intensity();
   unsigned int nb_non_white_col = 0;

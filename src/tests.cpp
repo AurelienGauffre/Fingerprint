@@ -60,10 +60,10 @@ void test_optimization(char const *arg[]){
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
   // im2.translation(-18.51,25.51);
-  // im2.rotate_bilinear(5.53,Pixel(83,93,0));
-  // im2.display_Mat();
-  std::vector<float> p_0 = im1.opti_greedy_fast(im2,true);
-  std::vector<float> p = im1.coord_descent(p_0,im2,true);
+  im2.rotate_bilinear(1.53,Pixel(13,16,0));
+  float p[3];
+  im1.opti_greedy_fast_rxy(p,im2,true);
+  im1.coord_descent(p,im2,true);
 }
 
 void test_warp(char const *arg[], float strength, Pixel location, float radius, int violence)

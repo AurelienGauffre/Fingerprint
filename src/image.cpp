@@ -6,7 +6,6 @@
  */
 
 #include "image.hpp"
-#include <typeinfo>
 
 /*!
      *  \brief Basic Image constructor
@@ -56,19 +55,6 @@ cv::Mat* Image::get_original_image() {
   return m_original_image;
 }
 
-void Image::data_intensity(){
-  std::string nom_fichier = "../results/intensities_" + m_name + ".txt";
-  std::ofstream fichier;
-  fichier.open(nom_fichier.c_str(), std::ios::out);
-  if (fichier.fail()) {
-    std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
-  } else {
-    for (unsigned int k = 0; k < m_size; k++) {
-      fichier << m_intensity_array[k] << " " << std::endl;
-    }
-    fichier.close();
-  }
-}
 
 void Image::display_attributes(){
   for (unsigned int y = 0 ; y < m_height; y++){

@@ -5,16 +5,17 @@
  * \brief Definition of Image class
  * \author Perrine, Célestine, Aurélien, Lucas
  */
-#include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/types_c.h>
 #include <vector>
+#include <math.h>
 #include <string.h>
 #include <fstream>
 #include <Eigen/Dense>
 #include <Eigen/Core>
 #include <opencv2/core/eigen.hpp>
 #include "pixel.hpp"
+
 /*! \class Image
    * \brief class of the image we'll work on
    *
@@ -36,7 +37,6 @@ class Image {
     float *get_pointer(unsigned int k);
     cv::Mat* get_original_image();
     void display_attributes();
-    void data_intensity();
     void back_to_Mat();  /*!< Update the Mat version of Image*/
     void display_Mat();
     float min_intensity() const;
@@ -72,24 +72,25 @@ class Image {
     float correlation(Image &modele); /*!< Loss function correlation */
     float covariance(Image &other);
     float mean();
-    std::vector<float> opti_greedy_x(Image &modele,bool squarred); /*!< Greedy strategy to find the best integer p_x */
-    std::vector<float> opti_greedy_xy(Image &modele,bool squarred); /*!< Greedy strategy to find the best couple of integers (p_x, p_y) */
-    std::vector<float> opti_greedy_fast_xy(Image &modele, bool squarred, bool plot); /*!< Better strategy to find the best couple of integers (p_x, p_y) */
-    std::vector<float> opti_greedy_fast(Image &modele, bool squarred); /*!< Better greedy strategy to find the best px, py and angle */
-    std::vector<float> opti_subpixel(Image &modele, bool squarred); /*!< Dichomomy strategy to find subpixel translation parameters */
-    float compute_l(Image &modele, float px, float py, bool squarred, std::vector<float> &copy_intensity_array);
-    // std::vector<float> opti_rot(Image &modele, bool squarred); /*!< Greedy strategy to find the angle of rotation using a DFT */
-    std::vector<float> coord_descent(std::vector<float> p_0, Image &modele, bool squarred); /*!< Coordinate descent/ascent strategy to find the best p_x, p_y and angle */
-    void one_step_opti(bool squarred, Image &modele, std::vector<float> &p_0, std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
-    std::vector<float> opti_pixel_approx(Image &modele, bool squarred);
-    //Linear filtering
+    void opti_greedy_x(float &p,Image &modele,bool squared); /*!< Greedy strategy to find the best integer parameter of translation of the image, along the x-axis, to correspond to the modele */
+    void opti_greedy_xy(float p[2],Image &modele,bool squared); /*!< Greedy strategy to find the best couple of integers parameters of translation of the image, along the x and y axis, to correspond to the modele image */
+    void opti_greedy_fast_xy(float p[2],Image &modele, bool squared, bool plot); /*!< Better strategy to find the best couple of integers parameter of translation, along the x-axis, of the image, to correspond to the modele image */
+    void opti_greedy_fast_rxy(float p[3],Image &modele, bool squared); /*!< Better greedy strategy to find the best px, py and angle */
+    void opti_subpixel(float p[2],Image &modele, bool squared); /*!< Dichomomy strategy to find subpixel translation parameters */
+    float compute_l_xy(Image &modele, float px, float py, bool squared, std::vector<float> &copy_intensity_array);
+    float compute_l_rxy(Image &modele, float px, float py, float angle, bool squared, std::vector<float> &copy_intensity_array);
+    // std::vector<float> opti_rot(Image &modele, bool squared); /*!< Greedy strategy to find the angle of rotation using a DFT */
+    void opti_rough(float p[3], Image &modele, bool squared);
+    void coord_descent(float p_0[3],Image &modele, bool squared); /*!< Coordinate descent/ascent strategy to find the best p_x, p_y and angle */
+    void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
+    // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
     cv::Mat fourier_convolution(cv::Mat& kernel);
     // DFT //
     Image DFT();
 
-    // operation
+    // operation //
     Image& operator-(float value);
     Image& operator+(float value);
     Image& operator*(float value);
