@@ -1,6 +1,4 @@
 #include "image.hpp"
-#include "pixel.hpp"
-#include <iostream>
 
 /*!
      *  \brief Coordinates of pixels
