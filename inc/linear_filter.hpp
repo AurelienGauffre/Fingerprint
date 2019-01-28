@@ -15,7 +15,8 @@ Image zeropad_kernel_expansion(std::vector<float> kernel,int width, int height);
 void updateResult(cv::Mat complex);
 void shift(cv::Mat magI);
 cv::Mat updateMag(cv::Mat complex );
-cv::Mat createGausFilterMask(cv::Size imsize, int radius, float sigma_clip);
+cv::Mat createFilterMask(cv::Size imsize, const cv::Mat& kernelX, const cv::Mat& kernelY);
 float search_max(const cv::Mat& image);
+std::vector<float> Mat_to_vector(const cv::Mat& matrix);
 
 #endif

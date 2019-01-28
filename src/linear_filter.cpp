@@ -188,12 +188,8 @@ Mat updateMag(Mat complex ) {
   return magI;
 }
 
-Mat createGausFilterMask(Size imsize, int radius, float sigma_clip) {
+Mat createFilterMask(Size imsize, const Mat& kernelX, const Mat& kernelY) {
 
-  // call openCV gaussian kernel generator
-  double sigma = (radius/sigma_clip+0.5f);
-  Mat kernelX = getGaussianKernel(2*radius+1, sigma, CV_32F);
-  Mat kernelY = getGaussianKernel(2*radius+1, sigma, CV_32F);
   // create 2d gaus
   Mat kernel = kernelX * kernelY.t();
 
@@ -252,4 +248,17 @@ Mat Image::fourier_convolution(Mat& kernel)
    Mat output_image;
    work.convertTo(output_image, CV_8UC1, 255.0/16777216); // We have to rescale by 2^24, then multiply by 255.
    return output_image;
+}
+
+std::vector<float> Mat_to_vector(const Mat& matrix) {
+  std::vector<float> array;
+  if (matrix.isContinuous()) {
+    std::cout << "Is Continous" << '\n';
+    array.assign((float*)matrix.datastart, (float*)matrix.dataend);
+  } else {
+    for (int i = 0; i < matrix.rows; ++i) {
+      array.insert(array.end(), matrix.ptr<float>(i), matrix.ptr<float>(i)+matrix.cols);
+    }
+  }
+  return array;
 }
