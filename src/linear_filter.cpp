@@ -137,19 +137,6 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
   *this = (*this-mini_intensity)*(1/(maxi_intensity-mini_intensity)) ;
 }
 
-
-void updateResult(Mat complex)
-{
-  Mat work;
-  idft(complex, work);
-  Mat planes[] = {Mat::zeros(complex.size(), CV_32F), Mat::zeros(complex.size(), CV_32F)};
-  split(work, planes);                // planes[0] = Re(DFT(I)), planes[1] = Im(DFT(I))
-
-  magnitude(planes[0], planes[1], work);    // === sqrt(Re(DFT(I))^2 + Im(DFT(I))^2)
-  normalize(work, work, 0, 1, NORM_MINMAX);
-  imshow("result", work);
-}
-
 void shift(Mat magI) {
 
   // crop if it has an odd number of rows or columns
