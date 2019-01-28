@@ -197,6 +197,7 @@ class Image {
 
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
+    void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
     cv::Mat fourier_convolution(cv::Mat& kernel);
 
     // DFT //
