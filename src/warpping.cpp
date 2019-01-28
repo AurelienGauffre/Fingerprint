@@ -24,6 +24,9 @@ std::vector<Pixel> Image::warp_pixels(std::vector<Pixel> &Pixel_array, float str
     return Pixel_array;
 }
 
+/*!
+     *  Apply warp and interpolation on image. The interpolation is done on the whole image.
+     */
 void Image::warp(float strength, Pixel &location, float radius, int violence)
 {
     std::vector<Pixel> pixels(this->convert_to_pixels());
