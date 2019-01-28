@@ -89,6 +89,16 @@ void test_convolute_classic(char const *arg[],std::vector<float> kernel)
   im1.display_Mat();
 }
 
+void test_convolute_opti(char const *arg[],std::vector<float> kernel_col,std::vector<float> kernel_line){
+  std::string m_name = (std::string)arg[1];
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+  Image im1(m_image, m_name);
+
+  im1.convolute_opti(kernel_col,kernel_line);
+  im1.display_Mat();
+
+}
 
 void test_inv_ft(char const *arg[]) {
   std::string m_name = (std::string)arg[1];
