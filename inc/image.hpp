@@ -49,47 +49,160 @@ class Image {
     void symetry_y();
     void symetry_diag();
     Image symetrize();
+
     // Pressure //
-    void weight_coeff(unsigned int x_spot, unsigned int y_spot); /*!< Simulates the fingerprint with a weak pressure given the center of pressure (circle approximation)*/
-    void weight_coeff_ellipse(float percentage);  /*!< Simulates the fingerprint with a weak pressure given a "percentage" of pressure (ellipse approximation) */
+    /*!
+        *  \brief Application of a weight function (Exponential) on the pixels to keep just a circle of the fingerprint.
+        *  \param Coordinates of the circle center.
+        */
+    void weight_coeff(unsigned int x_spot, unsigned int y_spot);
+    /*!
+        *  \brief Application of a weight function (Exponential) on the pixels to keep just an ellipse of the fingerprint.
+        *  \param percentage of variation of the ellipse size.
+        */
+    void weight_coeff_ellipse(float percentage);
+    /*!
+        *  \brief Method to find the pixel of the image at the intersection between the row and the column with the max of intensity.
+        *  \return Pointer to the coordinates of the pixel found.
+        */
     unsigned int *find_max_intensity();
-    unsigned int *find_ellipse(); /*!< Finds the ellipse that best represents the finger*/
+    /*!
+        *  \brief Method to find the parameters of the ellipse that best represents the finger.
+        *  \return Pointer to the coordinates of the ellipse middle, its width and its height.
+        */
+    unsigned int *find_ellipse();
+
     // Rotation //
     std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
     std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
     void rotate(float angle, const Pixel& rot_point);
     void rotate_bilinear(float angle, const Pixel& rot_point);
     void bilinear_interpolation(std::vector<Pixel> &former_pixels);
+
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
     void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
+
     // Translation //
-    void translation(float p_x,float p_y); /*!< Translates the image using translate_pixels and bilinear_interpolation*/
-    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y); /*!< Translates the pixel array of p_x along the x axis and of p_y along the y axis*/
+    /*!
+        *  \brief Translates the image using translate_pixels and bilinear_interpolation.
+        *  \param floats parameters p_x and p_y of translation.
+        */
+    void translation(float p_x,float p_y);
+    /*!
+        *  \brief Translates the pixel array of p_x along the x axis and of p_y along the y axis.
+        *
+        *  \param vector of the image pixels, floats parameters p_x and p_y of translation.
+        */
+    std::vector<Pixel> translate_pixels(std::vector<Pixel>& Pixel_array,float p_x,float p_y);
+
     // Optimization //
     Image Absolute_error_image(Image &modele); /*!< Computes the absolute error image between the image and the model */
-    float squared_error(Image &modele); /*!< Loss function squared_error */
-    float correlation(Image &modele); /*!< Loss function correlation */
-    float covariance(Image &other);
+    /*!
+        *  \brief lost function : sum of squared errors between the pixels of two images.
+        *  \param Image : the modele image
+        */
+    float squared_error(Image &modele);
+    /*!
+        *  \brief lost function : Correlation between the pixels of two images.
+        *  \param Image : the modele image
+        */
+    float correlation(Image &modele);
+    /*!
+        *  \brief Mean of its pixels.
+        */
     float mean();
-    void opti_greedy_x(float &p,Image &modele,bool squared); /*!< Greedy strategy to find the best integer parameter of translation of the image, along the x-axis, to correspond to the modele */
-    void opti_greedy_xy(float p[2],Image &modele,bool squared); /*!< Greedy strategy to find the best couple of integers parameters of translation of the image, along the x and y axis, to correspond to the modele image */
-    void opti_greedy_fast_xy(float p[2],Image &modele, bool squared, bool plot); /*!< Better strategy to find the best couple of integers parameter of translation, along the x-axis, of the image, to correspond to the modele image */
-    void opti_greedy_fast_rxy(float p[3],Image &modele, bool squared); /*!< Better greedy strategy to find the best px, py and angle */
-    void opti_subpixel(float p[2],Image &modele, bool squared); /*!< Dichomomy strategy to find subpixel translation parameters */
+    /*!
+        *  \brief Covariance between the pixels of two images.
+        *  \param Image : the modele image
+        */
+    float covariance(Image &other);
+    /*!
+        *  \brief Greedy strategy to optimize the integer parameter of translation along the x-axis of the image, in order to correspond to the modele.
+        *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void opti_greedy_x(float &p,Image &modele,bool squared);
+    /*!
+        *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void opti_greedy_xy(float p[2],Image &modele,bool squared);
+    /*!
+        *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
+        *
+        *  A first translation is done to match the pixel with the maximum of intensity of each image. The greedy strategy is apply on a lower number of pixels around this point.
+        *
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void opti_greedy_fast_xy(float p[2],Image &modele, bool squared, bool plot);
+    /*!
+        *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image and the parameter of rotation, in order to correspond to the modele.
+        *
+        *  The greedy strategy is applied on a little number of pixels around the values of the parameters found by the function opti_rough, to affine them.
+        *
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void opti_greedy_fast_rxy(float p[3],Image &modele, bool squared);
+    /*!
+        *  \brief Optimize the couple of float parameters of translations along the x and y axis of the image, in order to correspond to the modele.
+        *
+        *  It uses the function opti_greedy_fast_xy to find the integer parameter and by dichotomy finds the float ones.
+        *
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void opti_subpixel(float p[2],Image &modele, bool squared);
+    /*!
+        *  \brief Compute the loss function between the modele and the image translated.
+        *
+        *  The image is translated to compute the loss function and then put back to the original image in the function.
+        *
+        *  \param Image : the modele image, the parameter of translation along the x-axis, the parameter of translation along the y-axis,
+        *  a boolean which is true if the loss function used is the squared error, false if it's the correlation, a copy of the pixel of the image before modifications.
+        *  \return the value of the loss function
+        */
     float compute_l_xy(Image &modele, float px, float py, bool squared, std::vector<float> &copy_intensity_array);
+    /*!
+        *  \brief Compute the loss function between the modele and the image translated and rotated.
+        *
+        *  The image is translated and rotated to compute the loss function and then put back to the original image in the function.
+        *
+        *  \param Image : the modele image, the parameter of translation along the x-axis, the parameter of translation along the y-axis, the parameter of rotation,
+        *  a boolean which is true if the loss function used is the squared error, false if it's the correlation, a copy of the pixel of the image before modifications.
+        */
     float compute_l_rxy(Image &modele, float px, float py, float angle, bool squared, std::vector<float> &copy_intensity_array);
     // std::vector<float> opti_rot(Image &modele, bool squared); /*!< Greedy strategy to find the angle of rotation using a DFT */
+    /*!
+        *  \brief Rough optimization of the parameters of translations along the x and y axis and of rotation, in order to correspond to the modele.
+        *
+        *  Only 1/100 of the pixels are tested to give a first approximation of the parameters of optimization.
+        *
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
     void opti_rough(float p[3], Image &modele, bool squared);
-    void coord_descent(float p_0[3],Image &modele, bool squared); /*!< Coordinate descent/ascent strategy to find the best p_x, p_y and angle */
+    /*!
+        *  \brief Strategy of coordinates descent to affine the values of the parameters of translations and rotation, in order to correspond perfectly to the modele.
+        *
+        *  The algorithm of coordinates descent is applied from the reslut of a first greedy strategy solution.
+        *
+        *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
+        */
+    void coord_descent(float p_0[3],Image &modele, bool squared);
+    /*!
+        *  \brief Compute one step on the algorithm of coordinates descent for one parameter.
+        *
+        *  \param  a boolean : true if the loss function used is the squared error, false if it's the correlation, the modele image,
+        *  table in which we put the parameters, a vector with the percentages of increasing or decreasing of each parameter, the value of the loss function, a copy of the pixel values of the original image.
+        */
     void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
+
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     cv::Mat fourier_convolution(cv::Mat& kernel);
+
     // DFT //
     Image DFT();
 
-    // operation //
+    // Operation //
     Image& operator-(float value);
     Image& operator+(float value);
     Image& operator*(float value);
