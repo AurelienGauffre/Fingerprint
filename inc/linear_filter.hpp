@@ -9,7 +9,6 @@
  */
 
 #include "image.hpp"
-#include "pixel.hpp"
 #include "maths_tools.hpp"
 
 Image zeropad_kernel_expansion(std::vector<float> kernel,int width, int height);

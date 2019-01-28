@@ -1,10 +1,17 @@
-#include <iostream>
-#include <cmath>
-#include <math.h>
-
+/*!
+    * \file pressure.cpp
+    * \brief Set of methods and functions to simulate a variation of finger pressure during acquisition.
+    *
+    */
 #include "pressure.hpp"
 
+/*!
+    *  \def attenuation_power
+    *
+    *  \brief Power of the exponential attenuation function which caracterizes the attenuation.
+    */
 #define attenuation_power 70
+
 
 void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
   for (unsigned int y = 0; y < m_height; y++) {
@@ -18,9 +25,11 @@ void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
   }
 }
 
+
 float weight_exp(float coeff, unsigned int power, float r){
   return std::exp(-std::pow(coeff*r,power));
 }
+
 
 void Image::weight_coeff_ellipse(float percentage){
   unsigned int *ellipse = this->find_ellipse();
@@ -64,6 +73,7 @@ unsigned int *Image::find_max_intensity(){
   }
   return res;
 }
+
 
 unsigned int *Image::find_ellipse(){
   unsigned int *max_intensity = this->find_max_intensity();

@@ -6,7 +6,6 @@
  */
 
 #include "image.hpp"
-#include "pixel.hpp"
 
 std::vector<Pixel> Image::warp_pixels(std::vector<Pixel> &Pixel_array, float strength, Pixel &location, float radius, int violence)
 {

@@ -1,4 +1,5 @@
 *.o
 fingerprint
+/demo/build
 /results
 /build
