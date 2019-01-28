@@ -51,7 +51,6 @@ float *Image::get_pointer(unsigned int k){
   return &m_intensity_array[k];
 }
 
-
 cv::Mat* Image::get_original_image() {
   return m_original_image;
 }

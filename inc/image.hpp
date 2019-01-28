@@ -85,8 +85,7 @@ class Image {
     void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
-    cv::Mat convolute_dft(std::vector<float> kernel);
-    void fourier_convolution(cv::Mat& kernel);
+    cv::Mat fourier_convolution(cv::Mat& kernel);
     // DFT //
     Image DFT();
 

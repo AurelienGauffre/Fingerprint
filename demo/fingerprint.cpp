@@ -33,7 +33,7 @@ int main(int argc, char const *argv[]) {
   // std::vector<float> kernel = {-1,-1,-1,-1,9,-1,-1,-1,-1,-1}  ;
   // std::vector<float> kernel = {-1,0,1,-2,0,2,-1,0,1}  ;
   // cout << "Test convolution :" << endl ;
-  // test_inv_ft(argv);
+  test_inv_ft(argv);
 
 
   return 0;
