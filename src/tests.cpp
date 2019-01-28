@@ -96,6 +96,7 @@ void test_convolute_opti(char const *arg[],std::vector<float> kernel_col,std::ve
   Image im1(m_image, m_name);
 
   im1.convolute_opti(kernel_col,kernel_line);
+  im1.save_Mat();
   im1.display_Mat();
 
 }
