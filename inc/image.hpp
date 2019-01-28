@@ -32,6 +32,7 @@ class Image {
     Eigen::Matrix<float,Eigen::Dynamic,Eigen::Dynamic> m_intensity_matrix;
   public:
     Image(cv::Mat& image,const std::string& name);
+    Image(const Image& other);
     ~Image();
     float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
     float *get_pointer(unsigned int k);
@@ -120,7 +121,7 @@ class Image {
         *  \brief Greedy strategy to optimize the integer parameter of translation along the x-axis of the image, in order to correspond to the modele.
         *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
-    void opti_greedy_x(float &p,Image &modele,bool squared);
+    void opti_greedy_x(float &p,Image &modele,bool squared,bool plot);
     /*!
         *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
