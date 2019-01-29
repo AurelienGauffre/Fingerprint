@@ -23,7 +23,7 @@
    */
 class Image {
   private:
-    std::vector<float> m_intensity_array; /*!< 1D array of pixels reprensenting our image.*/
+    std::vector<float> m_intensity_array; /*!< 1D array of intensities scaled from 0 to 1 reprensenting our image.*/
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
@@ -33,22 +33,24 @@ class Image {
   public:
     Image(cv::Mat& image,const std::string& name);
     ~Image();
-    float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
-    float *get_pointer(unsigned int k);
-    cv::Mat* get_original_image();
-    void display_attributes();
+    float get_intensity(unsigned int k)const; /*! \param k : index * \return Intensity at index k of m_intensity_array.*/
+    float *get_pointer(unsigned int k); /*! \param k : index * \return Pointer towards k-th intensity in m_intensity_array .*/
+    cv::Mat* get_original_image(); /*! \param k : index * \return Adress of Mat object representing the image.*/
+    void display_attributes(); /*! \brief Displays all attributes of Image, including the full m_intensity_array.*/
     void back_to_Mat();  /*!< Update the Mat version of Image*/
-    void display_Mat();
-    float min_intensity() const;
-    float max_intensity() const;
-    void save_Mat(std::string name = "");
-    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
-    unsigned int coord_to_index(unsigned int x, unsigned int y);
-    // unsigned int *index_to_coord(unsigned int k);
-    void symetry_x();
-    void symetry_y();
-    void symetry_diag();
-    Image symetrize();
+    void display_Mat(); /*!< Display the image in a new Window.*/
+    float min_intensity() const; /*! \return Minimum intensity in m_intensity_array*/
+    float max_intensity() const; /*! \return Maximum intensity in m_intensity_array*/
+    void save_Mat(std::string name = ""); /*! \brief Saves the image in folder "results" */
+    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height); /*! \brief Draws rectangle * \param intensity : intensity of rectangle (0 to 1)
+                                                                                                                                       * \param origine : Coordinates of top left point */
+    unsigned int coord_to_index(unsigned int x, unsigned int y); /*! \return : 1D Index in m_intensity_array*/
+
+    // Symmetries
+    void symetry_x(); /*! \brief Vertical symmetry */
+    void symetry_y(); /*! \brief Horizontal symmetry */
+    void symetry_diag(); /*! \brief Symmetry along diagonal x=y*/
+    Image symetrize(); /*! \return New image containing all symmetries vesrions */
 
     // Pressure //
     /*!
