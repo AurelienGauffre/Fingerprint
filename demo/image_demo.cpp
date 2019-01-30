@@ -11,7 +11,7 @@ int main(int argc, char const *argv[]) {
   // im1.save_Mat();
   // im1.save_Mat("other_name.png");
   // std::cout << im1.min_intensity() << im1.max_intensity() << std::endl;
-  // unsigned int origine[2] = {30,0};
+  // int origine[2] = {30,0};
   // im1.draw_rectangle(1,origine,30,300);
   // im1.draw_rectangle(0,origine,10,10);
   // im1.display_Mat();
@@ -21,7 +21,7 @@ int main(int argc, char const *argv[]) {
   //
 
   Image im2(im1);
-  unsigned int origine[2] = {30,0};
+  int origine[2] = {30,0};
   im1.draw_rectangle(1,origine,30,300);
   im2.display_Mat();
   im1.display_Mat();

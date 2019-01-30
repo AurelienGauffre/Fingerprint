@@ -2,9 +2,9 @@
 
 std::vector<Pixel> Image::convert_to_pixels() {
   std::vector<Pixel> Pixel_array;
-  for (unsigned int y = 0; y < m_height; y++)
+  for (int y = 0; y < m_height; y++)
   {
-    for (unsigned int x = 0; x < m_width; x++)
+    for (int x = 0; x < m_width; x++)
     {
       Pixel_array.push_back(Pixel(x,y, m_intensity_array[coord_to_index(x,y)]));
     }
@@ -31,7 +31,7 @@ void Image::rotate_bilinear(float angle, const Pixel& rot_point) {
 
 void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
   std::vector<float> new_pixels_array(m_size);
-  for (unsigned int i = 0; i < m_size; i++) {
+  for (int i = 0; i < m_size; i++) {
     float x = former_pixels[i].get_x();
     float y = former_pixels[i].get_y();
     int x1 = (int)x ;

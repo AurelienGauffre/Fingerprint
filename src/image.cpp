@@ -17,7 +17,7 @@
 Image::Image(cv::Mat& image, const std::string& name){
   char s = '/';
   int pos = 0;
-  for (int k = name.size() - 1; (name[k] != s)&&(k>-1); k--){
+  for ( int k = name.size() - 1; (name[k] != s)&&(k>=0); k--){
     pos = k;
   }
   if (pos == -1){
@@ -30,12 +30,12 @@ Image::Image(cv::Mat& image, const std::string& name){
   m_size = m_width*m_height;
   m_original_image = new(cv::Mat);
   *m_original_image = image;
-  for (unsigned int i = 0; i < m_height; i++){
-    for (unsigned int j = 0; j < m_width; j++){
+  for (int i = 0; i < m_height; i++){
+    for (int j = 0; j < m_width; j++){
+      //Convertes intensities to float between 0 and 1
       m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
     }
   }
-  cv2eigen(*m_original_image, m_intensity_matrix);
 }
 
 Image::Image(const Image& other){
@@ -43,10 +43,8 @@ Image::Image(const Image& other){
   m_size = other.m_size;
   m_width = other.m_width;
   m_height= other.m_height;
-  std::cout << " a " << std::endl;
   m_original_image = new cv::Mat;
   *m_original_image = *other.m_original_image;
-  std::cout << " a " << std::endl;
   m_intensity_array = other.m_intensity_array;
 }
 
@@ -55,11 +53,11 @@ Image::~Image(){
   delete m_original_image;
 }
 
-float Image::get_intensity(unsigned int k)const{
+float Image::get_intensity(int k)const{
   return m_intensity_array[k];
 }
 
-float *Image::get_pointer(unsigned int k){
+float *Image::get_pointer(int k){
   return &m_intensity_array[k];
 }
 
@@ -69,8 +67,8 @@ cv::Mat* Image::get_original_image() {
 
 
 void Image::display_attributes(){
-  for (unsigned int y = 0 ; y < m_height; y++){
-    for (unsigned int x = 0 ; x < m_width; x++){
+  for (int y = 0 ; y < m_height; y++){
+    for (int x = 0 ; x < m_width; x++){
       std::cout << m_intensity_array[coord_to_index(x,y)] << " ";
     }
     std::cout << std::endl;
@@ -80,8 +78,9 @@ void Image::display_attributes(){
 
 void Image::back_to_Mat(){
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
-  for (unsigned int y = 0; y < m_height; y++){
-    for (unsigned int x = 0; x < m_width; x++){
+  for (int y = 0; y < m_height; y++){
+    for (int x = 0; x < m_width; x++){
+      //Converts back to integers beween 0 and 255
       m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_intensity_array[coord_to_index(x,y)]);
     }
   }
@@ -116,25 +115,25 @@ float Image::max_intensity()const{
   return *std::max_element(m_intensity_array.begin(),m_intensity_array.end());
 }
 
-unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
+int Image::coord_to_index(int x, int y){
   return y*m_width + x;
 }
 
-void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height){
-  unsigned int x_min = origine[0]; //raise error
-  unsigned int y_min = origine[1];
-  unsigned int x_max = std::min(x_min + width-1,m_width-1);
-  unsigned int y_max = std::min(y_min + height-1,m_height-1);
-  for (unsigned int x = x_min; x <= x_max; x++) {
-    for (unsigned int y = y_min; y <= y_max; y++) {
+void Image::draw_rectangle(float intensity, int origine[2], int width, int height){
+  int x_min = origine[0]; //raise error
+  int y_min = origine[1];
+  int x_max = std::min(x_min + width-1,m_width-1);
+  int y_max = std::min(y_min + height-1,m_height-1);
+  for (int x = x_min; x <= x_max; x++) {
+    for (int y = y_min; y <= y_max; y++) {
       m_intensity_array[coord_to_index(x,y)] = intensity;
     }
   }
 }
 
 void Image::symetry_y(){
-  for (unsigned int y = 0; y < m_height; y++){
-    for (unsigned int x= 0; x < m_width/2; x++){
+  for (int y = 0; y < m_height; y++){
+    for (int x= 0; x < m_width/2; x++){
       float tmp = m_intensity_array[coord_to_index(x,y)];
       m_intensity_array[coord_to_index(x,y)] = m_intensity_array[coord_to_index(m_width -1 - x,y)];
       m_intensity_array[coord_to_index(m_width -1 - x,y)] = tmp;
@@ -143,8 +142,8 @@ void Image::symetry_y(){
 }
 
 void Image::symetry_x(){
-  for (unsigned int y = 0; y < m_height/2; y++){
-    for (unsigned int x= 0; x < m_width; x++){
+  for (int y = 0; y < m_height/2; y++){
+    for (int x= 0; x < m_width; x++){
       float tmp = m_intensity_array[coord_to_index(x,y)];
       m_intensity_array[coord_to_index(x,y)] = m_intensity_array[coord_to_index(x,m_height - 1 - y)];
       m_intensity_array[coord_to_index(x,m_height - 1 - y)] = tmp;
@@ -154,48 +153,48 @@ void Image::symetry_x(){
 
 void Image::symetry_diag(){
   std::vector<float> m_new_pixels_array;
-  for (unsigned int x = 0; x < m_width; x++){
-    for (unsigned int y= 0; y < m_height; y++){
+  for (int x = 0; x < m_width; x++){
+    for (int y= 0; y < m_height; y++){
       m_new_pixels_array.push_back(m_intensity_array[coord_to_index(x,y)]);
     }
   }
   m_intensity_array = m_new_pixels_array ;
-  unsigned int tmp1 = m_width;
+  int tmp1 = m_width;
   m_width = m_height;
   m_height = tmp1;
 }
 
-/*! Creates an image 4 times bigger, containing all 3 symmetries possibilies : Horizontal symmetry on top left, 
+/*! Creates an image 4 times bigger, containing all 3 symmetries possibilies : Horizontal symmetry on top left,
     Diagonnal symmetry on bottom left, Vertical symmetry on bottom right,
     and Orginal image on top right.  */
 Image Image::symetrize() {
   std::vector<float> m_new_intensity_array(m_size*4);
-  for (unsigned int x = 0; x < m_width; x++){
-    for (unsigned int y = 0; y < m_height; y++){
+  for (int x = 0; x < m_width; x++){
+    for (int y = 0; y < m_height; y++){
       m_new_intensity_array[y*2*m_width + x] = m_intensity_array[coord_to_index(x,y)];
     }
   }
   this->symetry_y();
-  for (unsigned int x = 0; x < m_width; x++){
-    for (unsigned int y = 0; y < m_height; y++){
+  for (int x = 0; x < m_width; x++){
+    for (int y = 0; y < m_height; y++){
       m_new_intensity_array[y*2*m_width + x + m_width] = m_intensity_array[coord_to_index(x,y)];
     }
   }
   this->symetry_x();
-  for (unsigned int x = 0; x < m_width; x++){
-    for (unsigned int y = 0; y < m_height; y++){
+  for (int x = 0; x < m_width; x++){
+    for (int y = 0; y < m_height; y++){
       m_new_intensity_array[(y + m_height)*2*m_width + x + m_width] = m_intensity_array[coord_to_index(x,y)];
     }
   }
   this->symetry_y();
-  for (unsigned int x = 0; x < m_width; x++){
-    for (unsigned int y = 0; y < m_height; y++){
+  for (int x = 0; x < m_width; x++){
+    for (int y = 0; y < m_height; y++){
       m_new_intensity_array[(y + m_height)*2*m_width + x] = m_intensity_array[coord_to_index(x,y)];
     }
   }
   cv::Mat res_mat(m_height*2,m_width*2,CV_8UC1);
-  for (unsigned int y = 0; y < 2*m_height; y++){
-    for (unsigned int x = 0; x < 2*m_width; x++){
+  for (int y = 0; y < 2*m_height; y++){
+    for (int x = 0; x < 2*m_width; x++){
       res_mat.ptr<uchar>(y)[x] = (uchar)(255*m_new_intensity_array[y*2*m_width + x]);
     }
   }
@@ -205,7 +204,7 @@ Image Image::symetrize() {
 
 
 Image& Image::operator-(float value){
-  for(unsigned int i = 0 ; i<m_size ; i++){
+  for(int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]-=value ;
   }
   return *this ;
@@ -213,7 +212,7 @@ Image& Image::operator-(float value){
 
 
 Image& Image::operator+(float value){
-  for(unsigned int i = 0 ; i<m_size ; i++){
+  for(int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]+=value ;
   }
   return *this ;
@@ -221,7 +220,7 @@ Image& Image::operator+(float value){
 
 
 Image& Image::operator*(float value){
-  for(unsigned int i = 0 ; i<m_size ; i++){
+  for(int i = 0 ; i<m_size ; i++){
     m_intensity_array[i]*=value ;
   }
   return *this ;

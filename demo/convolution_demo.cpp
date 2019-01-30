@@ -44,7 +44,7 @@ int main(int argc, char const *argv[]) {
   // Image diff = im_result.Absolute_error_image(im1);
   // diff.display_Mat();
 
-  im1.convolute_blur(2,1,1);
+  im1.convolute_blur(5,5); // convolute blur(kernel_radius,speed)
   im1.display_Mat();
   return 0;
 }

@@ -24,18 +24,17 @@
 class Image {
   private:
     std::vector<float> m_intensity_array; /*!< 1D array of intensities scaled from 0 to 1 reprensenting our image.*/
-    unsigned int m_height;
-    unsigned int m_width;
-    unsigned int m_size;
+    int m_height;
+    int m_width;
+    int m_size;
     cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_intensity_array.*/
     std::string m_name;
-    Eigen::Matrix<float,Eigen::Dynamic,Eigen::Dynamic> m_intensity_matrix;
   public:
     Image(cv::Mat& image,const std::string& name);
     Image(const Image& other);
     ~Image();
-    float get_intensity(unsigned int k)const; /*! \param k : index * \return Intensity at index k of m_intensity_array.*/
-    float *get_pointer(unsigned int k); /*! \param k : index * \return Pointer towards k-th intensity in m_intensity_array .*/
+    float get_intensity(int k)const; /*! \param k : index * \return Intensity at index k of m_intensity_array.*/
+    float *get_pointer(int k); /*! \param k : index * \return Pointer towards k-th intensity in m_intensity_array .*/
     cv::Mat* get_original_image(); /*! \param k : index * \return Adress of Mat object representing the image.*/
     void display_attributes(); /*! \brief Displays all attributes of Image, including the full m_intensity_array.*/
     void back_to_Mat();  /*!< Update the Mat version of Image*/
@@ -43,9 +42,9 @@ class Image {
     float min_intensity() const; /*! \return Minimum intensity in m_intensity_array*/
     float max_intensity() const; /*! \return Maximum intensity in m_intensity_array*/
     void save_Mat(std::string name = ""); /*! \brief Saves the image in folder "results" */
-    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height); /*! \brief Draws rectangle * \param intensity : intensity of rectangle (0 to 1)
+    void draw_rectangle(float intensity, int origine[2], int width, int height); /*! \brief Draws rectangle * \param intensity : intensity of rectangle (0 to 1)
                                                                                                                                        * \param origine : Coordinates of top left point */
-    unsigned int coord_to_index(unsigned int x, unsigned int y); /*! \return : 1D Index in m_intensity_array*/
+    int coord_to_index(int x, int y); /*! \return : 1D Index in m_intensity_array*/
 
     // Symmetries //
     void symetry_x(); /*! \brief Vertical symmetry */
@@ -58,7 +57,7 @@ class Image {
         *  \brief Application of a weight function (Exponential) on the pixels to keep just a circle of the fingerprint.
         *  \param Coordinates of the circle center.
         */
-    void weight_coeff(unsigned int x_spot, unsigned int y_spot);
+    void weight_coeff(int x_spot, int y_spot);
     /*!
         *  \brief Application of a weight function (Exponential) on the pixels to keep just an ellipse of the fingerprint.
         *  \param percentage of variation of the ellipse size.
@@ -68,12 +67,12 @@ class Image {
         *  \brief Method to find the pixel of the image at the intersection between the row and the column with the max of intensity.
         *  \return Pointer to the coordinates of the pixel found.
         */
-    unsigned int *find_max_intensity();
+    int *find_max_intensity();
     /*!
         *  \brief Method to find the parameters of the ellipse that best represents the finger.
         *  \return Pointer to the coordinates of the ellipse middle, its width and its height.
         */
-    unsigned int *find_ellipse();
+    int *find_ellipse();
 
     // Rotation //
     std::vector<Pixel> convert_to_pixels();  /*!< \return A 1D array of Pixels representing the image*/
@@ -191,19 +190,19 @@ class Image {
         *
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
-    void coord_descent(float p_0[3],Image &modele, bool squared);
+    void coord_descent(float p_0[3],Image &modele, bool squared, bool plot);
     /*!
         *  \brief Compute one step on the algorithm of coordinates descent for one parameter.
         *
         *  \param  a boolean : true if the loss function used is the squared error, false if it's the correlation, the modele image,
         *  table in which we put the parameters, a vector with the percentages of increasing or decreasing of each parameter, the value of the loss function, a copy of the pixel values of the original image.
         */
-    void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
+    void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, int k, float &l, std::vector<float> &copy_intensity_array);
 
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
-    void convolute_blur(int size,float r,float s);
+    void convolute_blur(int kernel_radius,float speed);
     cv::Mat fourier_convolution(cv::Mat& kernel);
 
     // DFT //
