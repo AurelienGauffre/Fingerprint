@@ -138,13 +138,13 @@ void Image::convolute_blur(int kernel_radius,float speed){
   float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);
   cv::Mat blur_Mat;
-  blur_Mat = cv::imread("../ressources/noise4.png", cv::IMREAD_GRAYSCALE);
+  blur_Mat = cv::imread("../ressources/noise.png", cv::IMREAD_GRAYSCALE);
   Image blur_image(blur_Mat,"blur_image");
 
   // Autodection of the center of the finger (already used in pressure.cpp)
-  unsigned int *ellipse = this->find_ellipse();
-  unsigned int x_center = ellipse[0];
-  unsigned int y_center = ellipse[1];
+  int *ellipse = this->find_ellipse();
+  int x_center = ellipse[0];
+  int y_center = ellipse[1];
 
   for(int y = 0;  y<m_height; y++){
     for(int x = 0;  x<m_width;x++){

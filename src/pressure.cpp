@@ -15,9 +15,9 @@
 #define attenuation_power 70
 
 
-void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
-  for (unsigned int y = 0; y < m_height; y++) {
-    for (unsigned int x = 0; x < m_width; x++) {
+void Image::weight_coeff(int x_spot, int y_spot){
+  for (int y = 0; y < m_height; y++) {
+    for (int x = 0; x < m_width; x++) {
       int diff_x = x - x_spot;
       int diff_y = y - y_spot;
       float r = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2));
@@ -30,17 +30,17 @@ void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
 }
 
 
-float weight_exp(float coeff, unsigned int power, float r){
+float weight_exp(float coeff, int power, float r){
   return std::exp(-std::pow(coeff*r,power));
 }
 
 
 void Image::weight_coeff_ellipse(float percentage){
-  unsigned int *ellipse = this->find_ellipse();
+  int *ellipse = this->find_ellipse();
   //We want to keep an ellipse of width percentage*ellipse_width
   float coeff = 1.0/(percentage*ellipse[2]);
-  for (unsigned int y = 0; y < m_height; y++) {
-    for (unsigned int x = 0; x < m_width; x++) {
+  for (int y = 0; y < m_height; y++) {
+    for (int x = 0; x < m_width; x++) {
       int diff_x = x - ellipse[0];
       int diff_y = y - ellipse[1];
       float a = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*std::pow((float)ellipse[2]/(float)ellipse[3],2));
@@ -53,13 +53,13 @@ void Image::weight_coeff_ellipse(float percentage){
   delete ellipse;
 }
 
-unsigned int *Image::find_max_intensity(){
-  unsigned int *res = new unsigned int[2];
+int *Image::find_max_intensity(){
+  int *res = new int[2];
   float intensity_col_min = m_height;
   float intensity_row_min = m_width;
-  for (unsigned int x = 0; x < m_width; x++) {
+  for (int x = 0; x < m_width; x++) {
     float intensity_x = 0;
-    for (unsigned int y = 0; y < m_height; y++) {
+    for (int y = 0; y < m_height; y++) {
       intensity_x = intensity_x + m_intensity_array[coord_to_index(x,y)];
     }
     if (intensity_x < intensity_col_min) {
@@ -67,9 +67,9 @@ unsigned int *Image::find_max_intensity(){
       res[0] = x;
     }
   }
-  for (unsigned int y = 0; y < m_height; y++) {
+  for (int y = 0; y < m_height; y++) {
     float intensity_y = 0;
-    for (unsigned int x = 0; x < m_width; x++) {
+    for (int x = 0; x < m_width; x++) {
       intensity_y = intensity_y + m_intensity_array[coord_to_index(x,y)];
     }
     if (intensity_y < intensity_row_min) {
@@ -81,15 +81,15 @@ unsigned int *Image::find_max_intensity(){
 }
 
 
-unsigned int *Image::find_ellipse(){
-  unsigned int *max_intensity = this->find_max_intensity();
-  unsigned int nb_non_white_col = 0;
-  for (unsigned int y = 0; y < m_height; y++) {
+int *Image::find_ellipse(){
+  int *max_intensity = this->find_max_intensity();
+  int nb_non_white_col = 0;
+  for (int y = 0; y < m_height; y++) {
     if (m_intensity_array[coord_to_index(max_intensity[0],y)] != 1) {
       nb_non_white_col ++;
     }
   }
-  unsigned int *res = new unsigned int[4];
+  int *res = new int[4];
   res[0] = max_intensity[0]; //abscissa of the center
   res[1] = m_height - int(nb_non_white_col/2); //ordinate of the center
   //0.7 is approximately the quotient between the width and the height of a fingerprint

@@ -61,9 +61,9 @@ float Image::covariance(Image &other){
 }
 
 
-unsigned int optimize(std::vector<float> list_l, bool squared){
+int optimize(std::vector<float> list_l, bool squared){
   float l_opt = list_l[0];
-  unsigned int index = 0;
+  int index = 0;
   //Go to the first value that is not nan
   while (std::isnan(std::abs(l_opt))){
     index++;
@@ -120,7 +120,7 @@ void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
   if (plot){
     fichier.close();
   }
-  unsigned int index = optimize(list_l,squared);
+  int index = optimize(list_l,squared);
   px = list_px[index];
 }
 
@@ -143,7 +143,7 @@ void Image::opti_greedy_xy(float p[2], Image &modele, bool squared){
       list_l.push_back(l);
     }
   }
-  unsigned int index = optimize(list_l,squared);
+  int index = optimize(list_l,squared);
   p[0] = list_px[index/list_py.size()];
   p[1] = list_py[index%list_py.size()];
 }
@@ -235,8 +235,8 @@ void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool pl
       std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
     }
   }
-  unsigned int *max_intensity1 = this->find_max_intensity();
-  unsigned int *max_intensity2 = modele.find_max_intensity();
+  int *max_intensity1 = this->find_max_intensity();
+  int *max_intensity2 = modele.find_max_intensity();
   int diff_x = max_intensity2[0] - max_intensity1[0];
   int diff_y = max_intensity2[1] - max_intensity1[1];
   this->translation(diff_x,diff_y);
@@ -263,7 +263,7 @@ void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool pl
   if (plot == true) {
     fichier.close();
   }
-  unsigned int index = optimize(list_l,squared);
+  int index = optimize(list_l,squared);
   p[0] = list_px[index/list_py.size()] + diff_x;
   p[1] = list_py[index%list_py.size()] + diff_y;
 }
@@ -293,7 +293,7 @@ void Image::opti_rough(float p[3], Image &modele, bool squared){
       }
     }
   }
-  unsigned int index = optimize(list_l,squared);
+  int index = optimize(list_l,squared);
   p[0] = list_px[((index)%(list_px.size()*list_py.size()))%list_px.size()];
   p[1] = list_py[((index)%(list_px.size()*list_py.size()))/list_px.size()];
   p[2] = list_angles[(int)((float)index)/(float)(list_px.size()*list_py.size())];
@@ -324,7 +324,7 @@ void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
       }
     }
   }
-  unsigned int index = optimize(list_l,squared);
+  int index = optimize(list_l,squared);
   p[0] = list_px[((index)%(list_px.size()*list_py.size()))%list_px.size()];
   p[1] = list_py[((index)%(list_px.size()*list_py.size()))/list_px.size()];
   p[2] = list_angles[(int)((float)index)/(float)(list_px.size()*list_py.size())];
@@ -370,7 +370,7 @@ void Image::coord_descent(float p_0[3], Image &modele, bool squared, bool plot){
   }
 }
 
-void Image::one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array){
+void Image::one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, int k, float &l, std::vector<float> &copy_intensity_array){
   float l_increased, l_decreased;
   float p_copy[3];
   copy_tab3(p_copy, p_0);
@@ -430,7 +430,7 @@ void Image::one_step_opti(bool squared, Image &modele, float p_0[3], std::vector
 }
 
 void copy_tab3(float tab1[3], float tab2[3]){
-  for (unsigned int k=0; k<3; k++) {
+  for (int k=0; k<3; k++) {
     tab1[k] = tab2[k];
   }
 }
@@ -446,7 +446,7 @@ void copy_tab3(float tab1[3], float tab2[3]){
 //   for (float k = 0; k < M_PI/2.0; k+= 0.1) {
 //     list_angles.push_back(k);
 //   }
-//   for (unsigned int k = 0; k < list_angles.size(); k++) {
+//   for (int k = 0; k < list_angles.size(); k++) {
 //     std::cout << "k " << k << " " << list_angles[k] << std::endl;
 //     this->rotate_bilinear(list_angles[k],Pixel(m_width/2,m_height/2,0));
 //     this->display_Mat();
@@ -466,7 +466,7 @@ void copy_tab3(float tab1[3], float tab2[3]){
 //     }
 //     m_intensity_array = copy_intensity_array;
 //   }
-//   unsigned int index = optimize(list_l,squared);
+//   int index = optimize(list_l,squared);
 //   std::vector<float> p(1);
 //   p[0] = list_angles[index];
 //   std::vector<float> new_list_l(4);
@@ -475,7 +475,7 @@ void copy_tab3(float tab1[3], float tab2[3]){
 //   new_list_angles[1] = M_PI - p[0];
 //   new_list_angles[2] = 2*M_PI- p[0];
 //   new_list_angles[3] = M_PI + p[0];
-//   for (unsigned int k = 0; k < 4; k++){
+//   for (int k = 0; k < 4; k++){
 //     this->rotate_bilinear(new_list_angles[k],Pixel(m_width/2,m_height/2,0));
 //     std::cout << "angle " << new_list_angles[k] << std::endl;
 //     this->display_Mat();
@@ -504,7 +504,7 @@ void copy_tab3(float tab1[3], float tab2[3]){
 //       std::vector<float> list_l;
 //       std::vector<int> list_p;
 //       std::vector<int> new_list_px;
-//       for (unsigned int k = 0; k < list_px.size(); k++){
+//       for (int k = 0; k < list_px.size(); k++){
 //         int new_x = x + list_px[k];
 //         if (0 <= new_x && new_x < (int)m_width) {
 //           float diff = modele.get_intensity(coord_to_index(new_x,y)) - m_intensity_array[coord_to_index(x,y)];
@@ -523,7 +523,7 @@ void copy_tab3(float tab1[3], float tab2[3]){
 //       if (list_l.size() != 0) {
 //         l_min = *std::min_element(list_l.begin(),list_l.end());
 //       }
-//       for (unsigned int k = 0; k < list_l.size(); k++) {
+//       for (int k = 0; k < list_l.size(); k++) {
 //         if (list_l[k] == l_min) {
 //           new_list_px.push_back(list_p[k]);
 //         }
