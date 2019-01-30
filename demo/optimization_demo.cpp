@@ -15,7 +15,7 @@ int main(int argc, char const *argv[]) {
   // Image error = im1.Absolute_error_image(im2);
   // error.save_Mat();
   // im2.translation(-18.51,25.51);
-  im2.rotate_bilinear(1.53,Pixel(13,16,0));
+  // im2.rotate_bilinear(2,Pixel(13,16,0));
   float p[3];
   im1.opti_greedy_fast_rxy(p,im2,true);
   im1.coord_descent(p,im2,true);

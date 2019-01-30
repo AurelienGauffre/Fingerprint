@@ -127,6 +127,12 @@ unsigned int optimize(std::vector<float> list_l, bool squared){
 }
 
 
+float Image::opti_greedy_x_aux(float &px, Image &modele, bool squared) {
+  this->opti_greedy_x(float &px, Image &modele, bool squared);
+  return px;
+}
+
+
 void Image::opti_greedy_x(float &px, Image &modele, bool squared){
   std::vector<int> list_px;
   std::vector<float> list_l;

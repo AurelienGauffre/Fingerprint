@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5.0)
 project(fingerprints CXX)
 
 #Compiler definition and options
-set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_COMPILER "/usr/bin/clang++")
 set(CMAKE_CXX_FLAGS "-g -std=c++11 -Wall -Wextra")
 #However, the file(GLOB...) allows for wildcard additions:
 
