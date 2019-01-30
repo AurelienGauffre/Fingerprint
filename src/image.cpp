@@ -38,6 +38,18 @@ Image::Image(cv::Mat& image, const std::string& name){
   cv2eigen(*m_original_image, m_intensity_matrix);
 }
 
+Image::Image(const Image& other){
+  m_name = other.m_name;
+  m_size = other.m_size;
+  m_width = other.m_width;
+  m_height= other.m_height;
+  std::cout << " a " << std::endl;
+  m_original_image = new cv::Mat;
+  *m_original_image = *other.m_original_image;
+  std::cout << " a " << std::endl;
+  m_intensity_array = other.m_intensity_array;
+}
+
 Image::~Image(){
   m_original_image->cv::Mat::~Mat();
   delete m_original_image;

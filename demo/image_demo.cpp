@@ -19,6 +19,11 @@ int main(int argc, char const *argv[]) {
   // im1.display_Mat();
   // im1.symetry_diag();
   //
+
+  Image im2(im1);
+  unsigned int origine[2] = {30,0};
+  im1.draw_rectangle(1,origine,30,300);
+  im2.display_Mat();
   im1.display_Mat();
   // im1.data_intensity();
   return 0;
