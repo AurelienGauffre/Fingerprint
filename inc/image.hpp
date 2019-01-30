@@ -186,7 +186,7 @@ class Image {
         *
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
-    void coord_descent(float p_0[3],Image &modele, bool squared);
+    void coord_descent(float p_0[3],Image &modele, bool squared, bool plot);
     /*!
         *  \brief Compute one step on the algorithm of coordinates descent for one parameter.
         *

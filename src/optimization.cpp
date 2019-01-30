@@ -140,7 +140,7 @@ void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (int k = -m_width + 1; k < (int)m_width; k++) {
+  for (int k = -(int)(m_width/2); k < (int)(m_width/2); k++) {
     list_px.push_back(k);
   }
   for (unsigned int k = 0; k < list_px.size(); k++) {
@@ -424,7 +424,15 @@ bool equal_vector(std::vector<float> &v, std::vector<float> &w){
   return true;
 }
 
-void Image::coord_descent(float p_0[3], Image &modele, bool squared){
+void Image::coord_descent(float p_0[3], Image &modele, bool squared, bool plot){
+  std::ofstream fichier;
+  if (plot == true) {
+    std::string nom_fichier = "../results/coord_descent_" + m_name + ".txt";
+    fichier.open(nom_fichier.c_str(), std::ios::out);
+    if (fichier.fail()) {
+      std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
+    }
+  }
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
   float l;
@@ -432,9 +440,18 @@ void Image::coord_descent(float p_0[3], Image &modele, bool squared){
   std::vector<float> zeros {0.0, 0.0, 0.0};
   l = this->compute_l_rxy(modele, p_0[0], p_0[1], p_0[2], squared, copy_intensity_array);
   while (not equal_vector(alpha,zeros)) {
+    if (plot == true) {
+      fichier << l << std::endl;
+    }
     this->one_step_opti(squared, modele, p_0, alpha, 0, l, copy_intensity_array);
     this->one_step_opti(squared, modele, p_0, alpha, 1, l, copy_intensity_array);
     this->one_step_opti(squared, modele, p_0, alpha, 2, l, copy_intensity_array);
+  }
+  if (plot == true) {
+    fichier << l << std::endl;
+  }
+  if (plot){
+    fichier.close();
   }
 }
 
