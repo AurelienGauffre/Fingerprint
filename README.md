@@ -6,11 +6,10 @@ The aim of this project is to find mathematical filters and models which best si
 Create a folder named build in the project folder. Go into this one and build the makefile with cmake. Then you can make. Finally the executable demo files are in /build/demo/. If you don't give any argument when calling the demo, a standard image will be used, but you can test each demo file on the image you want.
 
 ```bash
-# create the conda environment
-$ mkdir build
-$ cd build
-$ cmake ..
-$ make
-$ ./demo/rotation_demo
-$ ./demo/rotation_demo ./../ressources/clean_finger.png #if you want to test with a particular image you can give it as an argument
+fingerprint$ mkdir build
+fingerprint$ cd build
+fingerprint/build$ cmake ..
+fingerprint/build$ make
+fingerprint/build$ ./demo/rotation_demo
+fingerprint/build$ ./demo/rotation_demo ./../ressources/clean_finger.png #if you want to test with a particular image you can give it as an argument
 ```
