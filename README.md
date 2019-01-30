@@ -8,8 +8,11 @@ Create a folder named build in the project folder. Go into this one and build th
 ```bash
 fingerprint$ mkdir build
 fingerprint$ cd build
+#Creatiion of the Makefile :
 fingerprint/build$ cmake ..
+#Make :
 fingerprint/build$ make
 fingerprint/build$ ./demo/rotation_demo
-fingerprint/build$ ./demo/rotation_demo ./../ressources/clean_finger.png #if you want to test with a particular image you can give it as an argument
+#If you want to test with a particular image, you can give it as an argument :
+fingerprint/build$ ./demo/rotation_demo ./../ressources/clean_finger.png
 ```
