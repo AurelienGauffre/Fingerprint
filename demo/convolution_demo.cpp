@@ -16,6 +16,7 @@ int main(int argc, char const *argv[]) {
   cv::Mat kY = cv::getGaussianKernel(2*r+1, sigma, CV_32F);
   cv::Size opti_size = cv::Size(cv::getOptimalDFTSize(m_image1.cols), cv::getOptimalDFTSize(m_image1.rows));
   cv::Mat kernel2 = createFilterMask(opti_size, kX, kY); // Kernel used for convolution in Fourier Sapce
+  std::cout << "Sum of kernel : " << cv::sum(kernel2)[0] << '\n';
 
   std::vector<float> kernelX = Mat_to_vector(kX);
   std::vector<float> kernelY = Mat_to_vector(kY);

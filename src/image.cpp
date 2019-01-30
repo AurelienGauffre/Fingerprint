@@ -32,10 +32,10 @@ Image::Image(cv::Mat& image, const std::string& name){
   *m_original_image = image;
   for (unsigned int i = 0; i < m_height; i++){
     for (unsigned int j = 0; j < m_width; j++){
+      //Convertes intensities to float between 0 and 1
       m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
     }
   }
-  cv2eigen(*m_original_image, m_intensity_matrix);
 }
 
 Image::Image(const Image& other){
@@ -43,10 +43,8 @@ Image::Image(const Image& other){
   m_size = other.m_size;
   m_width = other.m_width;
   m_height= other.m_height;
-  std::cout << " a " << std::endl;
   m_original_image = new cv::Mat;
   *m_original_image = *other.m_original_image;
-  std::cout << " a " << std::endl;
   m_intensity_array = other.m_intensity_array;
 }
 
@@ -82,6 +80,7 @@ void Image::back_to_Mat(){
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x = 0; x < m_width; x++){
+      //Converts back to integers beween 0 and 255
       m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_intensity_array[coord_to_index(x,y)]);
     }
   }
@@ -119,12 +118,6 @@ float Image::max_intensity()const{
 unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
   return y*m_width + x;
 }
-// unsigned int *Image::index_to_coord(unsigned int k){
-//   unsigned int result[2];
-//   result[0] = k%m_width;
-//   result[1] = k/m_width;
-//   return result;
-// }
 
 void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height){
   unsigned int x_min = origine[0]; //raise error
@@ -171,7 +164,10 @@ void Image::symetry_diag(){
   m_height = tmp1;
 }
 
-Image Image::symetrize(){
+/*! Creates an image 4 times bigger, containing all 3 symmetries possibilies : Horizontal symmetry on top left,
+    Diagonnal symmetry on bottom left, Vertical symmetry on bottom right,
+    and Orginal image on top right.  */
+Image Image::symetrize() {
   std::vector<float> m_new_intensity_array(m_size*4);
   for (unsigned int x = 0; x < m_width; x++){
     for (unsigned int y = 0; y < m_height; y++){
