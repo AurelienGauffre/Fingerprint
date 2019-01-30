@@ -29,20 +29,22 @@ int main(int argc, char const *argv[]) {
   // std::vector<float> kernel = {-1,-1,-1,-1,9,-1,-1,-1,-1,-1};
   //std::vector<float> kernel = {-1,0,1,-2,0,2,-1,0,1};
   Image im1(m_image1, m_name);
-  im1.convolute_opti(kernelY, kernelX);
+  // im1.convolute_opti(kernelY, kernelX);
+  // im1.display_Mat();
+  //
+  //
+  // // Fourier convolution
+  // std::cout << "Demo convolution  in Fourier Space :" << std::endl ;
+  // Image im2(m_image2, m_name);
+  // cv::Mat convoluted = im2.fourier_convolution(kernel2);
+  // Image im_result(convoluted, "image_convoluted");
+  // im_result.display_Mat();
+  //
+  // // Difference between two results
+  // Image diff = im_result.Absolute_error_image(im1);
+  // diff.display_Mat();
+
+  im1.convolute_blur(2,1,1);
   im1.display_Mat();
-
-
-  // Fourier convolution
-  std::cout << "Demo convolution  in Fourier Space :" << std::endl ;
-  Image im2(m_image2, m_name);
-  cv::Mat convoluted = im2.fourier_convolution(kernel2);
-  Image im_result(convoluted, "image_convoluted");
-  im_result.display_Mat();
-
-  // Difference between two results
-  Image diff = im_result.Absolute_error_image(im1);
-  diff.display_Mat();
-  diff.save_Mat("absolute error");
   return 0;
 }

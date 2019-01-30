@@ -124,6 +124,7 @@ class Image {
         *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
     void opti_greedy_x(float &p,Image &modele,bool squared,bool plot);
+    float opti_greedy_x_aux(float &px, Image &modele, bool squared, bool plot);
     /*!
         *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
@@ -137,6 +138,7 @@ class Image {
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
     void opti_greedy_fast_xy(float p[2],Image &modele, bool squared, bool plot);
+    float* opti_greedy_fast_xy_aux(float p[2], Image &modele, bool squared, bool plot);
     /*!
         *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image and the parameter of rotation, in order to correspond to the modele.
         *
@@ -200,7 +202,7 @@ class Image {
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
-    void convolute_blur(float size,float r,float s);
+    void convolute_blur(int size,float r,float s);
     cv::Mat fourier_convolution(cv::Mat& kernel);
 
     // DFT //

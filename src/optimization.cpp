@@ -127,10 +127,16 @@ unsigned int optimize(std::vector<float> list_l, bool squared){
 }
 
 
+float Image::opti_greedy_x_aux(float &px, Image &modele, bool squared, bool plot) {
+  this->opti_greedy_x(px, modele, squared, plot);
+  return px;
+}
+
+
 void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
   std::ofstream fichier;
   if (plot == true) {
-    std::string nom_fichier = "../results/data_opti_greedy_x_" + m_name + ".txt";
+    std::string nom_fichier = "../results/data_opti_greedy_fast_x_" + m_name + ".txt";
     fichier.open(nom_fichier.c_str(), std::ios::out);
     if (fichier.fail()) {
       std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
@@ -252,6 +258,11 @@ void Image::opti_subpixel(float p[2], Image &modele, bool squared){
   p[1] = py;
 }
 
+
+float* Image::opti_greedy_fast_xy_aux(float p[2], Image &modele, bool squared, bool plot){
+  this->opti_greedy_fast_xy(p, modele, squared, plot);
+  return p;
+}
 
 void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool plot){
   std::ofstream fichier;
