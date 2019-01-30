@@ -27,7 +27,7 @@ int main(int argc, char const *argv[]) {
 
   cout << "Test convolution :" << endl;
   //test_convolute_classic(argv,kernel);
-  test_convolute_opti(argv,kernel_col,kernel_line);
+  test_convolute_blur(50,1,1);
 
 
   return 0;

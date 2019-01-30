@@ -10,6 +10,7 @@
 
 #include "image.hpp"
 #include "maths_tools.hpp"
+#include "pressure.hpp" // We use the same kind of monotous function as in pressure.cpp to blur our image localy
 
 void shift(cv::Mat magI); /*!< \brief : Shift subparts of input * \param magI : Image to be shifted */
 cv::Mat updateMag(cv::Mat complex );
