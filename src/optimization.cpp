@@ -127,13 +127,21 @@ unsigned int optimize(std::vector<float> list_l, bool squared){
 }
 
 
-float Image::opti_greedy_x_aux(float &px, Image &modele, bool squared) {
-  this->opti_greedy_x(float &px, Image &modele, bool squared);
+float Image::opti_greedy_x_aux(float &px, Image &modele, bool squared, bool plot) {
+  this->opti_greedy_x(px, modele, squared, plot);
   return px;
 }
 
 
-void Image::opti_greedy_x(float &px, Image &modele, bool squared){
+void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
+  std::ofstream fichier;
+  if (plot == true) {
+    std::string nom_fichier = "../results/data_opti_greedy_fast_x_" + m_name + ".txt";
+    fichier.open(nom_fichier.c_str(), std::ios::out);
+    if (fichier.fail()) {
+      std::cerr << " Impossible d'ouvrir le fichier ! " << std::endl;
+    }
+  }
   std::vector<int> list_px;
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
