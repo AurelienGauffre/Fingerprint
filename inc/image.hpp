@@ -80,6 +80,7 @@ class Image {
     std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< \param Pixel_array : The array of pixels to be rotated * \param angle : angle of rotation * \param rot_Pixel : rotation Pixel
                                                                                                           \return Vector of pixels rotated*/
     void rotate_bilinear(float angle, const Pixel& rot_point); /*!< \brief Calls rotate_pixels, interpolate, and apply rotation on Image * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
+    void rotate_opencv(float angle, const Pixel& rot_point); /*!< \brief Rotation using OpenCV Library * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
     void bilinear_interpolation(std::vector<Pixel> &former_pixels); /*!< \brief Change the intensities value by interpolation \param former_pixels : Array of pixels to be interpolated according their position*/
 
     // Warp //
