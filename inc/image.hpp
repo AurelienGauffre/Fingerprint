@@ -47,7 +47,7 @@ class Image {
                                                                                                                                        * \param origine : Coordinates of top left point */
     unsigned int coord_to_index(unsigned int x, unsigned int y); /*! \return : 1D Index in m_intensity_array*/
 
-    // Symmetries
+    // Symmetries //
     void symetry_x(); /*! \brief Vertical symmetry */
     void symetry_y(); /*! \brief Horizontal symmetry */
     void symetry_diag(); /*! \brief Symmetry along diagonal x=y*/
@@ -76,11 +76,11 @@ class Image {
     unsigned int *find_ellipse();
 
     // Rotation //
-    std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
-    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
-    void rotate(float angle, const Pixel& rot_point);
-    void rotate_bilinear(float angle, const Pixel& rot_point);
-    void bilinear_interpolation(std::vector<Pixel> &former_pixels);
+    std::vector<Pixel> convert_to_pixels();  /*!< \return A 1D array of Pixels representing the image*/
+    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< \param Pixel_array : The array of pixels to be rotated * \param angle : angle of rotation * \param rot_Pixel : rotation Pixel
+                                                                                                          \return Vector of pixels rotated*/
+    void rotate_bilinear(float angle, const Pixel& rot_point); /*!< \brief Calls rotate_pixels, interpolate, and apply rotation on Image * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
+    void bilinear_interpolation(std::vector<Pixel> &former_pixels); /*!< \brief Change the intensities value by interpolation \param former_pixels : Array of pixels to be interpolated according their position*/
 
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
