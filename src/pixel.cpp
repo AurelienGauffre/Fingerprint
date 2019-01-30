@@ -39,7 +39,7 @@ void Pixel::warp(const Pixel& location, float strength, float radius, int violen
   float theta = exp(-std::pow(d/radius, violence))*strength;
   float x = (m_x - location.m_x) * cos(theta) - (m_y - location.m_y) * sin(theta) + location.m_x;
   float y = (m_x - location.m_x) * sin(theta) + (m_y - location.m_y) * cos(theta) + location.m_y;
-  m_intensity = std::pow(m_intensity, 1+exp(-d/radius));
+  m_intensity = std::pow(m_intensity, 1+2*exp(-d/radius));
   m_x = x;
   m_y = y;
 }

@@ -9,16 +9,11 @@
 
 using namespace cv;
 
-/*!
-     *  \brief Classic 2D Convolution on Image
-     *
-     *  Convolute the image with a separable kernel.
-     *
-     *  \param listSongs : kernel under 1D std::vector form.
-     */
 void Image::convolute_classic(std::vector<float> kernel){
-  int a = ((int)(std::pow(kernel.size(),0.5))-1)/2;
-  int b = a ;
+  int a = ((int)(std::pow(kernel.size(),0.5))-1)/2; // We extract the horizontal radius a of the kernel
+  int b = a ;  // The vertical radius is currently equals to horizontal one : we work only with squared kernels
+
+  // The minimum and maximum intensity of the image have to be caclulated to normalize it at the end (the value of the image pixels has to belong to [0,1])
   float mini_intensity = 0 ;
   float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);
@@ -30,6 +25,7 @@ void Image::convolute_classic(std::vector<float> kernel){
           float intensity = 0 ;
           bool in_width = between(x-i,0,m_width);
           bool in_height= between(y-j,0,m_height);
+          // Mirror edge handling :
           if(in_width&&in_height){ // The pixel is in the image
             intensity = m_intensity_array[coord_to_index(x-i,y-j)];
           }
@@ -46,7 +42,7 @@ void Image::convolute_classic(std::vector<float> kernel){
           }
           else{ // The pixel is either on the right or on the left of the image
 
-            if(x-i < 0){ // The pixel is on  left of the image // HAS BEEN MODDIFIED FROM X-J TO X-J
+            if(x-i < 0){ // The pixel is on  left of the image 
               intensity = m_intensity_array[coord_to_index(-x+i-1,y-j)];
             }
             else{ // The pixel is on the right of the image
@@ -132,8 +128,8 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
 void Image::convolute_blur(int kernel_radius,float speed){
   std::vector<float> kernel_col(2*kernel_radius+1,1.0/(2*kernel_radius+1));
   std::vector<float> kernel_line(2*kernel_radius+1,1.0/(2*kernel_radius+1));
-  std::cout <<"Kernel value : "<< kernel_line[0]<< std::endl ;
-  std::vector<float> kernel_identity{0,0,1,0,0};
+  std::vector<float> kernel_identity(2*kernel_radius+1,0);
+  kernel_identity[kernel_radius]=1.0;
   float mini_intensity = 0 ;
   float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);

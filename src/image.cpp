@@ -4,9 +4,7 @@
  * \author Perrine, Célestine, Aurélien, Lucas
  * \date 01/08/2019
  */
-
 #include "image.hpp"
-
 /*!
      *  \brief Basic Image constructor
      *
@@ -14,6 +12,7 @@
      *
      *  \param listSongs : image "Mat", name
      */
+
 Image::Image(cv::Mat& image, const std::string& name){
   char s = '/';
   int pos = 0;
@@ -103,6 +102,7 @@ void Image::save_Mat(std::string name){
   if (name == ""){
     name = m_name;
   }
+
   name = "../results/" + name;
   // (*m_original_image).convertTo(*m_original_image, CV_8UC1, 255.0);
   cv::imwrite(name,*m_original_image);
