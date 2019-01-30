@@ -21,6 +21,7 @@ Image Image::Absolute_error_image(Image &modele){
 
 
 float Image::squared_error(Image &modele){
+  assert(m_original_image->size() == modele.get_original_image()->size());
   float sum = 0;
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {
@@ -29,6 +30,18 @@ float Image::squared_error(Image &modele){
     }
   }
   return sum;
+}
+
+float Image::error_rate(Image &modele){
+  assert(m_original_image->size() == modele.get_original_image()->size());
+  float sum = 0;
+  for (int x = 0; x < (int)m_width; x++) {
+    for (int y = 0; y < (int)m_height; y++) {
+      float diff = std::abs(m_intensity_array[coord_to_index(x,y)] - modele.get_intensity(coord_to_index(x,y)));
+      sum += diff;
+    }
+  }
+  return sum/(m_width*m_height);
 }
 
 

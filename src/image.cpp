@@ -29,7 +29,7 @@ Image::Image(cv::Mat& image, const std::string& name){
   m_width = image.cols;
   m_size = m_width*m_height;
   m_original_image = new(cv::Mat);
-  *m_original_image = image;
+  *m_original_image = image.clone();
   for (int i = 0; i < m_height; i++){
     for (int j = 0; j < m_width; j++){
       //Convertes intensities to float between 0 and 1
@@ -43,8 +43,8 @@ Image::Image(const Image& other){
   m_size = other.m_size;
   m_width = other.m_width;
   m_height= other.m_height;
-  m_original_image = new cv::Mat;
-  *m_original_image = *other.m_original_image;
+  m_original_image = new(cv::Mat);
+  *m_original_image = (*other.m_original_image).clone();
   m_intensity_array = other.m_intensity_array;
 }
 
@@ -76,7 +76,7 @@ void Image::display_attributes(){
   std::cout << m_height << " " << m_width << " " << m_size << "" << m_name << std::endl;
 }
 
-void Image::back_to_Mat(){
+void Image::back_to_Mat() {
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
   for (int y = 0; y < m_height; y++){
     for (int x = 0; x < m_width; x++){

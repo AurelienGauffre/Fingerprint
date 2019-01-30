@@ -6,7 +6,7 @@ int main(int argc, char const *argv[]) {
   std::string m_name = (std::string)argv[1];
   m_image1 = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   cv::Mat m_image2;
-  m_image2 = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
+  m_image1.copyTo(m_image2);
 
   // Creation of Gaussian kernels
   int r = 10;
