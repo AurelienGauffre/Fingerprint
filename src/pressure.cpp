@@ -54,7 +54,7 @@ void Image::weight_coeff_ellipse(float percentage){
 }
 
 int *Image::find_max_intensity(){
-  int *res = new int[2];
+  int res = new int[2]; // TO FIX Free somewhere but we may not need to use a dynamic allocation for these array
   float intensity_col_min = m_height;
   float intensity_row_min = m_width;
   for (int x = 0; x < m_width; x++) {
@@ -89,7 +89,7 @@ int *Image::find_ellipse(){
       nb_non_white_col ++;
     }
   }
-  int *res = new int[4];
+  int *res = new int[4]; // TO FIX
   res[0] = max_intensity[0]; //abscissa of the center
   res[1] = m_height - int(nb_non_white_col/2); //ordinate of the center
   //0.7 is approximately the quotient between the width and the height of a fingerprint

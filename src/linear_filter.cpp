@@ -37,16 +37,16 @@ void Image::convolute_classic(std::vector<float> kernel){
               intensity = m_intensity_array[coord_to_index(x-i,-y+j-1)];
             }
             else{ // The pixel is under the image
-              intensity = m_intensity_array[coord_to_index(x-i,2*m_height-y-j+1)] ;
+              intensity = m_intensity_array[coord_to_index(x-i,2*m_height-y+j+1)] ;
             }
           }
           else{ // The pixel is either on the right or on the left of the image
 
-            if(x-i < 0){ // The pixel is on  left of the image 
+            if(x-i < 0){ // The pixel is on  left of the image
               intensity = m_intensity_array[coord_to_index(-x+i-1,y-j)];
             }
             else{ // The pixel is on the right of the image
-              intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y-j)];
+              intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y-j)];
             }
           }
           res+= intensity*kernel[(2*a+1)*(a-i)+(b-j)];
@@ -82,7 +82,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
             intensity = m_intensity_array[coord_to_index(x,-y+j-1)];
           }
           else{ // The pixel is under the image
-            intensity = m_intensity_array[coord_to_index(x,2*m_height-y-j+1)] ;
+            intensity = m_intensity_array[coord_to_index(x,2*m_height-y+j+1)] ;
           }
         }
         res+= intensity*kernel_col[b-j];
@@ -107,7 +107,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
             intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
           }
           else{ // The pixel is on the right of the image
-            intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y)];
+            intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y)];
           }
         }
         res+= intensity*kernel_line[a-i];
@@ -156,7 +156,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
             intensity = m_intensity_array[coord_to_index(x,-y+j-1)];
           }
           else{ // The pixel is under the image
-            intensity = m_intensity_array[coord_to_index(x,2*m_height-y-j+1)] ;
+            intensity = m_intensity_array[coord_to_index(x,2*m_height-y+j+1)] ;
           }
         }
         int diff_x = x - x_center;
@@ -192,7 +192,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
             intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
           }
           else{ // The pixel is on the right of the image
-            intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y)];
+            intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y)];
           }
         }
 
