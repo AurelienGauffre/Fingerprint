@@ -200,9 +200,38 @@ class Image {
 
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
+    /*!
+        *  \brief  Classic convolution of an image and a kernel
+        *
+        *
+        *  \param  kernel : The kernel is a 1D float array whose size is a square of an odd number.
+        */
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
+    /*!
+        *  \brief  Convolution with separated kernel.
+        *   This convolution works by making two 1D convolution  with the two 1D Kernel given in order to optimize the time of the convolution.
+        *
+        *  \param  kernel_col : This  kernel is a 1D float array whose size is a an odd number. A convolution along the y axis will be performed with this kernnel.
+        *  \param  kernel_line : This kernel is a 1D float array whose size is a an odd number. A convolution along the x axis will be performed with this kernnel.
+        */
     void convolute_blur(int kernel_radius,float speed);
+    /*!
+        *  \brief  Convolution to simulate blur artefact.
+        *   This convolution try to simulate the blur artefact. Unlike the other convolution, this one  uses a kernel whose values is space dependant. The center of the fingerprint and its size are self-detected.
+        *
+        *  \param kernel_radius : The radius of the blur kernel used. The size of the kernel will be 2*kernel_radius + 1 .
+        *  \param  speed : speed of transition between the blur and sharp region.
+        */
     cv::Mat fourier_convolution(cv::Mat& kernel);
+    /*!
+        *  \brief  Convolution in fourrier space.
+        *   Convolute in fourrier space by realising a pointwise multiplication with the kernel wich is going to be shiftrf clerverly.
+        *
+        *  \param kernel : The kernel has to be the same size of the image, at the center of the image, and 0 padded elsewhere. The shifting of the kernel will be done inside the method.
+        *
+        */
+
+
 
     // DFT //
     Image DFT();

@@ -132,8 +132,8 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
 void Image::convolute_blur(int kernel_radius,float speed){
   std::vector<float> kernel_col(2*kernel_radius+1,1.0/(2*kernel_radius+1));
   std::vector<float> kernel_line(2*kernel_radius+1,1.0/(2*kernel_radius+1));
-  std::cout <<"Kernel value : "<< kernel_line[0]<< std::endl ;
-  std::vector<float> kernel_identity{0,0,1,0,0};
+  std::vector<float> kernel_identity(2*kernel_radius+1,0);
+  kernel_identity[kernel_radius]=1.0;
   float mini_intensity = 0 ;
   float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);
