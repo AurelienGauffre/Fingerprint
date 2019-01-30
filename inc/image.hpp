@@ -80,6 +80,7 @@ class Image {
                                                                                                           \return Vector of pixels rotated*/
     void rotate_bilinear(float angle, const Pixel& rot_point); /*!< \brief Calls rotate_pixels, interpolate, and apply rotation on Image * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
     void bilinear_interpolation(std::vector<Pixel> &former_pixels); /*!< \brief Change the intensities value by interpolation \param former_pixels : Array of pixels to be interpolated according their position*/
+    cv::Mat rotate_opencv(float angle, Pixel& rot_point); /*!< \brief Rotation using OpenCV Library * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
 
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
@@ -104,6 +105,11 @@ class Image {
         *  \param Image : the modele image
         */
     float squared_error(Image &modele);
+    /*!
+        *  \param Image : the modele image
+        *  \return Sum of differences normalised to 1, divided by size.
+        */
+    float error_rate(Image &modele);
     /*!
         *  \brief lost function : Correlation between the pixels of two images.
         *  \param Image : the modele image
@@ -199,6 +205,10 @@ class Image {
     void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, int k, float &l, std::vector<float> &copy_intensity_array);
 
     // Linear filtering //
+    /*!
+        *  \brief Convolute the image with a kernel (2D convolution).
+        *  \param kernel : The kernel must be under 1D form. No need to pad the kernel.
+        */
     void convolute_classic(std::vector<float> kernel);
     /*!
         *  \brief  Classic convolution of an image and a kernel

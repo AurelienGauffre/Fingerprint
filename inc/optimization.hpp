@@ -2,7 +2,7 @@
 #define DEF_OPTIMIZATION
 
 #include "image.hpp"
-
+#include <assert.h>
 /*!
     *  \fn int optimize(std::vector<float> list_l, bool squared)
     *  \brief Find the index of the maximum or the minimum (correlation or squared error) of the values of loss function in the vector.
