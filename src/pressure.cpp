@@ -10,6 +10,8 @@
     *
     *  \brief Power of the exponential attenuation function which caracterizes the attenuation.
     */
+
+//
 #define attenuation_power 70
 
 
@@ -19,7 +21,9 @@ void Image::weight_coeff(unsigned int x_spot, unsigned int y_spot){
       int diff_x = x - x_spot;
       int diff_y = y - y_spot;
       float r = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2));
+      //64 is the radius of the circle we want to keep
       float c_r = weight_exp(1.0/64.0,attenuation_power,r);
+      //new intensity = 1 - c*(1 - intensity) because 1 corresponds to white
       m_intensity_array[coord_to_index(x,y)] = 1 - c_r*(1-m_intensity_array[coord_to_index(x,y)]);
     }
   }
@@ -33,6 +37,7 @@ float weight_exp(float coeff, unsigned int power, float r){
 
 void Image::weight_coeff_ellipse(float percentage){
   unsigned int *ellipse = this->find_ellipse();
+  //We want to keep an ellipse of width percentage*ellipse_width
   float coeff = 1.0/(percentage*ellipse[2]);
   for (unsigned int y = 0; y < m_height; y++) {
     for (unsigned int x = 0; x < m_width; x++) {
@@ -41,7 +46,8 @@ void Image::weight_coeff_ellipse(float percentage){
       float a = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*std::pow((float)ellipse[2]/(float)ellipse[3],2));
       float c_r = weight_exp(coeff,attenuation_power,a);
       m_intensity_array[coord_to_index(x,y)] = 1 - c_r*(1-m_intensity_array[coord_to_index(x,y)]);
-      m_intensity_array[coord_to_index(x,y)] = std::sin((M_PI/2)*m_intensity_array[coord_to_index(x,y)]); // FIX sin pas bon. utiliser sqrt
+      //Apply sinus to add more white pixels
+      m_intensity_array[coord_to_index(x,y)] = std::sin((M_PI/2)*m_intensity_array[coord_to_index(x,y)]);
     }
   }
   delete ellipse;
@@ -84,9 +90,10 @@ unsigned int *Image::find_ellipse(){
     }
   }
   unsigned int *res = new unsigned int[4];
-  res[0] = max_intensity[0];
-  res[1] = m_height - int(nb_non_white_col/2);
-  res[2] = int(nb_non_white_col/2)*0.7;
-  res[3] = int(nb_non_white_col/2);
+  res[0] = max_intensity[0]; //abscissa of the center
+  res[1] = m_height - int(nb_non_white_col/2); //ordinate of the center
+  //0.7 is approximately the quotient between the width and the height of a fingerprint
+  res[2] = int(nb_non_white_col/2)*0.7; //width
+  res[3] = int(nb_non_white_col/2); //height
   return res;
 }

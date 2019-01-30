@@ -32,10 +32,10 @@ Image::Image(cv::Mat& image, const std::string& name){
   *m_original_image = image;
   for (unsigned int i = 0; i < m_height; i++){
     for (unsigned int j = 0; j < m_width; j++){
+      //Convertes intensities to float between 0 and 1
       m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
     }
   }
-  cv2eigen(*m_original_image, m_intensity_matrix);
 }
 
 Image::Image(const Image& other){
@@ -80,6 +80,7 @@ void Image::back_to_Mat(){
   resize(*m_original_image,*m_original_image,cv::Size(m_width,m_height));
   for (unsigned int y = 0; y < m_height; y++){
     for (unsigned int x = 0; x < m_width; x++){
+      //Converts back to integers beween 0 and 255
       m_original_image->ptr<uchar>(y)[x] = (uchar)(255*m_intensity_array[coord_to_index(x,y)]);
     }
   }

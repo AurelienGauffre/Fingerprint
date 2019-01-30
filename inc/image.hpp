@@ -29,7 +29,6 @@ class Image {
     unsigned int m_size;
     cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_intensity_array.*/
     std::string m_name;
-    Eigen::Matrix<float,Eigen::Dynamic,Eigen::Dynamic> m_intensity_matrix;
   public:
     Image(cv::Mat& image,const std::string& name);
     Image(const Image& other);
