@@ -32,8 +32,9 @@ class Image {
     Eigen::Matrix<float,Eigen::Dynamic,Eigen::Dynamic> m_intensity_matrix;
   public:
     Image(cv::Mat& image,const std::string& name);
+    Image(const Image& other);
     ~Image();
-    float get_intensity(unsigned int k)const;
+    float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
     float *get_pointer(unsigned int k);
     cv::Mat* get_original_image();
     void display_attributes();
@@ -81,8 +82,7 @@ class Image {
 
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
-    void warp(float strength,  Pixel &location, float radius, int violence); /*!< Warp a part of picture*/
-
+    void warp(float strength,  Pixel &location, float radius, int violence); /*!< \brief Warps a part of image \param strength : "strength" of rotation \param location : pixel around which the warps occurs*/
     // Translation //
     /*!
         *  \brief Translates the image using translate_pixels and bilinear_interpolation.
@@ -121,7 +121,7 @@ class Image {
         *  \brief Greedy strategy to optimize the integer parameter of translation along the x-axis of the image, in order to correspond to the modele.
         *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
-    void opti_greedy_x(float &p,Image &modele,bool squared);
+    void opti_greedy_x(float &p,Image &modele,bool squared,bool plot);
     /*!
         *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
@@ -198,6 +198,7 @@ class Image {
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
+    void convolute_blur(float size,float r,float s);
     cv::Mat fourier_convolution(cv::Mat& kernel);
 
     // DFT //
