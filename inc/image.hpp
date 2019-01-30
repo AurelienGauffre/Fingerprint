@@ -23,7 +23,7 @@
    */
 class Image {
   private:
-    std::vector<float> m_intensity_array; /*!< 1D array of pixels reprensenting our image.*/
+    std::vector<float> m_intensity_array; /*!< 1D array of intensities scaled from 0 to 1 reprensenting our image.*/
     unsigned int m_height;
     unsigned int m_width;
     unsigned int m_size;
@@ -34,22 +34,24 @@ class Image {
     Image(cv::Mat& image,const std::string& name);
     Image(const Image& other);
     ~Image();
-    float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
-    float *get_pointer(unsigned int k);
-    cv::Mat* get_original_image();
-    void display_attributes();
+    float get_intensity(unsigned int k)const; /*! \param k : index * \return Intensity at index k of m_intensity_array.*/
+    float *get_pointer(unsigned int k); /*! \param k : index * \return Pointer towards k-th intensity in m_intensity_array .*/
+    cv::Mat* get_original_image(); /*! \param k : index * \return Adress of Mat object representing the image.*/
+    void display_attributes(); /*! \brief Displays all attributes of Image, including the full m_intensity_array.*/
     void back_to_Mat();  /*!< Update the Mat version of Image*/
-    void display_Mat();
-    float min_intensity() const;
-    float max_intensity() const;
-    void save_Mat(std::string name = "");
-    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
-    unsigned int coord_to_index(unsigned int x, unsigned int y);
-    // unsigned int *index_to_coord(unsigned int k);
-    void symetry_x();
-    void symetry_y();
-    void symetry_diag();
-    Image symetrize();
+    void display_Mat(); /*!< Display the image in a new Window.*/
+    float min_intensity() const; /*! \return Minimum intensity in m_intensity_array*/
+    float max_intensity() const; /*! \return Maximum intensity in m_intensity_array*/
+    void save_Mat(std::string name = ""); /*! \brief Saves the image in folder "results" */
+    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height); /*! \brief Draws rectangle * \param intensity : intensity of rectangle (0 to 1)
+                                                                                                                                       * \param origine : Coordinates of top left point */
+    unsigned int coord_to_index(unsigned int x, unsigned int y); /*! \return : 1D Index in m_intensity_array*/
+
+    // Symmetries //
+    void symetry_x(); /*! \brief Vertical symmetry */
+    void symetry_y(); /*! \brief Horizontal symmetry */
+    void symetry_diag(); /*! \brief Symmetry along diagonal x=y*/
+    Image symetrize(); /*! \return New image containing all symmetries vesrions */
 
     // Pressure //
     /*!
@@ -74,11 +76,11 @@ class Image {
     unsigned int *find_ellipse();
 
     // Rotation //
-    std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
-    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
-    void rotate(float angle, const Pixel& rot_point);
-    void rotate_bilinear(float angle, const Pixel& rot_point);
-    void bilinear_interpolation(std::vector<Pixel> &former_pixels);
+    std::vector<Pixel> convert_to_pixels();  /*!< \return A 1D array of Pixels representing the image*/
+    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< \param Pixel_array : The array of pixels to be rotated * \param angle : angle of rotation * \param rot_Pixel : rotation Pixel
+                                                                                                          \return Vector of pixels rotated*/
+    void rotate_bilinear(float angle, const Pixel& rot_point); /*!< \brief Calls rotate_pixels, interpolate, and apply rotation on Image * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
+    void bilinear_interpolation(std::vector<Pixel> &former_pixels); /*!< \brief Change the intensities value by interpolation \param former_pixels : Array of pixels to be interpolated according their position*/
 
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
@@ -122,6 +124,7 @@ class Image {
         *  \param variable in which we put the best parameter, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
     void opti_greedy_x(float &p,Image &modele,bool squared,bool plot);
+    float opti_greedy_x_aux(float &px, Image &modele, bool squared, bool plot);
     /*!
         *  \brief Greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image, in order to correspond to the modele.
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
@@ -135,6 +138,7 @@ class Image {
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
     void opti_greedy_fast_xy(float p[2],Image &modele, bool squared, bool plot);
+    float* opti_greedy_fast_xy_aux(float p[2], Image &modele, bool squared, bool plot);
     /*!
         *  \brief Faster greedy strategy to optimize the couple of integer parameters of translations along the x and y axis of the image and the parameter of rotation, in order to correspond to the modele.
         *
@@ -198,7 +202,7 @@ class Image {
     // Linear filtering //
     void convolute_classic(std::vector<float> kernel);
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
-    void convolute_blur(float size,float r,float s);
+    void convolute_blur(int size,float r,float s);
     cv::Mat fourier_convolution(cv::Mat& kernel);
 
     // DFT //

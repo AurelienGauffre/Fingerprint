@@ -1,9 +1,5 @@
 #include "image.hpp"
 
-/*!
-     *  \brief Coordinates of pixels
-     *  \return array of Pixels corresponding to pixels coordinates, in order of pixels
-     */
 std::vector<Pixel> Image::convert_to_pixels() {
   std::vector<Pixel> Pixel_array;
   for (unsigned int y = 0; y < m_height; y++)
@@ -17,9 +13,7 @@ std::vector<Pixel> Image::convert_to_pixels() {
 }
 
 /*!
-  *  \brief Coordinates of pixels
-  *  \param listSongs : name of image
-  *  \return array of Pixels
+  *  Do not change the position of the Pixels in the returned array.
   */
 std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel) {
   for (unsigned int i = 0; i < Pixel_array.size(); i++) {

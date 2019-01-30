@@ -129,11 +129,10 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
 }
 
 
-void Image::convolute_blur(float size,float r,float s){
-  std::vector<float> kernel_col = {1,2,4,2,1};
-  std::vector<float> kernel_line = {1,2,4,2,1};
-  int a = (int)((kernel_col.size()-1)/2);
-  int b = a ;
+void Image::convolute_blur(int a,float r,float s){
+  std::vector<float> kernel_col = {1.0/5,1.0/5,1.0/5,1.0/5,1.0/5};
+  std::vector<float> kernel_line = {1.0/5,1.0/5,1.0/5,1.0/5,1.0/5};
+  std::vector<float> kernel_identity{0,0,1,0,0};
   float mini_intensity = 0 ;
   float maxi_intensity = 1 ;
   std::vector<float> new_intensity(m_size);
@@ -141,7 +140,7 @@ void Image::convolute_blur(float size,float r,float s){
   for(int y = 0;  y<m_height; y++){
     for(int x = 0;  x<m_width;x++){
       float res = 0 ;
-      for(int j = -b;j<=b;j++){
+      for(int j = -a;j<=a;j++){
         float intensity = 0 ;
         bool in_height= between(y-j,0,m_height);
         if(in_height){ // The pixel is in the image
@@ -155,7 +154,12 @@ void Image::convolute_blur(float size,float r,float s){
             intensity = m_intensity_array[coord_to_index(x,2*m_height-y-j+1)] ;
           }
         }
-        res+= intensity*kernel_col[b-j];
+        int diff_x = x - 80;
+        int diff_y = y - 120;
+        float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*0.7);
+        float c_r = weight_exp(1.0/50,10,rad);
+
+        res+= intensity*(kernel_col[a-j]*(1-c_r)+c_r*kernel_identity[a-j]);
       }
       new_intensity[coord_to_index(x,y)] = res;
     }
@@ -180,7 +184,12 @@ void Image::convolute_blur(float size,float r,float s){
             intensity = m_intensity_array[coord_to_index(2*m_width-x-i+1,y)];
           }
         }
-        res+= intensity*kernel_line[a-i];
+
+        int diff_x = x - 80;
+        int diff_y = y - 120;
+        float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*0.7);
+        float c_r = weight_exp(1.0/50,10,rad);
+        res+= intensity*(kernel_col[a-i]*(1-c_r)+c_r*kernel_identity[a-i]);
       }
       new_intensity[coord_to_index(x,y)] = res;
       if (res>maxi_intensity) maxi_intensity = res ;
@@ -297,7 +306,6 @@ Mat Image::fourier_convolution(Mat& kernel)
 std::vector<float> Mat_to_vector(const Mat& matrix) {
   std::vector<float> array;
   if (matrix.isContinuous()) {
-    std::cout << "Is Continous" << '\n';
     array.assign((float*)matrix.datastart, (float*)matrix.dataend);
   } else {
     for (int i = 0; i < matrix.rows; ++i) {

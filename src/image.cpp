@@ -43,10 +43,8 @@ Image::Image(const Image& other){
   m_size = other.m_size;
   m_width = other.m_width;
   m_height= other.m_height;
-  std::cout << " a " << std::endl;
   m_original_image = new cv::Mat;
   *m_original_image = *other.m_original_image;
-  std::cout << " a " << std::endl;
   m_intensity_array = other.m_intensity_array;
 }
 
@@ -119,12 +117,6 @@ float Image::max_intensity()const{
 unsigned int Image::coord_to_index(unsigned int x, unsigned int y){
   return y*m_width + x;
 }
-// unsigned int *Image::index_to_coord(unsigned int k){
-//   unsigned int result[2];
-//   result[0] = k%m_width;
-//   result[1] = k/m_width;
-//   return result;
-// }
 
 void Image::draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height){
   unsigned int x_min = origine[0]; //raise error
@@ -171,7 +163,10 @@ void Image::symetry_diag(){
   m_height = tmp1;
 }
 
-Image Image::symetrize(){
+/*! Creates an image 4 times bigger, containing all 3 symmetries possibilies : Horizontal symmetry on top left,
+    Diagonnal symmetry on bottom left, Vertical symmetry on bottom right,
+    and Orginal image on top right.  */
+Image Image::symetrize() {
   std::vector<float> m_new_intensity_array(m_size*4);
   for (unsigned int x = 0; x < m_width; x++){
     for (unsigned int y = 0; y < m_height; y++){
