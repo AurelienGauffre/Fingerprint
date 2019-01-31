@@ -10,6 +10,7 @@
 
 
 Image Image::Absolute_error_image(Image &modele){
+  assert(m_original_image->size() == modele.get_original_image()->size());
   Image res = Image(*m_original_image, m_name.substr(0, m_name.size()-4) + "_error.png");
   for (int x = 0; x < (int)m_width; x++) {
     for (int y = 0; y < (int)m_height; y++) {

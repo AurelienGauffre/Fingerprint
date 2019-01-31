@@ -6,8 +6,8 @@ add_executable(convolution_demo convolution_demo.cpp)
 add_executable(optimization_demo optimization_demo.cpp)
 add_executable(rot_comp rotation_comp_demo.cpp)
 add_executable(blur_demo blur_demo.cpp)
+add_executable(time_convolution demo_time_convolution.cpp)
 add_executable(dft_convolution_demo dft_convolution_demo.cpp)
-
 target_link_libraries(image_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(pressure_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(rotation_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
@@ -17,5 +17,5 @@ target_link_libraries(convolution_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} finger
 target_link_libraries(dft_convolution_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(rot_comp ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(blur_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
-
+target_link_libraries(time_convolution ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(optimization_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)

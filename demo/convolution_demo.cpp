@@ -20,6 +20,7 @@ int main(int argc, char const *argv[]) {
   im1.convolute_classic(kernel);
   im1.save_Mat();
   im1.display_Mat();
+  im1.save_Mat("normal_conv.png");
 
 
 
