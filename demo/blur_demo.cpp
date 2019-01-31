@@ -13,6 +13,7 @@ int main(int argc, char const *argv[]) {
   m_image1 = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image1, m_name);
   im1.convolute_blur(5,5); // convolute blur(kernel_radius,speed)
+  im1.save_Mat();
   im1.display_Mat();
   return 0;
 }
