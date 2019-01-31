@@ -1,9 +1,5 @@
 #include "image.hpp"
 
-/*!
-     *  \brief Coordinates of pixels
-     *  \return array of Pixels corresponding to pixels coordinates, in order of pixels
-     */
 std::vector<Pixel> Image::convert_to_pixels() {
   std::vector<Pixel> Pixel_array;
   for (unsigned int y = 0; y < m_height; y++)
@@ -17,9 +13,7 @@ std::vector<Pixel> Image::convert_to_pixels() {
 }
 
 /*!
-  *  \brief Coordinates of pixels
-  *  \param listSongs : name of image
-  *  \return array of Pixels
+  *  Do not change the position of the Pixels in the returned array.
   */
 std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel) {
   for (unsigned int i = 0; i < Pixel_array.size(); i++) {
@@ -31,7 +25,7 @@ std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float a
 
 void Image::rotate_bilinear(float angle, const Pixel& rot_point) {
   std::vector<Pixel> pixels(this->convert_to_pixels());
-  std::vector<Pixel> former_pixels(this->rotate_pixels(pixels,-angle, rot_point));
+  std::vector<Pixel> former_pixels(this->rotate_pixels(pixels,angle, rot_point));
   this->bilinear_interpolation(former_pixels);
 }
 
@@ -52,8 +46,16 @@ void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
       former_pixels[coord_to_index(x2,y2)].get_intensity()*(x-x1)*(y-y1);
     }
     else{
-      new_pixels_array[i] = 1; // Test with grey value
+      new_pixels_array[i] = 0; // Test with grey value
     }
   }
   m_intensity_array = new_pixels_array;
+}
+
+cv::Mat Image::rotate_opencv(float angle, Pixel& rot_point) {
+  cv::Mat result;
+  cv::Point2f p_rot(rot_point.get_x(), rot_point.get_y());
+  cv::Mat rot_mat = cv::getRotationMatrix2D(p_rot, angle, 1.0);
+  cv::warpAffine(*m_original_image, result, rot_mat, cv::Size(m_width, m_height));
+  return result;
 }

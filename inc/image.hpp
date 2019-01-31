@@ -23,40 +23,41 @@
    */
 class Image {
   private:
-    std::vector<float> m_intensity_array; /*!< 1D array of pixels reprensenting our image.*/
-    unsigned int m_height;
-    unsigned int m_width;
-    unsigned int m_size;
+    std::vector<float> m_intensity_array; /*!< 1D array of intensities scaled from 0 to 1 reprensenting our image.*/
+    int m_height;
+    int m_width;
+    int m_size;
     cv::Mat *m_original_image; /*!< We keep the Opencv image format in memory in our class to save it at the end. All the mathematical operation will be performed on the attribute m_intensity_array.*/
     std::string m_name;
-    Eigen::Matrix<float,Eigen::Dynamic,Eigen::Dynamic> m_intensity_matrix;
   public:
     Image(cv::Mat& image,const std::string& name);
     Image(const Image& other);
     ~Image();
-    float get_intensity(unsigned int k)const; /*! * \brief Getter of intensity at certain index * \param k : index.*/
-    float *get_pointer(unsigned int k);
-    cv::Mat* get_original_image();
-    void display_attributes();
+    float get_intensity(int k)const; /*! \param k : index * \return Intensity at index k of m_intensity_array.*/
+    float *get_pointer(int k); /*! \param k : index * \return Pointer towards k-th intensity in m_intensity_array .*/
+    cv::Mat* get_original_image(); /*! \param k : index * \return Adress of Mat object representing the image.*/
+    void display_attributes(); /*! \brief Displays all attributes of Image, including the full m_intensity_array.*/
     void back_to_Mat();  /*!< Update the Mat version of Image*/
-    void display_Mat();
-    float min_intensity() const;
-    float max_intensity() const;
-    void save_Mat(std::string name = "");
-    void draw_rectangle(float intensity, unsigned int origine[2], unsigned int width, unsigned int height);
-    unsigned int coord_to_index(unsigned int x, unsigned int y);
-    // unsigned int *index_to_coord(unsigned int k);
-    void symetry_x();
-    void symetry_y();
-    void symetry_diag();
-    Image symetrize();
+    void display_Mat(); /*!< Display the image in a new Window.*/
+    float min_intensity() const; /*! \return Minimum intensity in m_intensity_array*/
+    float max_intensity() const; /*! \return Maximum intensity in m_intensity_array*/
+    void save_Mat(std::string name = ""); /*! \brief Saves the image in folder "results" */
+    void draw_rectangle(float intensity, int origine[2], int width, int height); /*! \brief Draws rectangle * \param intensity : intensity of rectangle (0 to 1)
+                                                                                                                                       * \param origine : Coordinates of top left point */
+    int coord_to_index(int x, int y); /*! \return : 1D Index in m_intensity_array*/
+
+    // Symmetries //
+    void symetry_x(); /*! \brief Vertical symmetry */
+    void symetry_y(); /*! \brief Horizontal symmetry */
+    void symetry_diag(); /*! \brief Symmetry along diagonal x=y*/
+    Image symetrize(); /*! \return New image containing all symmetries vesrions */
 
     // Pressure //
     /*!
         *  \brief Application of a weight function (Exponential) on the pixels to keep just a circle of the fingerprint.
         *  \param Coordinates of the circle center.
         */
-    void weight_coeff(unsigned int x_spot, unsigned int y_spot);
+    void weight_coeff(int x_spot, int y_spot);
     /*!
         *  \brief Application of a weight function (Exponential) on the pixels to keep just an ellipse of the fingerprint.
         *  \param percentage of variation of the ellipse size.
@@ -66,19 +67,20 @@ class Image {
         *  \brief Method to find the pixel of the image at the intersection between the row and the column with the max of intensity.
         *  \return Pointer to the coordinates of the pixel found.
         */
-    unsigned int *find_max_intensity();
+    int *find_max_intensity();
     /*!
         *  \brief Method to find the parameters of the ellipse that best represents the finger.
         *  \return Pointer to the coordinates of the ellipse middle, its width and its height.
         */
-    unsigned int *find_ellipse();
+    int *find_ellipse();
 
     // Rotation //
-    std::vector<Pixel> convert_to_pixels();  /*!< Convert the m_intensity values in a vector of Pixel whose position (x,y)  are now float*/
-    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< Returns array of rotated pixels (but keep same order than convert_to_pixels)*/
-    void rotate(float angle, const Pixel& rot_point);
-    void rotate_bilinear(float angle, const Pixel& rot_point);
-    void bilinear_interpolation(std::vector<Pixel> &former_pixels);
+    std::vector<Pixel> convert_to_pixels();  /*!< \return A 1D array of Pixels representing the image*/
+    std::vector<Pixel> rotate_pixels(std::vector<Pixel>& Pixel_array, float angle, Pixel rot_Pixel); /*!< \param Pixel_array : The array of pixels to be rotated * \param angle : angle of rotation * \param rot_Pixel : rotation Pixel
+                                                                                                          \return Vector of pixels rotated*/
+    void rotate_bilinear(float angle, const Pixel& rot_point); /*!< \brief Calls rotate_pixels, interpolate, and apply rotation on Image * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
+    void bilinear_interpolation(std::vector<Pixel> &former_pixels); /*!< \brief Change the intensities value by interpolation \param former_pixels : Array of pixels to be interpolated according their position*/
+    cv::Mat rotate_opencv(float angle, Pixel& rot_point); /*!< \brief Rotation using OpenCV Library * \param angle : angle of rotation * \param rot_point : rotation Pixel*/
 
     // Warp //
     std::vector<Pixel> warp_pixels(std::vector<Pixel>& Pixel_array, float strength,  Pixel& location, float radius, int violence); /*!< Returns array of warpped pixels (but keep same order than convert_to_pixels)*/
@@ -103,6 +105,11 @@ class Image {
         *  \param Image : the modele image
         */
     float squared_error(Image &modele);
+    /*!
+        *  \param Image : the modele image
+        *  \return Sum of differences normalised to 1, divided by size.
+        */
+    float error_rate(Image &modele);
     /*!
         *  \brief lost function : Correlation between the pixels of two images.
         *  \param Image : the modele image
@@ -187,20 +194,53 @@ class Image {
         *
         *  \param table in which we put the best parameters, the modele image, a boolean which is true if the loss function used is the squared error, false if it's the correlation.
         */
-    void coord_descent(float p_0[3],Image &modele, bool squared);
+    void coord_descent(float p_0[3],Image &modele, bool squared, bool plot);
     /*!
         *  \brief Compute one step on the algorithm of coordinates descent for one parameter.
         *
         *  \param  a boolean : true if the loss function used is the squared error, false if it's the correlation, the modele image,
         *  table in which we put the parameters, a vector with the percentages of increasing or decreasing of each parameter, the value of the loss function, a copy of the pixel values of the original image.
         */
-    void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, unsigned int k, float &l, std::vector<float> &copy_intensity_array);
+    void one_step_opti(bool squared, Image &modele, float p_0[3], std::vector<float> &alpha, int k, float &l, std::vector<float> &copy_intensity_array);
 
     // Linear filtering //
+    /*!
+        *  \brief Convolute the image with a kernel (2D convolution).
+        *  \param kernel : The kernel must be under 1D form. No need to pad the kernel.
+        */
     void convolute_classic(std::vector<float> kernel);
+    /*!
+        *  \brief  Classic convolution of an image and a kernel
+        *
+        *
+        *  \param  kernel : The kernel is a 1D float array whose size is a square of an odd number.
+        */
     void convolute_opti(std::vector<float> kernel_col, std::vector<float> kernel_line);
-    void convolute_blur(float size,float r,float s);
+    /*!
+        *  \brief  Convolution with separated kernel.
+        *   This convolution works by making two 1D convolution  with the two 1D Kernel given in order to optimize the time of the convolution.
+        *
+        *  \param  kernel_col : This  kernel is a 1D float array whose size is a an odd number. A convolution along the y axis will be performed with this kernnel.
+        *  \param  kernel_line : This kernel is a 1D float array whose size is a an odd number. A convolution along the x axis will be performed with this kernnel.
+        */
+    void convolute_blur(int kernel_radius,float speed);
+    /*!
+        *  \brief  Convolution to simulate blur artefact.
+        *   This convolution try to simulate the blur artefact. Unlike the other convolution, this one  uses a kernel whose values is space dependant. The center of the fingerprint and its size are self-detected.
+        *
+        *  \param kernel_radius : The radius of the blur kernel used. The size of the kernel will be 2*kernel_radius + 1 .
+        *  \param  speed : speed of transition between the blur and sharp region.
+        */
     cv::Mat fourier_convolution(cv::Mat& kernel);
+    /*!
+        *  \brief  Convolution in fourrier space.
+        *   Convolute in fourrier space by realising a pointwise multiplication with the kernel wich is going to be shiftrf clerverly.
+        *
+        *  \param kernel : The kernel has to be the same size of the image, at the center of the image, and 0 padded elsewhere. The shifting of the kernel will be done inside the method.
+        *
+        */
+
+
 
     // DFT //
     Image DFT();
