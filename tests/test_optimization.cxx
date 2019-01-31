@@ -66,7 +66,6 @@ TEST(coord_descent, px_py_angle) {
     ASSERT_NEAR(p_att[2], p[2], 0.001);
 }
 
-
 int main(int argc, char *argv[]) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
