@@ -54,7 +54,7 @@ void Image::weight_coeff_ellipse(float percentage){
 }
 
 int *Image::find_max_intensity(){
-  int res = new int[2]; // TO FIX Free somewhere but we may not need to use a dynamic allocation for these array
+  int *res = new int[2]; // TO FIX Free somewhere but we may not need to use a dynamic allocation for these array
   float intensity_col_min = m_height;
   float intensity_row_min = m_width;
   for (int x = 0; x < m_width; x++) {
