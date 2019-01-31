@@ -1,9 +1,16 @@
 #include "linear_filter.hpp"
 
 int main(int argc, char const *argv[]) {
-
   cv::Mat m_image1;
-  std::string m_name = (std::string)argv[1];
+  std::string m_name ;
+  if (argc == 1){
+    m_name = "../ressources/woman.png" ;
+  }
+  else{
+    m_name = (std::string)argv[1];
+  }
+
+
   m_image1 = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   cv::Mat m_image2;
   m_image2 = cv::imread(m_name, cv::IMREAD_GRAYSCALE);

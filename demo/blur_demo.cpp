@@ -4,7 +4,7 @@ int main(int argc, char const *argv[]) {
   cv::Mat m_image1;
   std::string m_name ;
   if (argc == 1){
-    m_name = "../ressources/woman.png" ;
+    m_name = "../ressources/Rotation4/5.png" ;
   }
   else{
     m_name = (std::string)argv[1];
