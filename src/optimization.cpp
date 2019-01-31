@@ -259,11 +259,6 @@ void Image::opti_subpixel(float p[2], Image &modele, bool squared){
 }
 
 
-float* Image::opti_greedy_fast_xy_aux(float p[2], Image &modele, bool squared, bool plot){
-  this->opti_greedy_fast_xy(p, modele, squared, plot);
-  return p;
-}
-
 void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool plot){
   std::ofstream fichier;
   if (plot == true) {
