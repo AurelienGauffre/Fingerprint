@@ -245,13 +245,11 @@ void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool pl
   }
   int *max_intensity1 = this->find_max_intensity();
   int *max_intensity2 = modele.find_max_intensity();
-  std::cout << max_intensity1[0] << " " << max_intensity1[1] << " " << max_intensity2[0] << " " << max_intensity2[1] << std::endl;
   int diff_x = max_intensity2[0] - max_intensity1[0];
   int diff_y = max_intensity2[1] - max_intensity1[1];
   delete max_intensity1;
   delete max_intensity2;
   this->translation(diff_x,diff_y);
-  this->display_Mat();
   float percentage = 0.2;
   std::vector<int> list_px, list_py;
   std::vector<float> list_l;
@@ -314,7 +312,6 @@ void Image::opti_rough(float p[3], Image &modele, bool squared){
 
 void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
   this->opti_rough(p, modele, squared);
-  std::cout << p[0] << " " << p[1] << " " << p[2] << std::endl;
   std::vector<int> list_px, list_py;
   std::vector<float> list_l;
   std::vector<float> list_angles;
