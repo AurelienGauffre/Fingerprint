@@ -309,15 +309,15 @@ Mat Image::fourier_convolution(Mat& kernel)
 
    // Display Fourier-domain result
    Mat magI = updateMag(DFTimage);
-   imshow("spectrum magnitude", magI);
-   cv::waitKey(0);
+   // imshow("spectrum magnitude", magI);
+   // cv::waitKey(0);
 
    // IDFT
    Mat work;
    idft(DFTimage, work, DFT_REAL_OUTPUT); // <- NOTE! Don't inverse transform log-transformed magnitude image!
 
    Mat output_image;
-   work.convertTo(output_image, CV_8UC1, 255.0/16777216); // We have to rescale by 2^24, then multiply by 255.
+   work.convertTo(output_image, CV_8UC1, 255.0/16777216.0); // We have to rescale by 2^24, then multiply by 255.
    return output_image;
 }
 
