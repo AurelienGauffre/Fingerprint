@@ -22,37 +22,17 @@ int main(int argc, char const *argv[]) {
   // std::cout << "p : " << p << std::endl;
 
   // float p[2];
-  // std::clock_t start;
-  // double duration;
-  // start = std::clock();
   // im1.opti_greedy_fast_xy(p,im2,true,false);
-  // duration = (std::clock()- start)/(double)CLOCKS_PER_SEC;
-  // std::cout << "Execution time : " << duration << std::endl;
   // std::cout << "px : " << p[0] << "py : " << p[1] << std::endl;
 
   // float p[2];
-  // std::clock_t start;
-  // double duration;
-  // start = std::clock();
   // im1.opti_subpixel(p,im2,true);
-  // duration = (std::clock()- start)/(double)CLOCKS_PER_SEC;
-  // std::cout << "Execution time : " << duration << std::endl;
   // std::cout << "px : " << p[0] << "py : " << p[1] << std::endl;
 
   float p[3];
-  // clock_t start;
-  // double duration;
-  // start = clock();
   im1.opti_greedy_fast_rxy(p,im2,true);
-  // duration = (clock()- start)/(double)CLOCKS_PER_SEC;
-  // std::cout << "Execution time : " << duration << std::endl;
   std::cout << "After approx px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
-  // clock_t start2;
-  // double duration2;
-  // start2 = clock();
   im1.coord_descent(p,im2,true,false);
-  // duration2 = (clock()- start2)/(double)CLOCKS_PER_SEC;
-  // std::cout << "Execution time : " << duration2 << std::endl;
   std::cout << "After coord_descent px : " << p[0] << " py : " << p[1] << " angle : " << p[2] << std::endl;
 
   // im1.rotate_bilinear(0.260269,Pixel(128,144));
