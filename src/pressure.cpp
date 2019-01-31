@@ -95,5 +95,6 @@ int *Image::find_ellipse(){
   //0.7 is approximately the quotient between the width and the height of a fingerprint
   res[2] = int(nb_non_white_col/2)*0.7; //width
   res[3] = int(nb_non_white_col/2); //height
+  delete max_intensity;
   return res;
 }

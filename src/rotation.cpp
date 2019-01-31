@@ -23,14 +23,18 @@ std::vector<Pixel> Image::rotate_pixels(std::vector<Pixel>& Pixel_array, float a
 }
 
 
-void Image::rotate_bilinear(float angle, const Pixel& rot_point) {
+void Image::rotate_bilinear(float angle, const Pixel& rot_point, bool fill_black) {
   std::vector<Pixel> pixels(this->convert_to_pixels());
   std::vector<Pixel> former_pixels(this->rotate_pixels(pixels,angle, rot_point));
-  this->bilinear_interpolation(former_pixels);
+  this->bilinear_interpolation(former_pixels, fill_black);
 }
 
-void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
+void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels, bool fill_black){
   std::vector<float> new_pixels_array(m_size);
+  int fill = 1;
+  if (fill_black) {
+    fill = 0;
+  }
   for (int i = 0; i < m_size; i++) {
     float x = former_pixels[i].get_x();
     float y = former_pixels[i].get_y();
@@ -46,7 +50,7 @@ void Image::bilinear_interpolation(std::vector<Pixel> &former_pixels){
       former_pixels[coord_to_index(x2,y2)].get_intensity()*(x-x1)*(y-y1);
     }
     else{
-      new_pixels_array[i] = 0; // Test with grey value
+      new_pixels_array[i] = fill;
     }
   }
   m_intensity_array = new_pixels_array;

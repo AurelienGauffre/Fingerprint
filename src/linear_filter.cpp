@@ -218,7 +218,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
 
   m_intensity_array = new_intensity ;
   *this = (*this-mini_intensity)*(1.0/(maxi_intensity-mini_intensity)) ;
-
+  delete ellipse;
 }
 
 void shift(Mat magI) {

@@ -13,7 +13,7 @@ TEST(rotate_bilinear, erreur_rotation) {
     Image our_rot(ref);
     float angle_rad = angle/360.0*M_PI*2.0;
 
-    our_rot.rotate_bilinear(angle_rad, rot_pix);
+    our_rot.rotate_bilinear(angle_rad, rot_pix,true);
     our_rot.back_to_Mat();
 
     cv::Mat mat_rotated = ref.rotate_opencv(angle, rot_pix);

@@ -120,7 +120,7 @@ void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (int k = -(int)(m_width/2); k < (int)(m_width/2); k++) {
+  for (int k = (int)((int)(-m_width)/2); k < (int)(m_width/2); k++) {
     list_px.push_back(k);
   }
   for (unsigned int k = 0; k < list_px.size(); k++) {
@@ -144,10 +144,10 @@ void Image::opti_greedy_xy(float p[2], Image &modele, bool squared){
   std::vector<float> list_l;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (int k = -(int)(m_width/2); k < (int)(m_width/2); k++) {
+  for (int k = (int)((int)(-m_width)/2); k < (int)(m_width/2); k++) {
     list_px.push_back(k);
   }
-  for (int k = -(int)(m_height/2); k < (int)(m_height/2); k++) {
+  for (int k = (int)((int)(-m_height)/2); k < (int)(m_height/2); k++) {
     list_py.push_back(k);
   }
   for (unsigned int i = 0; i < list_px.size(); i++) {
@@ -247,6 +247,8 @@ void Image::opti_greedy_fast_xy(float p[2], Image &modele, bool squared, bool pl
   int *max_intensity2 = modele.find_max_intensity();
   int diff_x = max_intensity2[0] - max_intensity1[0];
   int diff_y = max_intensity2[1] - max_intensity1[1];
+  delete max_intensity1;
+  delete max_intensity2;
   this->translation(diff_x,diff_y);
   float percentage = 0.2;
   std::vector<int> list_px, list_py;
