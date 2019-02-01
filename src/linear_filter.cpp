@@ -316,8 +316,9 @@ Mat Image::fourier_convolution(Mat& kernel)
    Mat work;
    idft(DFTimage, work, DFT_REAL_OUTPUT); // <- NOTE! Don't inverse transform log-transformed magnitude image!
 
+   normalize(work, work, 0, 1, NORM_MINMAX, work.type() );
    Mat output_image;
-   work.convertTo(output_image, CV_8UC1, 255.0/16777216.0); // We have to rescale by 2^24, then multiply by 255.
+   work.convertTo(output_image, CV_8UC1, 255.0); // We have to rescale by 2^24, then multiply by 255.
    return output_image;
 }
 

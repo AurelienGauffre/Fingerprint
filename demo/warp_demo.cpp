@@ -10,16 +10,20 @@ int main(int argc, char const *argv[]) {
   else{
     m_name = (std::string)argv[1];
   }
-  float strength = -M_PI*3/12;
+  cv::Mat m_image;
+  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Pixel location(160,330);
   float radius = 70;
   int violence = 2;
-
-  cv::Mat m_image;
-  m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
-  Image im1(m_image, m_name);
-  im1.warp(strength, location, radius, violence);
-  im1.display_Mat();
-//  im1.save_Mat("Swirl.png");
+  for (float i = 1; i<=8.0; i++) {
+    float strength = -M_PI*i/24;
+    cv::Mat m_im1 = m_image.clone();
+    Image im1(m_im1, m_name);
+    im1.warp(strength, location, radius, violence);
+    im1.save_Mat();
+    im1.display_Mat();
+  }
   return 0;
+
+
 }
