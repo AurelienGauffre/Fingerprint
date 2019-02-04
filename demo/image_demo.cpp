@@ -1,8 +1,14 @@
 #include "image.hpp"
 
 int main(int argc, char const *argv[]) {
-  (void)argc;
-  std::string m_name = (std::string) argv[1];
+  std::cout << "Demo image :" << std::endl ;
+  std::string m_name;
+  if (argc == 2){
+    m_name = (std::string)argv[1];
+  }
+  else{
+    m_name = "../ressources/clean_finger.png" ;
+  }
   cv::Mat m_image;
   m_image = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image im1(m_image, m_name);

@@ -30,7 +30,6 @@ float Image::squared_error(Image &modele){
       sum += std::pow(diff,2);
     }
   }
-  this->Absolute_error_image(modele);
   return sum;
 }
 
@@ -310,7 +309,6 @@ void Image::opti_rough(float p[3], Image &modele, bool squared){
   p[1] = list_py[((index)%(list_px.size()*list_py.size()))/list_px.size()];
   p[2] = list_angles[(int)((float)index)/(float)(list_px.size()*list_py.size())];
   m_intensity_array = copy_intensity_array;
-  std::cout<<p[0]<<" "<<p[1]<<" "<<p[2]<<std::endl;
 }
 
 void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
@@ -320,10 +318,10 @@ void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
   std::vector<float> list_angles;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (int k = p[0] -25; k < p[0] + 25; k+=2) {
+  for (int k = p[0] -30; k < p[0] + 30; k+=2) {
     list_px.push_back(k);
   }
-  for (int k = p[1] -25; k < p[1] + 25; k+=2) {
+  for (int k = p[1] -30; k < p[1] + 30; k+=2) {
     list_py.push_back(k);
   }
   for (float k = p[2] - 0.5; k < p[2] + 0.5; k+=0.1) {
