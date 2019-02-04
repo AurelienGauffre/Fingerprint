@@ -168,11 +168,11 @@ void Image::convolute_blur(int kernel_radius,float speed){
       }
       int diff_x = x - x_center;
       int diff_y = y - y_center;
-      float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*0.7);
-      float c_r = weight_exp(1.0/ellipse[2],speed,rad);
-      float c_r_2 = weight_exp(0.65/ellipse[2],speed,rad);
+      float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*.6);
+
+      float c_r_2 = weight_exp(1.1/ellipse[2],2*speed,rad);
     //  c_r= c_r +std::abs(cos(100*x/m_width)*cos(100*y/m_height));
-      new_intensity[coord_to_index(x,y)] = std::pow(c_r*res+(1-c_r)*std::max(blur_image.m_intensity_array[coord_to_index(x,y)],res),c_r_2);
+      new_intensity[coord_to_index(x,y)] = res*c_r_2 + (1-c_r_2)*std::pow(res,1-blur_image.m_intensity_array[coord_to_index(x,y)]); //std::pow(c_r*res+(1-c_r)*std::max(blur_image.m_intensity_array[coord_to_index(x,y)],res),c_r_2);
     }
 
   }
@@ -204,11 +204,10 @@ void Image::convolute_blur(int kernel_radius,float speed){
       }
       int diff_x = x - x_center;
       int diff_y = y - y_center;
-      float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*0.7);
-      float c_r = weight_exp(1.0/ellipse[2],speed,rad);
-      float c_r_2 = weight_exp(0.65/ellipse[2],speed,rad);
+      float rad = std::sqrt(std::pow(diff_x,2) + std::pow(diff_y,2)*.6);
+      float c_r_2 = weight_exp(1.1/ellipse[2],speed,rad);
     //  c_r= c_r +std::abs(cos(100*x/m_width)*cos(100*y/m_height));
-    new_intensity[coord_to_index(x,y)] =std::pow(c_r*res+(1-c_r)*std::max(blur_image.m_intensity_array[coord_to_index(x,y)],res),c_r_2);
+    new_intensity[coord_to_index(x,y)] =res*c_r_2 + (1-c_r_2)*std::pow(res,1-blur_image.m_intensity_array[coord_to_index(x,y)]);
 
       if (res>maxi_intensity) maxi_intensity = res ;
 
@@ -308,16 +307,16 @@ Mat Image::fourier_convolution(Mat& kernel)
    mulSpectrums(DFTimage, DFTkernel, DFTimage, 0);
 
    // Display Fourier-domain result
-   Mat magI = updateMag(DFTimage);
-   imshow("spectrum magnitude", magI);
-   cv::waitKey(0);
+   // Mat magI = updateMag(DFTimage);
+   // imshow("spectrum magnitude", magI);
+   // cv::waitKey(0);
 
    // IDFT
    Mat work;
    idft(DFTimage, work, DFT_REAL_OUTPUT); // <- NOTE! Don't inverse transform log-transformed magnitude image!
 
    Mat output_image;
-   work.convertTo(output_image, CV_8UC1, 255.0/16777216); // We have to rescale by 2^24, then multiply by 255.
+   work.convertTo(output_image, CV_8UC1, 255.0/16777216.0); // We have to rescale by 2^24, then multiply by 255.
    return output_image;
 }
 
