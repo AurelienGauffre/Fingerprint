@@ -1,4 +1,4 @@
-:construction: work in progress... :construction:
+
 
 # fingerprint 👆
 The aim of this project is to find mathematical filters and models which best simulate artefacts that could occur during the fingerprint acquisition.
@@ -12,7 +12,13 @@ fingerprint$ cd build
 fingerprint/build$ cmake ..
 #Make :
 fingerprint/build$ make
+# This is how to execute a demo file :
 fingerprint/build$ ./demo/rotation_demo
 #If you want to test with a particular image, you can give it as an argument :
 fingerprint/build$ ./demo/rotation_demo ./../ressources/clean_finger.png
+# To call one of the tests :
+fingerprint/build$ ./tests/test_rotation
+
 ```
+:construction: Warning :construction:
+You have to execute the demo and tests files from the build directory as described above if you want the standard images to be properly called.
