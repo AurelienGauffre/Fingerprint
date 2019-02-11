@@ -13,11 +13,18 @@ target_link_libraries(image_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(pressure_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(rotation_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(warp_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
-
 target_link_libraries(convolution_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+<<<<<<< HEAD
+target_link_libraries(optimization_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+target_link_libraries(rot_comp ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+target_link_libraries(blur_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+target_link_libraries(time_convolution ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+target_link_libraries(dft_convolution_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+=======
 target_link_libraries(optimization_tx_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(optimization_txy_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(optimization_rtxy_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(rot_comp ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(blur_demo ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
 target_link_libraries(time_convolution ${OpenCV_LIBRARIES} ${Eigen3_LIBS} fingerprint)
+>>>>>>> 2f8c0fc03fb8bd8eea78132ea631399238d9855b
