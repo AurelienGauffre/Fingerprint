@@ -318,13 +318,13 @@ void Image::opti_greedy_fast_rxy(float p[3], Image &modele, bool squared){
   std::vector<float> list_angles;
   std::vector<float> copy_intensity_array(m_size);
   copy_intensity_array = m_intensity_array;
-  for (int k = p[0] -12; k < p[0] + 12; k+=2) {
+  for (int k = p[0] -30; k < p[0] + 30; k+=2) {
     list_px.push_back(k);
   }
-  for (int k = p[1] -12; k < p[1] + 12; k+=2) {
+  for (int k = p[1] -30; k < p[1] + 30; k+=2) {
     list_py.push_back(k);
   }
-  for (float k = p[2] - 0.7; k < p[2] + 0.7; k+=0.1) {
+  for (float k = p[2] - 0.5; k < p[2] + 0.5; k+=0.1) {
     list_angles.push_back(k);
   }
   for (unsigned int i = 0; i < list_angles.size(); i++) {
