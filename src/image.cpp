@@ -29,10 +29,11 @@ Image::Image(cv::Mat& image, const std::string& name){
   m_size = m_width*m_height;
   m_original_image = new(cv::Mat);
   *m_original_image = image.clone();
+  m_intensity_array.resize(m_size, 0);
   for (int i = 0; i < m_height; i++){
     for (int j = 0; j < m_width; j++){
       //Convertes intensities to float between 0 and 1
-      m_intensity_array.push_back(((int)(image.at<uchar>(i, j)))/255.0);
+      m_intensity_array[coord_to_index(j,i)] = static_cast<float>((static_cast<int>(image.at<uchar>(i, j)))/255.0);
     }
   }
 }
