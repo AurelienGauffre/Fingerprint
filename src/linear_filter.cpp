@@ -149,6 +149,9 @@ void Image::convolute_blur(int kernel_radius,float speed){
         float intensity = 0 ;
         bool in_height= between(y-j,0,m_height);
         if(in_height){
+          //std::cout << "x :" << x << "  y :" << y << "  j : " << j << '\t' << y-j << '\n';
+          int index = coord_to_index(x,y-j);
+          if (index>=m_size) {std::cout << index << '\n';}
           intensity = m_intensity_array[coord_to_index(x,y-j)];
         }
         else{ // The pixel is either over or under the image
