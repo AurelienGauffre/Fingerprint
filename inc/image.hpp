@@ -72,7 +72,7 @@ class Image {
         *  \brief Method to find the parameters of the ellipse that best represents the finger.
         *  \return Pointer to the coordinates of the ellipse middle, its width and its height.
         */
-    int *find_ellipse();
+    std::array<int, 4> find_ellipse();
 
     // Rotation //
     std::vector<Pixel> convert_to_pixels();  /*!< \return A 1D array of Pixels representing the image*/

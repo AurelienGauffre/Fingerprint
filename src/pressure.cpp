@@ -36,7 +36,7 @@ float weight_exp(float coeff, int power, float r){
 
 
 void Image::weight_coeff_ellipse(float percentage){
-  int *ellipse = this->find_ellipse();
+  std::array<int, 4> ellipse = this->find_ellipse();
   //We want to keep an ellipse of width percentage*ellipse_width
   float coeff = 1.0/(percentage*ellipse[2]);
   for (int y = 0; y < m_height; y++) {
@@ -50,7 +50,6 @@ void Image::weight_coeff_ellipse(float percentage){
       m_intensity_array[coord_to_index(x,y)] = std::sin((M_PI/2)*m_intensity_array[coord_to_index(x,y)]);
     }
   }
-  delete[] ellipse;
 }
 
 int *Image::find_max_intensity(){
@@ -81,7 +80,7 @@ int *Image::find_max_intensity(){
 }
 
 
-int *Image::find_ellipse(){
+std::array<int, 4> Image::find_ellipse(){
   int *max_intensity = this->find_max_intensity();
   int nb_non_white_col = 0;
   for (int y = 0; y < m_height; y++) {
@@ -89,7 +88,7 @@ int *Image::find_ellipse(){
       nb_non_white_col ++;
     }
   }
-  int *res = new int[4]; // TO FIX
+  std::array<int, 4> res; // TO FIX
   res[0] = max_intensity[0]; //abscissa of the center
   res[1] = m_height - int(nb_non_white_col/2); //ordinate of the center
   //0.7 is approximately the quotient between the width and the height of a fingerprint

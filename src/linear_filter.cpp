@@ -10,7 +10,7 @@
 using namespace cv;
 
 void Image::convolute_classic(std::vector<float> kernel){
-  int a = ((int)(std::pow(kernel.size(),0.5))-1)/2; // We extract the horizontal radius a of the kernel
+  int a = static_cast<int>((std::pow(kernel.size(),0.5)-1)/2); // We extract the horizontal radius a of the kernel
   int b = a ;  // The vertical radius is currently equals to horizontal one : we work only with squared kernels
 
   // The minimum and maximum intensity of the image have to be caclulated to normalize it at the end (the value of the image pixels has to belong to [0,1])
@@ -23,8 +23,8 @@ void Image::convolute_classic(std::vector<float> kernel){
       for(int i = -a;i<=a;i++){
         for(int j = -b;j<=b;j++){
           float intensity = 0 ;
-          bool in_width = between(x-i,0,m_width);
-          bool in_height= between(y-j,0,m_height);
+          bool in_width = between(x-i,0,m_width-1);
+          bool in_height= between(y-j,0,m_height-1);
           // Mirror edge handling :
           if(in_width&&in_height){ // The pixel is in the image
             intensity = m_intensity_array[coord_to_index(x-i,y-j)];
@@ -37,7 +37,7 @@ void Image::convolute_classic(std::vector<float> kernel){
               intensity = m_intensity_array[coord_to_index(x-i,-y+j-1)];
             }
             else{ // The pixel is under the image
-              intensity = m_intensity_array[coord_to_index(x-i,2*m_height-y+j+1)] ;
+              intensity = m_intensity_array[coord_to_index(x-i,2*(m_height-1)-y+j+1)] ;
             }
           }
           else{ // The pixel is either on the right or on the left of the image
@@ -46,7 +46,9 @@ void Image::convolute_classic(std::vector<float> kernel){
               intensity = m_intensity_array[coord_to_index(-x+i-1,y-j)];
             }
             else{ // The pixel is on the right of the image
-              intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y-j)];
+              int index = coord_to_index(2*(m_width-1)-x+i+1,y-j);
+              if (index>=m_size) {std::cout << index << " x:" << x << " i:" << i << " y:" << y << " j:" << j << '\n';}
+              intensity = m_intensity_array[coord_to_index(2*(m_width-1)-x+i+1,y-j)];
             }
           }
           res+= intensity*kernel[(2*a+1)*(a-i)+(b-j)];
@@ -73,7 +75,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
       float res = 0 ;
       for(int j = -b;j<=b;j++){
         float intensity = 0 ;
-        bool in_height= between(y-j,0,m_height);
+        bool in_height= between(y-j,0,m_height-1);
         if(in_height){ // The pixel is in the image
           intensity = m_intensity_array[coord_to_index(x,y-j)];
         }
@@ -82,7 +84,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
             intensity = m_intensity_array[coord_to_index(x,-y+j-1)];
           }
           else{ // The pixel is under the image
-            intensity = m_intensity_array[coord_to_index(x,2*m_height-y+j+1)] ;
+            intensity = m_intensity_array[coord_to_index(x,2*(m_height-1)-y+j+1)] ;
           }
         }
         res+= intensity*kernel_col[b-j];
@@ -97,7 +99,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
       float res = 0 ;
       for(int i = -a;i<=a;i++){
         float intensity = 0 ;
-        bool in_width = between(x-i,0,m_width);
+        bool in_width = between(x-i,0,m_width-1);
 
         if(in_width){ // The pixel is in the image
           intensity = m_intensity_array[coord_to_index(x-i,y)];
@@ -107,7 +109,7 @@ void Image::convolute_opti(std::vector<float> kernel_col,std::vector<float> kern
             intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
           }
           else{ // The pixel is on the right of the image
-            intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y)];
+            intensity = m_intensity_array[coord_to_index(2*(m_width-1)-x+i+1,y)];
           }
         }
         res+= intensity*kernel_line[a-i];
@@ -138,7 +140,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
   Image blur_image(blur_Mat,"blur_image");
 
   // Autodection of the center of the finger (already used in pressure.cpp)
-  int *ellipse = this->find_ellipse();
+  std::array<int, 4> ellipse = this->find_ellipse();
   int x_center = ellipse[0];
   int y_center = ellipse[1];
 
@@ -147,19 +149,17 @@ void Image::convolute_blur(int kernel_radius,float speed){
       float res = 0 ;
       for(int j = -kernel_radius;j<=kernel_radius;j++){
         float intensity = 0 ;
-        bool in_height= between(y-j,0,m_height);
+        bool in_height= between(y-j,0,m_height-1);
         if(in_height){
-          //std::cout << "x :" << x << "  y :" << y << "  j : " << j << '\t' << y-j << '\n';
           int index = coord_to_index(x,y-j);
-          if (index>=m_size) {std::cout << index << '\n';}
-          intensity = m_intensity_array[coord_to_index(x,y-j)];
+          intensity = m_intensity_array[index];
         }
         else{ // The pixel is either over or under the image
           if(y-j < 0){ // The pixel is above the image
             intensity = m_intensity_array[coord_to_index(x,-y+j-1)];
           }
           else{ // The pixel is under the image
-            intensity = m_intensity_array[coord_to_index(x,2*m_height-y+j+1)] ;
+            intensity = m_intensity_array[coord_to_index(x,2*(m_height-1)-y+j+1)] ;
           }
         }
         int diff_x = x - x_center;
@@ -184,7 +184,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
       float res = 0 ;
       for(int i = -kernel_radius;i<=kernel_radius;i++){
         float intensity = 0 ;
-        bool in_width = between(x-i,0,m_width);
+        bool in_width = between(x-i,0,m_width-1);
 
         if(in_width){ // The pixel is in the image
           intensity = m_intensity_array[coord_to_index(x-i,y)];
@@ -194,7 +194,7 @@ void Image::convolute_blur(int kernel_radius,float speed){
             intensity = m_intensity_array[coord_to_index(-x+i-1,y)];
           }
           else{ // The pixel is on the right of the image
-            intensity = m_intensity_array[coord_to_index(2*m_width-x+i+1,y)];
+            intensity = m_intensity_array[coord_to_index(2*(m_width-1)-x+i+1,y)];
           }
         }
 
@@ -219,7 +219,6 @@ void Image::convolute_blur(int kernel_radius,float speed){
 
   m_intensity_array = new_intensity ;
   *this = (*this-mini_intensity)*(1.0/(maxi_intensity-mini_intensity)) ;
-  delete ellipse;
 }
 
 void shift(Mat magI) {
