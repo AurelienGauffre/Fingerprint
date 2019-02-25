@@ -16,7 +16,7 @@
 Image::Image(cv::Mat& image, const std::string& name){
   char s = '/';
   int pos = 0;
-  for ( int k = name.size() - 1; (name[k] != s)&&(k>=0); k--){
+  for ( int k = name.size() - 1; (k>=0)&&(name[k] != s); k--){
     pos = k;
   }
   if (pos == -1){

@@ -1,17 +1,24 @@
 #include "image.hpp"
 
 int main(int argc, char const *argv[]) {
+  (void)argc;
   Pixel rot_pix(128,144);
   cv::Mat modele;
-  std::string name_modele = "../ressources/clean_finger.png";
-  modele = cv::imread(name_modele, cv::IMREAD_GRAYSCALE);
+  std::string m_name;
+  if (argc == 1){
+    m_name = "../ressources/clean_finger.png" ;
+  }
+  else{
+    m_name = (std::string)argv[1];
+  }
+  modele = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image ref(modele, "reference");
   float max_error = 0;
   for (int angle = 10; angle < 360; angle+=10) {
     Image our_rot(ref);
     float angle_rad = angle/360.0*M_PI*2.0;
 
-    our_rot.rotate_bilinear(angle_rad, rot_pix);
+    our_rot.rotate_bilinear(angle_rad, rot_pix, true);
     our_rot.back_to_Mat();
     cv::Mat mat_rotated = ref.rotate_opencv(angle, rot_pix);
     Image ocv_rot(mat_rotated, "Res");

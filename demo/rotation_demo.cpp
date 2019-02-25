@@ -4,7 +4,6 @@ int main(int argc, char const *argv[]) {
   std::cout << "Demo rotation :" << std::endl ;
   std::string m_name;
   if (argc == 1){
-    //m_name = "../ressources/Rotation4/5.png" ;
     m_name = "../ressources/Rotation4/5.png" ;
   }
   else{
