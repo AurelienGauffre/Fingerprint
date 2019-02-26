@@ -9,7 +9,7 @@ TEST(optimize, max_or_min_list) {
 }
 
 
-TEST(opti_greedy_x_aux, px_translation) {
+TEST(opti_greedy_x, px_translation) {
     float px;
     cv::Mat modele;
     std::string name_modele = "../ressources/clean_finger.png";
@@ -20,7 +20,8 @@ TEST(opti_greedy_x_aux, px_translation) {
     std::string name_image = "../ressources/clean_finger.png";
     image = cv::imread(name_image, cv::IMREAD_GRAYSCALE);
     Image im1(image, name_image);
-    ASSERT_EQ(3.0 , im1.opti_greedy_x_aux(px, im2, true, false));
+    im1.opti_greedy_x(px, im2, true, false);
+    ASSERT_EQ(3.0 , px);
 }
 
 

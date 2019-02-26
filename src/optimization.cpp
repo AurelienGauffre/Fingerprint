@@ -102,11 +102,6 @@ int optimize(std::vector<float> list_l, bool squared){
 }
 
 
-float Image::opti_greedy_x_aux(float &px, Image &modele, bool squared, bool plot) {
-  this->opti_greedy_x(px, modele, squared, plot);
-  return px;
-}
-
 
 void Image::opti_greedy_x(float &px, Image &modele, bool squared, bool plot){
   std::ofstream fichier;
