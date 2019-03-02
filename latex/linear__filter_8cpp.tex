@@ -1,0 +1,73 @@
+\hypertarget{linear__filter_8cpp}{}\section{src/linear\+\_\+filter.cpp File Reference}
+\label{linear__filter_8cpp}\index{src/linear\+\_\+filter.\+cpp@{src/linear\+\_\+filter.\+cpp}}
+
+
+Definition of methods concerning the linear filtering.  
+
+
+{\ttfamily \#include \char`\"{}linear\+\_\+filter.\+hpp\char`\"{}}\newline
+Include dependency graph for linear\+\_\+filter.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{linear__filter_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{linear__filter_8cpp_a856caac33d6b5cf718f168e8a14aaed3}{shift} (Mat magI)
+\item 
+Mat \hyperlink{linear__filter_8cpp_a450e66dbcac8bcfbb551c88196e96529}{update\+Mag} (Mat complex)
+\item 
+Mat \hyperlink{linear__filter_8cpp_a7da1ca57ead7bbf0d2ce4432bd3a72f0}{create\+Filter\+Mask} (Size imsize, const Mat \&kernelX, const Mat \&kernelY)
+\item 
+std\+::vector$<$ float $>$ \hyperlink{linear__filter_8cpp_ab0856ea1389c695cc6a92d52dd655007}{Mat\+\_\+to\+\_\+vector} (const Mat \&matrix)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Definition of methods concerning the linear filtering. 
+
+Implementation of functions used for 2D convolution.
+
+\begin{DoxyAuthor}{Author}
+Perrine, Célestine, Aurélien, Lucas 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+01/21/2019
+\end{DoxyDate}
+\begin{DoxyAuthor}{Author}
+Perrine, Célestine, Aurélien, Lucas 
+\end{DoxyAuthor}
+\begin{DoxyDate}{Date}
+19.\+01.\+2019 
+\end{DoxyDate}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{linear__filter_8cpp_a7da1ca57ead7bbf0d2ce4432bd3a72f0}\label{linear__filter_8cpp_a7da1ca57ead7bbf0d2ce4432bd3a72f0}} 
+\index{linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}!create\+Filter\+Mask@{create\+Filter\+Mask}}
+\index{create\+Filter\+Mask@{create\+Filter\+Mask}!linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}}
+\subsubsection{\texorpdfstring{create\+Filter\+Mask()}{createFilterMask()}}
+{\footnotesize\ttfamily Mat create\+Filter\+Mask (\begin{DoxyParamCaption}\item[{Size}]{imsize,  }\item[{const Mat \&}]{kernelX,  }\item[{const Mat \&}]{kernelY }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{linear__filter_8cpp_ab0856ea1389c695cc6a92d52dd655007}\label{linear__filter_8cpp_ab0856ea1389c695cc6a92d52dd655007}} 
+\index{linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}!Mat\+\_\+to\+\_\+vector@{Mat\+\_\+to\+\_\+vector}}
+\index{Mat\+\_\+to\+\_\+vector@{Mat\+\_\+to\+\_\+vector}!linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}}
+\subsubsection{\texorpdfstring{Mat\+\_\+to\+\_\+vector()}{Mat\_to\_vector()}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ Mat\+\_\+to\+\_\+vector (\begin{DoxyParamCaption}\item[{const Mat \&}]{matrix }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{linear__filter_8cpp_a856caac33d6b5cf718f168e8a14aaed3}\label{linear__filter_8cpp_a856caac33d6b5cf718f168e8a14aaed3}} 
+\index{linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}!shift@{shift}}
+\index{shift@{shift}!linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}}
+\subsubsection{\texorpdfstring{shift()}{shift()}}
+{\footnotesize\ttfamily void shift (\begin{DoxyParamCaption}\item[{Mat}]{magI }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{linear__filter_8cpp_a450e66dbcac8bcfbb551c88196e96529}\label{linear__filter_8cpp_a450e66dbcac8bcfbb551c88196e96529}} 
+\index{linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}!update\+Mag@{update\+Mag}}
+\index{update\+Mag@{update\+Mag}!linear\+\_\+filter.\+cpp@{linear\+\_\+filter.\+cpp}}
+\subsubsection{\texorpdfstring{update\+Mag()}{updateMag()}}
+{\footnotesize\ttfamily Mat update\+Mag (\begin{DoxyParamCaption}\item[{Mat}]{complex }\end{DoxyParamCaption})}
+

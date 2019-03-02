@@ -1,0 +1,108 @@
+\hypertarget{linear__filter_8hpp}{}\section{inc/linear\+\_\+filter.hpp File Reference}
+\label{linear__filter_8hpp}\index{inc/linear\+\_\+filter.\+hpp@{inc/linear\+\_\+filter.\+hpp}}
+{\ttfamily \#include \char`\"{}image.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}maths\+\_\+tools.\+hpp\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}pressure.\+hpp\char`\"{}}\newline
+Include dependency graph for linear\+\_\+filter.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{linear__filter_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{linear__filter_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{linear__filter_8hpp_ad1b837554f9911e4bf91c60bd43b5df2}{shift} (cv\+::\+Mat magI)
+\begin{DoxyCompactList}\small\item\em \+: Shift subparts of input $\ast$ \end{DoxyCompactList}\item 
+cv\+::\+Mat \hyperlink{linear__filter_8hpp_a1c9c777c748a21c0e0d4537dbd0e9bae}{update\+Mag} (cv\+::\+Mat complex)
+\begin{DoxyCompactList}\small\item\em \+: Compute the matrix of magnitude $\ast$ \end{DoxyCompactList}\item 
+cv\+::\+Mat \hyperlink{linear__filter_8hpp_a86bade9e2cd4aa9230fc6d8e3833b147}{create\+Filter\+Mask} (cv\+::\+Size imsize, const cv\+::\+Mat \&kernelX, const cv\+::\+Mat \&kernelY)
+\begin{DoxyCompactList}\small\item\em Create a mask (or kernel) by matricial multiplication between two vectors. The sum of the two vectors should equal 1 to preserve the energy by convolution. \end{DoxyCompactList}\item 
+float \hyperlink{linear__filter_8hpp_adc05d0d856da04e78bbde8b311f17203}{search\+\_\+max} (const cv\+::\+Mat \&image)
+\begin{DoxyCompactList}\small\item\em \+: Returns the maximum intensity present in the Matrix \end{DoxyCompactList}\item 
+std\+::vector$<$ float $>$ \hyperlink{linear__filter_8hpp_afe688b7431925c587389dc73cc42180a}{Mat\+\_\+to\+\_\+vector} (const cv\+::\+Mat \&matrix)
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{linear__filter_8hpp_a86bade9e2cd4aa9230fc6d8e3833b147}\label{linear__filter_8hpp_a86bade9e2cd4aa9230fc6d8e3833b147}} 
+\index{linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}!create\+Filter\+Mask@{create\+Filter\+Mask}}
+\index{create\+Filter\+Mask@{create\+Filter\+Mask}!linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}}
+\subsubsection{\texorpdfstring{create\+Filter\+Mask()}{createFilterMask()}}
+{\footnotesize\ttfamily cv\+::\+Mat create\+Filter\+Mask (\begin{DoxyParamCaption}\item[{cv\+::\+Size}]{imsize,  }\item[{const cv\+::\+Mat \&}]{kernelX,  }\item[{const cv\+::\+Mat \&}]{kernelY }\end{DoxyParamCaption})}
+
+
+
+Create a mask (or kernel) by matricial multiplication between two vectors. The sum of the two vectors should equal 1 to preserve the energy by convolution. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em imsize} & \+: Size of the output Matrix \\
+\hline
+{\em kernelX} & \+: Must be a column vector. \\
+\hline
+{\em kernelY} & \+: Must be a column vector. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\+: Matrix of the kernel. The kernel is placed in the middle of the matrix. The, to complete the size, we pad the matrix with zeros around the kernel. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{linear__filter_8hpp_afe688b7431925c587389dc73cc42180a}\label{linear__filter_8hpp_afe688b7431925c587389dc73cc42180a}} 
+\index{linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}!Mat\+\_\+to\+\_\+vector@{Mat\+\_\+to\+\_\+vector}}
+\index{Mat\+\_\+to\+\_\+vector@{Mat\+\_\+to\+\_\+vector}!linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}}
+\subsubsection{\texorpdfstring{Mat\+\_\+to\+\_\+vector()}{Mat\_to\_vector()}}
+{\footnotesize\ttfamily std\+::vector$<$float$>$ Mat\+\_\+to\+\_\+vector (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{matrix }\end{DoxyParamCaption})}
+
+Convert a mat object in a vector type \mbox{\Hypertarget{linear__filter_8hpp_adc05d0d856da04e78bbde8b311f17203}\label{linear__filter_8hpp_adc05d0d856da04e78bbde8b311f17203}} 
+\index{linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}!search\+\_\+max@{search\+\_\+max}}
+\index{search\+\_\+max@{search\+\_\+max}!linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}}
+\subsubsection{\texorpdfstring{search\+\_\+max()}{search\_max()}}
+{\footnotesize\ttfamily float search\+\_\+max (\begin{DoxyParamCaption}\item[{const cv\+::\+Mat \&}]{image }\end{DoxyParamCaption})}
+
+
+
+\+: Returns the maximum intensity present in the Matrix 
+
+\mbox{\Hypertarget{linear__filter_8hpp_ad1b837554f9911e4bf91c60bd43b5df2}\label{linear__filter_8hpp_ad1b837554f9911e4bf91c60bd43b5df2}} 
+\index{linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}!shift@{shift}}
+\index{shift@{shift}!linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}}
+\subsubsection{\texorpdfstring{shift()}{shift()}}
+{\footnotesize\ttfamily void shift (\begin{DoxyParamCaption}\item[{cv\+::\+Mat}]{magI }\end{DoxyParamCaption})}
+
+
+
+\+: Shift subparts of input $\ast$ 
+
+
+\begin{DoxyParams}{Parameters}
+{\em magI} & \+: \hyperlink{class_image}{Image} to be shifted \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{linear__filter_8hpp_a1c9c777c748a21c0e0d4537dbd0e9bae}\label{linear__filter_8hpp_a1c9c777c748a21c0e0d4537dbd0e9bae}} 
+\index{linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}!update\+Mag@{update\+Mag}}
+\index{update\+Mag@{update\+Mag}!linear\+\_\+filter.\+hpp@{linear\+\_\+filter.\+hpp}}
+\subsubsection{\texorpdfstring{update\+Mag()}{updateMag()}}
+{\footnotesize\ttfamily cv\+::\+Mat update\+Mag (\begin{DoxyParamCaption}\item[{cv\+::\+Mat}]{complex }\end{DoxyParamCaption})}
+
+
+
+\+: Compute the matrix of magnitude $\ast$ 
+
+
+\begin{DoxyParams}{Parameters}
+{\em complex} & \+: Matrix under complex form $\ast$ \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix of magnitudes 
+\end{DoxyReturn}

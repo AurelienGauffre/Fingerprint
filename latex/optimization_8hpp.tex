@@ -1,0 +1,80 @@
+\hypertarget{optimization_8hpp}{}\section{inc/optimization.hpp File Reference}
+\label{optimization_8hpp}\index{inc/optimization.\+hpp@{inc/optimization.\+hpp}}
+{\ttfamily \#include \char`\"{}image.\+hpp\char`\"{}}\newline
+{\ttfamily \#include $<$assert.\+h$>$}\newline
+Include dependency graph for optimization.\+hpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{optimization_8hpp__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{optimization_8hpp__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{optimization_8hpp_a9ee1e4e7beea5a472fe21ed2bd97ddf2}{optimize} (std\+::vector$<$ float $>$ list\+\_\+l, bool max)
+\begin{DoxyCompactList}\small\item\em Find the index of the maximum or the minimum (correlation or squared error) of the values of loss function in the vector. \end{DoxyCompactList}\item 
+bool \hyperlink{optimization_8hpp_a532ed4571db526e7215785ece8d31efe}{equal\+\_\+vector} (std\+::vector$<$ float $>$ \&v, std\+::vector$<$ float $>$ \&w)
+\begin{DoxyCompactList}\small\item\em Function which return true if the two vectors are equals down to 0.\+001, false otherwise. \end{DoxyCompactList}\item 
+void \hyperlink{optimization_8hpp_a781986c541a7394e5c2f86e29643fb0d}{copy\+\_\+tab3} (float tab1\mbox{[}3\mbox{]}, float tab2\mbox{[}4\mbox{]})
+\begin{DoxyCompactList}\small\item\em Made a copy of a table of size 3 in an other. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{optimization_8hpp_a781986c541a7394e5c2f86e29643fb0d}\label{optimization_8hpp_a781986c541a7394e5c2f86e29643fb0d}} 
+\index{optimization.\+hpp@{optimization.\+hpp}!copy\+\_\+tab3@{copy\+\_\+tab3}}
+\index{copy\+\_\+tab3@{copy\+\_\+tab3}!optimization.\+hpp@{optimization.\+hpp}}
+\subsubsection{\texorpdfstring{copy\+\_\+tab3()}{copy\_tab3()}}
+{\footnotesize\ttfamily void copy\+\_\+tab3 (\begin{DoxyParamCaption}\item[{float}]{tab1\mbox{[}3\mbox{]},  }\item[{float}]{tab2\mbox{[}4\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+Made a copy of a table of size 3 in an other. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em two} & tables of size 3. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{optimization_8hpp_a532ed4571db526e7215785ece8d31efe}\label{optimization_8hpp_a532ed4571db526e7215785ece8d31efe}} 
+\index{optimization.\+hpp@{optimization.\+hpp}!equal\+\_\+vector@{equal\+\_\+vector}}
+\index{equal\+\_\+vector@{equal\+\_\+vector}!optimization.\+hpp@{optimization.\+hpp}}
+\subsubsection{\texorpdfstring{equal\+\_\+vector()}{equal\_vector()}}
+{\footnotesize\ttfamily bool equal\+\_\+vector (\begin{DoxyParamCaption}\item[{std\+::vector$<$ float $>$ \&}]{v,  }\item[{std\+::vector$<$ float $>$ \&}]{w }\end{DoxyParamCaption})}
+
+
+
+Function which return true if the two vectors are equals down to 0.\+001, false otherwise. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em two} & vectors of floats \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{optimization_8hpp_a9ee1e4e7beea5a472fe21ed2bd97ddf2}\label{optimization_8hpp_a9ee1e4e7beea5a472fe21ed2bd97ddf2}} 
+\index{optimization.\+hpp@{optimization.\+hpp}!optimize@{optimize}}
+\index{optimize@{optimize}!optimization.\+hpp@{optimization.\+hpp}}
+\subsubsection{\texorpdfstring{optimize()}{optimize()}}
+{\footnotesize\ttfamily int optimize (\begin{DoxyParamCaption}\item[{std\+::vector$<$ float $>$}]{list\+\_\+l,  }\item[{bool}]{squared }\end{DoxyParamCaption})}
+
+
+
+Find the index of the maximum or the minimum (correlation or squared error) of the values of loss function in the vector. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em a} & vector of the loss function values for a set of images, a boolean which is true if the loss function used is the squared error, false if it\textquotesingle{}s the correlation. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the index of the optimized value in the vector 
+\end{DoxyReturn}
