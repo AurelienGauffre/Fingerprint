@@ -14,7 +14,7 @@ int main(int argc, char const *argv[]) {
   modele = cv::imread(m_name, cv::IMREAD_GRAYSCALE);
   Image ref(modele, "reference");
   float max_error = 0;
-  for (int angle = 10; angle < 360; angle+=10) {
+  for (int angle = 10; angle < 360; angle+=60) {
     Image our_rot(ref);
     float angle_rad = angle/360.0*M_PI*2.0;
 
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
     our_rot.back_to_Mat();
     cv::Mat mat_rotated = ref.rotate_opencv(angle, rot_pix);
     Image ocv_rot(mat_rotated, "Res");
-
+    std::cout << "Rotation of angle " << angle << " degrees." << std::endl;
     cv::imshow("resopcv.png", *ocv_rot.get_original_image());
     cv::imshow("resrot.png", *our_rot.get_original_image());
     cv::waitKey(0);
