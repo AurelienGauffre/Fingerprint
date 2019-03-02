@@ -20,7 +20,7 @@ public:
   float get_intensity();
   float distance(Pixel p);
 
-  void rotation(const Pixel& origin, float angle); /*!< return the Pixel rotated around origin of angle*/
+  void rotation(const Pixel& origin, float angle); /*!< \brief return the Pixel rotated around origin of angle * \param origin : rotation pixel \param angle : rotation angle*/
 
   /*!
       *  \brief return the Pixel rotated around location of angle calculated according to parameters strength,radius,violence

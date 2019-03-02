@@ -9,6 +9,6 @@
     *
     *  \param Image : float : coefficient of attenuation, int : power, float : parameter.
     */
-float weight_exp(float coeff, int power, float r);  /*!< Approximation of the rectangular function*/
+float weight_exp(float coeff, int power, float r);
 
 #endif

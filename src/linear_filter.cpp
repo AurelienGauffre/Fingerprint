@@ -324,7 +324,7 @@ Mat Image::fourier_convolution(Mat& kernel)
 
 std::vector<float> Mat_to_vector(const Mat& matrix) {
   std::vector<float> array;
-  if (matrix.isContinuous()) {
+  if (matrix.isContinuous()) { // Check if the matrix is continously present in memory
     array.assign((float*)matrix.datastart, (float*)matrix.dataend);
   } else {
     for (int i = 0; i < matrix.rows; ++i) {
