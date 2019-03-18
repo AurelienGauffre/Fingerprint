@@ -1,4 +1,5 @@
 
+NB : This project was imported from Gitlab once it was finished and was made with 3 other contributors.
 
 # fingerprint 👆
 The aim of this project is to find mathematical filters and models which best simulate artefacts that could occur during the fingerprint acquisition.
