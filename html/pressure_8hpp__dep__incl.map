@@ -1,9 +1,0 @@
-<map id="inc/pressure.hpp" name="inc/pressure.hpp">
-<area shape="rect" id="node2" href="$linear__filter_8hpp.html" title="inc/linear_filter.hpp" alt="" coords="473,80,619,107"/>
-<area shape="rect" id="node8" href="$pressure_8cpp.html" title="Set of methods and functions to simulate a variation of finger pressure during acquisition. " alt="" coords="643,80,771,107"/>
-<area shape="rect" id="node3" href="$blur__demo_8cpp.html" title="demo/blur_demo.cpp" alt="" coords="5,162,164,189"/>
-<area shape="rect" id="node4" href="$convolution__demo_8cpp.html" title="demo/convolution_demo.cpp" alt="" coords="189,162,399,189"/>
-<area shape="rect" id="node5" href="$demo__time__convolution_8cpp.html" title="demo/demo_time_convolution.cpp" alt="" coords="423,162,669,189"/>
-<area shape="rect" id="node6" href="$dft__convolution__demo_8cpp.html" title="demo/dft_convolution\l_demo.cpp" alt="" coords="693,155,857,196"/>
-<area shape="rect" id="node7" href="$linear__filter_8cpp.html" title="Definition of methods concerning the linear filtering. " alt="" coords="881,162,1027,189"/>
-</map>
