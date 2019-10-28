@@ -9,7 +9,7 @@ Create a folder named build in the project folder. Go into this one and build th
 ```bash
 fingerprint$ mkdir build
 fingerprint$ cd build
-#Creatiion of the Makefile :
+#Creation of the Makefile :
 fingerprint/build$ cmake ..
 #Make :
 fingerprint/build$ make
